@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import "./styles.css";
 
-export default function ButtonLarge({ variant, children }) {
+export default function Button({ variant, children }) {
   return (
     <div>
       <button
-        className={`buttonLarge ${
-          variant ? `buttonLarge--${variant}` : ""
+        className={`button ${
+          variant ? `button--${variant}` : ""
         }`.trim()}
       >
         {children}
@@ -15,7 +15,7 @@ export default function ButtonLarge({ variant, children }) {
   );
 }
 
-ButtonLarge.propTypes = {
+Button.propTypes = {
   variant: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };

@@ -1,0 +1,8 @@
+
+
+  
+  .button--solid-green {
+    @apply h-16 w-80 text-2xl bg-petrack-green font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300 font-mono;
+}
+
+
