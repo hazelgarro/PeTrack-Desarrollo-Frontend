@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-    <ButtonRegister variant="solid-green">Registrarse</ButtonRegister>
+    <ButtonRegister variant="border-green">Registrarse</ButtonRegister>
     </>
   )
 }
