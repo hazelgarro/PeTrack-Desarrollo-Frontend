@@ -1,4 +1,5 @@
 import ButtonRegister from "./components/atoms/Button"
+import CardsContainer from "./components/organisms/CardsContainer";
 
 
 
@@ -7,7 +8,7 @@ function App() {
   return (
     <>
     
-    <ButtonRegister variant="border-green">Registrarse</ButtonRegister>
+    <CardsContainer></CardsContainer>
     </>
   )
 }

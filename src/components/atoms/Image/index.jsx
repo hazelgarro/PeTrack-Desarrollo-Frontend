@@ -1,7 +1,7 @@
-import "./styles.css";
-
-export default function Image({imgSrc, imgAlt}) {
+export default function Image({ imgSrc, imgAlt }) {
   return (
-    <img src={imgSrc} alt={imgAlt}/>
+    <div className="w-full h-0 pb-[56.25%] relative">
+      <img src={imgSrc} alt={imgAlt} />
+    </div>
   );
 }
