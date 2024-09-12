@@ -1,15 +1,17 @@
 import ButtonRegister from "./components/atoms/Button"
 import CardsContainer from "./components/organisms/CardsContainer";
+import SignUp from "./components/templates/SignUp/PageTemplate";
 
 
 
 function App() {
 
   return (
-    <>
-    
-    <CardsContainer></CardsContainer>
-    </>
+<div>
+  <Routes>
+    <Route path="/" element={<SignUp />} />
+  </Routes>
+</div>
   )
 }
 
