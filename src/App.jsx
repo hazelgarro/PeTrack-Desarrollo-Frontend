@@ -1,3 +1,7 @@
+import React from 'react';
+import './App.css';
+import './index.css';
+
 import ButtonRegister from "./components/atoms/Button"
 import CardsContainer from "./components/organisms/CardsContainer";
 import SignUp from "./components/templates/SignUp/PageTemplate";
@@ -7,11 +11,15 @@ import SignUp from "./components/templates/SignUp/PageTemplate";
 function App() {
 
   return (
-<div>
+/*<div>
   <Routes>
-    <Route path="/" element={<SignUp />} />
+    <Route path="/signup" element={<SignUp />} />
   </Routes>
-</div>
+</div>*/
+<div className="App">
+  <SignUp />
+</div>  
+
   )
 }
 
