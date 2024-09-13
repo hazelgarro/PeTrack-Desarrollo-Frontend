@@ -9,7 +9,7 @@ const FormFooter = () => (
       <Link className="text-[#8E8E8E]" href="!!!POR HACER!!!" text="Forgot password?" />
     </li>
     <li className="flex justify-center">
-      <Button text="Sign Up" />
+      <Button type='submit' text="Sign Up"/>
     </li>
     <li className="flex justify-center">
       <div className="flex flex-row justify-items-center justify-center m-3">

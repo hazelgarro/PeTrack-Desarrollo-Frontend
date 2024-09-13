@@ -1,30 +1,29 @@
-// Consulta a la API para el login
-async function login(username, password) {
+async function authenticatePetOwner(email, password) {
+    //el api recibe el objeto completo, por lo tanto hay que mandarle un id pero es solo por formato
+    const apiUrl = "https://www.APIPetrack.somee.com/PetOwner/Login"
+
+    let accountData = {
+        email,
+        password
+    }
+
     try {
-        const response = await fetch('https://api.ejemplo.com/login', {
-            method: 'POST', // Método POST para enviar los datos
+        const response = await fetch(apiUrl, {
+            method: "POST",
             headers: {
-                'Content-Type': 'application/json', // Cabecera indicando que se enviará JSON
+                "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                username: username, // Se envían las credenciales en el cuerpo de la solicitud
-                password: password,
-            }),
+            body: JSON.stringify(accountData)
         });
 
-        // Verifica si la respuesta es exitosa
         if (!response.ok) {
-            throw new Error('Error en la autenticación');
+            console.log(response.status);
         }
 
-        const data = await response.json(); // Parsear la respuesta como JSON
-        console.log('Token de autenticación:', data.token); // Mostrar el token o la respuesta de éxito
-        return data; // Retornar los datos recibidos (ej. token)
-
+        const data = await response.json();
+        console.log(data);
+        return data;
     } catch (error) {
-        console.error('Error:', error); // Manejo de errores
+        console.error("Error:", error);
     }
 }
-
-// Ejemplo de uso
-login('miUsuario', 'miContraseña');
