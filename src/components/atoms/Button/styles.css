@@ -1,7 +1,28 @@
+/* Base styles for solid green button */
 .button--solid-green {
-    @apply h-16 w-80 text-2xl bg-petrack-green font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300;
+    @apply bg-petrack-green font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300;
 }
 
-.button--border-green{
-    @apply h-16 w-80 text-2xl border-4 border-petrack-green font-bold text-petrack-green rounded-full cursor-pointer hover:scale-105 duration-300;
+/* Base styles for border green button */
+.button--border-green {
+    @apply border-2 border-petrack-green font-bold text-petrack-green rounded-full cursor-pointer hover:scale-105 duration-300;
+}
+
+/* Large size variant */
+.button--large {
+    @apply h-16 w-80 text-2xl;
+}
+
+/* Medium size variant */
+.button--medium {
+    @apply h-12 w-64 text-xl;
+}
+
+/* Small size variant */
+.button--small {
+    @apply h-10 w-48 text-lg;
+}
+
+.button--extra-small {
+    @apply h-8 w-36 text-sm;
 }

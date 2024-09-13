@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import "./styles.css";
 
-export default function Button({ variant, children }) {
+export default function Button({ variant, size, children }) {
   return (
     <div>
       <button
         className={`button ${
           variant ? `button--${variant}` : ""
-        }`.trim()}
+        } ${size ? `button--${size}` : ""}`.trim()}
       >
         {children}
       </button>
@@ -17,5 +17,6 @@ export default function Button({ variant, children }) {
 
 Button.propTypes = {
   variant: PropTypes.string.isRequired,
+  size: PropTypes.oneOf(["small", "medium", "large"]).isRequired, // Define the possible sizes
   children: PropTypes.node.isRequired,
 };

@@ -1,0 +1,24 @@
+
+.link {
+  @apply  p-4 font-bold cursor-pointer duration-300 hover:opacity-75;
+}
+
+
+.link--green {
+  @apply text-petrack-green;
+}
+
+
+.link--large {
+  @apply text-2xl;
+}
+
+
+.link--medium {
+  @apply text-xl;
+}
+
+
+.link--small {
+  @apply text-base;
+}
