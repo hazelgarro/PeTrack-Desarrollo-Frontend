@@ -1,4 +1,3 @@
-import React from 'react';
 import Logo from '../atoms/Logo';
 import SocialLink from '../atoms/SocialLink';
 import ServicesLinks from '../molecules/ServicesLinks';
