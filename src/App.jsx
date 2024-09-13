@@ -1,13 +1,20 @@
 import './App.css';
 import './index.css';
-import NavBar from "./components/organisms/Nav";
+import Signup from "./components/templates/SignUp/PageTemplate";
+import Login from "./components/templates/LogIn/PageTemplate";
 
 function App() {
 
   return (
-    <>
-    <NavBar></NavBar>
-    </>
+    /*
+    <div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/signup" element={<Login />} />
+      </Routes>
+    </div>
+  */
+ <Signup></Signup>
   );
 }
 
