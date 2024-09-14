@@ -3,22 +3,17 @@ import ButtonSignUp from "../../atoms/Button";
 import ButtonLogin from "../../atoms/Button";
 import Profile from "../../atoms/Profile";
 import Link from "../../atoms/Link";
+import Logo from "../../atoms/Logo"
 
 export default function NavBar({ isAuthenticated }) {
     return (
         <div className="w-full bg-white">
             <nav className="flex justify-between items-center px-8 py-4">
-                {/* Logo */}
                 <a href="/homepage-fake-link">
-                    <img 
-                        src="/src/assets/img/PetrackTextWithLogo.svg" 
-                        alt="Petrack Logo"
-                        className="w-36" 
-                    />
+                    <Logo variant="extra-small"></Logo>
                 </a>
 
                 <div className="flex space-x-4 items-center">
-                    {/* Common Links */}
                     <div className="p-2">
                         <Link href="/home" variant="green" size="small">Inicio</Link>
                         <Link href="/about" variant="green" size="small">Veterinarias</Link>

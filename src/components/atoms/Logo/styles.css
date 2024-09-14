@@ -1,0 +1,18 @@
+/* Large size variant */
+.logo--large {
+    @apply h-16 w-80 text-2xl;
+}
+
+/* Medium size variant */
+.logo--medium {
+    @apply h-12 w-64 text-xl;
+}
+
+/* Small size variant */
+.logo--small {
+    @apply h-10 w-48 text-lg;
+}
+
+.logo--extra-small {
+    @apply h-8 w-36 text-sm;
+}
