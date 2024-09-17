@@ -38,7 +38,6 @@ const FormFields = () => {
         <InputField
           type="password"
           name="confirmPassword"
-          
           placeholder="Confirm Password"
         />
       </li>

@@ -1,34 +1,44 @@
-export default async function createPetOwnerAccount(firstName, lastName, email, password) {
-    const apiUrl = "https://www.APIPetrack.somee.com/PetOwner/CreateAccount";
+export default async function createAccount(email, password, userTypeId, profilePicture, phoneNumber, additionalData) {
+    const apiUrl = 'http://www.APIpetrack.somee.com/User/CreateAccount';
 
-    //el api recibe el objeto completo, por lo tanto hay que mandarle un id pero es solo por formato
-    let accountData = {
-        id: 0,
-        firstName,
-        lastName,
+    const accountData = {
         email,
-        password
-    }
-
-    console.log(accountData)
+        password,
+        userTypeId, //acepta "O" (PetOwner), "V" (Veterinarian) y "S" (PetShelter) 
+        profilePicture,
+        phoneNumber,
+        additionalData
+    };
 
     try {
         const response = await fetch(apiUrl, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(accountData)
         });
-        
-        if (!response.ok) {
-            console.log(response.status);
-        }
 
-        const data = await response.json();
-        console.log(data);
-        return data;
+        const responseData = await response.json();
+        console.log("Message: " + responseData.message);
+
+        if (!response.ok) {
+            return{
+                result: false,
+                message: responseData.message || "An error occurred while creating the account."
+            };
+        }
+        return{
+            result: true,
+            message: responseData.message
+        };
+
     } catch (error) {
-        console.error("Error:", error);
+        console.log("Error message: "+ error.message || "An error occurred while creating the account.")
+        return{
+            result: false,
+            message: error.message || "An error occurred while creating the account."
+        };
     }
 }

@@ -1,10 +1,6 @@
 import './App.css';
 import './index.css';
-<<<<<<< Updated upstream
 import FormFields from './components/templates/SignUp/PageTemplate';
-=======
-import NavBar from "./components/organisms/cardsContainer";
->>>>>>> Stashed changes
 
 /*
 <div>
@@ -16,15 +12,9 @@ import NavBar from "./components/organisms/cardsContainer";
 */
 function App() {
   return (
-<<<<<<< Updated upstream
   <>
   <FormFields></FormFields>
   </>
-=======
-    <>
-    <NavBar isAuthenticated="true"></NavBar>
-    </>
->>>>>>> Stashed changes
   );
 }
 

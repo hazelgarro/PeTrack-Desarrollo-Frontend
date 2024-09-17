@@ -1,29 +1,35 @@
-async function authenticatePetOwner(email, password) {
-    //el api recibe el objeto completo, por lo tanto hay que mandarle un id pero es solo por formato
-    const apiUrl = "https://www.APIPetrack.somee.com/PetOwner/Login"
+export default async function loginUser(email, password) {
+    const apiUrl = "http://www.APIPetrack.somee.com/User/Login"
 
-    let accountData = {
+    const accountData = {
         email,
         password
-    }
+    };
 
     try {
         const response = await fetch(apiUrl, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                "Content-Type": "application/json"
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(accountData)
         });
 
+        const responseData = await response.json();
+
         if (!response.ok) {
             console.log(response.status);
         }
+        
+        console.log(responseData);
+        return responseData;
 
-        const data = await response.json();
-        console.log(data);
-        return data;
     } catch (error) {
-        console.error("Error:", error);
+        console.log(error.message || "An error occurred while creating the account.")
+        return{
+            result: false,
+            message: error.message || "An error occurred while creating the account."
+        };
     }
 }
