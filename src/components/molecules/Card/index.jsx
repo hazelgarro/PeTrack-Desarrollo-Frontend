@@ -9,7 +9,7 @@ import Location from "../../atoms/Icons/Location";
 export default function Card({ typeCard, link, title, imgSrc, imgAlt }) {
     return (
         <a href={link} className="block transform">
-            <div className="relative bg-white rounded-xl overflow-hidden">
+            <div className="relative rounded overflow-hidden">
                 <Image imgSrc={imgSrc} imgAlt={imgAlt}></Image>
 
                 {typeCard === "service" ? (

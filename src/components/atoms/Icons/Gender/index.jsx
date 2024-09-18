@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function Gender({ props, gender }) {
   return (
     gender === 'female' ? (

@@ -10,19 +10,19 @@
 
 /* Large size variant */
 .button--large {
-    @apply h-16 w-80 text-2xl;
+    @apply h-16 min-w-80 text-2xl px-3;
 }
 
 /* Medium size variant */
 .button--medium {
-    @apply h-12 w-64 text-xl;
+    @apply h-12 min-w-64 text-xl px-3;
 }
 
 /* Small size variant */
 .button--small {
-    @apply h-10 w-48 text-lg;
+    @apply h-10 min-w-48 text-lg px-3;
 }
 
 .button--extra-small {
-    @apply h-8 w-36 text-sm;
+    @apply h-8 min-w-36 text-sm px-3;
 }

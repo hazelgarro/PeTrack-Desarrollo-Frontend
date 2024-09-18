@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import FormFields from './components/templates/SignUp/PageTemplate';
+import ProfileTemplate from './components/templates/Profile';
 
 /*
 <div>
@@ -13,7 +13,7 @@ import FormFields from './components/templates/SignUp/PageTemplate';
 function App() {
   return (
   <>
-  <FormFields></FormFields>
+  <ProfileTemplate></ProfileTemplate>
   </>
   );
 }

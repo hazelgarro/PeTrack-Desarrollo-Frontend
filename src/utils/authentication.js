@@ -32,4 +32,9 @@ export default async function loginUser(email, password) {
             message: error.message || "An error occurred while creating the account."
         };
     }
+
+    /*
+    Falta guardar la cookie de sesión
+    esto se hará cuando se utilice este script en la vista
+    */
 }
