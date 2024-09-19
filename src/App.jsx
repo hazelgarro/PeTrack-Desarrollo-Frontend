@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import ProfileTemplate from './components/templates/Profile';
+import PasswordInput from './components/molecules/PasswordInput';
 
 /*
 <div>
@@ -13,7 +13,7 @@ import ProfileTemplate from './components/templates/Profile';
 function App() {
   return (
   <>
-  <ProfileTemplate></ProfileTemplate>
+  <PasswordInput size="extra-large"></PasswordInput>
   </>
   );
 }
