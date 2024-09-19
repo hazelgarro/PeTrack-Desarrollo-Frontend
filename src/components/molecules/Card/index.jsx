@@ -56,7 +56,3 @@ export default function Card({ typeCard, link, title, imgSrc, imgAlt }) {
 Card.proptotypes = {
     typeCard: Proptypes.oneOf(["service", "pet", "adoption_pet"]).isRequired,
 };
-
-Card.defaultProps = {
-    typeCard: "service"
-}

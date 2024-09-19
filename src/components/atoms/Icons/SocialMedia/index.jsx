@@ -27,6 +27,3 @@ SocialIcon.propTypes = {
     variant: PropTypes.oneOf(['instagram', 'youtube', 'x']).isRequired,
     href: PropTypes.string.isRequired,
 };
-
-
-
