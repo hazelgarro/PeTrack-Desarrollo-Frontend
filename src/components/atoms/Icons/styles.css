@@ -1,0 +1,32 @@
+.svg-icon {
+    @apply w-6 h-6;
+}
+
+.svg-icon--primary {
+    @apply text-petrack-green;
+}
+
+.svg-icon--secondary {
+    @apply text-gray-500;
+}
+
+/* Custom sizes */
+.svg-icon--extra-small {
+    @apply w-4 h-4;
+}
+
+.svg-icon--small {
+    @apply w-5 h-5;
+}
+
+.svg-icon--medium {
+    @apply w-6 h-6;
+}
+
+.svg-icon--large {
+    @apply w-8 h-8;
+}
+
+.svg-icon--extra-large {
+    @apply w-10 h-10;
+}
