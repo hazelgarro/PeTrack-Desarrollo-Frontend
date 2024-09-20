@@ -2,7 +2,7 @@ import Image from "../../atoms/Image";
 import QrCode from "../../atoms/Icons/QrCode";
 import Button from "../../atoms/Button";
 
-export default function PetPhotoQr({ petPicture }) {
+export default function ({ petPicture }) {
     return (<div className="relative rounded-3xl overflow-hidden w-full">
         <Image imgSrc={petPicture} imgAlt={"Pet profile picture"}></Image>
         <div className="absolute top-2 right-2 p-3">

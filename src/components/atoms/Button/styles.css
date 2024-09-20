@@ -3,22 +3,23 @@
     @apply bg-petrack-green font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300;
 }
 
-/* Base styles for border green button */
 .button--border-green {
     @apply border-2 border-petrack-green font-bold text-petrack-green rounded-full cursor-pointer hover:scale-105 duration-300;
 }
 
-/* Large size variant */
+.button--content-fit{
+    @apply min-w-min !important;
+}
+
+/* size variants */
 .button--large {
     @apply h-16 min-w-80 text-2xl px-3;
 }
 
-/* Medium size variant */
 .button--medium {
     @apply h-12 min-w-64 text-xl px-3;
 }
 
-/* Small size variant */
 .button--small {
     @apply h-10 min-w-48 text-lg px-3;
 }
