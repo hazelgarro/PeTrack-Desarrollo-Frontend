@@ -17,11 +17,14 @@ const DropdownMenu = ({ children }) => {
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
                     {/* Fondo semitransparente al hacer clic */}
-                    <div className="w-auto bg-white border-2 border-petrack-green rounded-lg shadow-lg p-4 m-8">
-                        <div className="text-end">
-                            <button label="Opciones" onClick={toggleMenu}><ExitIcon size="large"></ExitIcon></button>
+                    <div className="relative bg-white border-2 border-petrack-green rounded-lg p-7 md:pr-10 pr-9 my-10 mx-4">
+                        <div className="absolute top-2 right-2">
+                            <button label="Exit" onClick={toggleMenu}>
+                                <ExitIcon size="large" />
+                            </button>
                         </div>
-                        <div className="flex-col-reverse">
+
+                        <div className="flex flex-wrap justify-start gap-4">
                             {children}
                         </div>
                     </div>

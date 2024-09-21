@@ -43,7 +43,7 @@ export default function Profile() {
             </div>
             <div className="flex w-full justify-between my-4">
                 <h2 className="justify-center text-4xl font-bold">Name</h2>
-                <div className="hidden lg:flex space-x-4">{buttons}</div>
+                <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
             </div>
             <ProfileInfoContainer className="mt-6 lg:mt-4">
                 <IconText iconName="dog" text="Breed"></IconText>
