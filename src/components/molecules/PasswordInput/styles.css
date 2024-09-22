@@ -12,12 +12,12 @@
 
 
 .password-input {
-    @apply w-full py-2 outline-none bg-transparent box-border;
+    @apply w-full outline-none bg-transparent box-border;
     /* Asegura que los bordes se calculen bien */
 }
 
 .password-toggle {
-    @apply cursor-pointer text-gray-500 hover:text-petrack-black ml-2;
+    @apply cursor-pointer text-gray-500 hover:text-gray-500;
 
 }
 

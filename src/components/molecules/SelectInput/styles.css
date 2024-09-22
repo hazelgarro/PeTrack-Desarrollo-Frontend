@@ -1,7 +1,7 @@
 /* Input container styling */
 .input-container {
-    @apply flex items-center border-4 border-gray-300 rounded-full px-4;
-    @apply box-border;
+    @apply flex items-center border-4 border-gray-300 text-gray-400 rounded-full px-4;
+    @apply box-border mb-3;
     transition: border-color 0.3s ease, ring-color 0.3s ease;
     /* Smooth transition for border and ring colors */
 }

@@ -2,16 +2,16 @@ import PropTypes from 'prop-types';
 import LogoImage from '../../../../public/assets/img/PetrackTextWithLogo.svg';
 import './styles.css'; 
 
-export default function Logo({ variant }) {
+export default function Logo({ size }) {
   return (
     <img
       src={LogoImage}
       alt="Logo"
-      className={`logo ${variant ? `logo--${variant}` : ''}`.trim()}
+      className={`logo ${size ? `logo--${size}` : ''}`.trim()}
     />
   );
 }
 
 Logo.propTypes = {
-  variant: PropTypes.oneOf(['extra-small', 'small', 'medium', 'large']).isRequired, //Define  the posibles variantes
+  size: PropTypes.oneOf(['extra-small', 'small', 'medium', 'large', 'extra-large']).isRequired, //Define  the posibles variantes
 };
