@@ -13,11 +13,11 @@ export default function PasswordInput({ size, placeholder }) {
     };
 
     return (
-        <div className={`password-input-container ${size ? `password-input--${size}` : ""} flex items-center border rounded-full px-4 transition-all duration-300 border-gray-300 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 mb-0`}>
+        <div className={`password-input-container ${size ? `password-input--${size}` : ""} flex items-center border rounded-full px-4 transition-all duration-300 border-gray-300 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500 mb-3`}>
             <input
                 type={isVisible ? "text" : "password"}
                 placeholder={placeholder}
-                className="password-input w-full  outline-none bg-transparent box-border"
+                className="password-input w-full  outline-none bg-transparent box-border "
             />
             <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 hover:text-petrack-black ml-2">
                 <div className="relative">

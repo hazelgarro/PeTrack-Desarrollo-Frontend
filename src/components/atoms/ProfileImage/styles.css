@@ -1,0 +1,32 @@
+.profile-extra-large {
+    @apply h-48 w-48 text-xl px-6;
+}
+
+.profile-large {
+    @apply h-12 w-12 text-lg px-5;
+}
+
+.profile-medium {
+    @apply h-10 w-10 text-base px-4;
+}
+
+.profile-small {
+    @apply h-8 w-8 text-sm px-3 border-2;
+}
+
+.profile-extra-small {
+    @apply h-6 w-6 text-xs px-2 border;
+}
+
+/* Additional styles for Profile component */
+.profile-container {
+    @apply rounded-full bg-slate-300 flex items-center justify-center;
+}
+
+.profile-image {
+    @apply w-full h-full rounded-full object-cover;
+}
+
+.profile-placeholder {
+    @apply text-gray-500 text-xs;
+}

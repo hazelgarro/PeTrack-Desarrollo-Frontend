@@ -1,7 +1,6 @@
 import './App.css';
 import './index.css';
-import  Login  from "./components/templates/Profile";
-
+import RegisterPhotos from "./components/templates/RegisterImages";
 /*<div>
   <Routes>
     <Route path="/" element={<Login />} />
@@ -9,7 +8,9 @@ import  Login  from "./components/templates/Profile";
 </div>*/
 function App() {
   return (
-    <Login></Login>
+    <>
+      <RegisterPhotos></RegisterPhotos>
+    </>
   );
 }
 

@@ -1,5 +1,5 @@
 .password-input-container {
-    @apply flex items-center border-4 border-gray-600 rounded-full px-4;
+    @apply flex items-center border-4 border-gray-300 rounded-full px-4;
     @apply box-border;
     transition: border-color 0.3s ease, ring-color 0.3s ease;
     /* Transición suave para el color del borde y el color del anillo */
