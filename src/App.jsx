@@ -1,6 +1,7 @@
 import './App.css';
 import './index.css';
-import RegisterPhotos from "./components/templates/RegisterImages/RegisterImagesWithBanner";
+// import RegisterPhotos from "./components/templates/RegisterImages/RegisterImagesWithBanner";
+import Profile from "./components/templates/Profile"
 /*<div>
   <Routes>
     <Route path="/" element={<Login />} />
@@ -9,7 +10,8 @@ import RegisterPhotos from "./components/templates/RegisterImages/RegisterImages
 function App() {
   return (
     <>
-      <RegisterPhotos></RegisterPhotos>
+      {/* <RegisterPhotos></RegisterPhotos> */}
+      <Profile></Profile>
     </>
   );
 }

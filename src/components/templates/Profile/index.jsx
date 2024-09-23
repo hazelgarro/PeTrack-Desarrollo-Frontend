@@ -12,6 +12,8 @@ import Transfer from "../../atoms/Icons/Transfer";
 import History from "../../atoms/Icons/History";
 import Edit from "../../atoms/Icons/Edit";
 import TextBlock from "../../molecules/TextBlock";
+import MedicalInfoCard from "../../molecules/MedicalInfoCard";
+import MedicalInfoToggle from "../../organisms/MedicalInfoToggle";
 
 export default function Profile() {
     const buttons = <>
@@ -74,19 +76,12 @@ export default function Profile() {
                 <TextBlock title="About (name)">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae deleniti est, asperiores quisquam modi, tempore voluptates dolorum illum laudantium fugiat ex, consectetur facere assumenda ducimus. Quae fugit tempora eius tempore.</TextBlock>
                 <TextBlock title="Especifications">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae deleniti est, asperiores quisquam modi, tempore voluptates dolorum illum laudantium fugiat ex, consectetur facere assumenda ducimus. Quae fugit tempora eius tempore.</TextBlock>
             </section>
-            {/* <section class="medical-record">
-                <h2>Medical record</h2>
+            <section>
+                <MedicalInfoToggle title="Medical Record">
+                    <MedicalInfoCard></MedicalInfoCard>
+                </MedicalInfoToggle>
 
-                <article class="record-entry">
-                    <h3>Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur. Quis quis id in cum.</p>
-                </article>
-
-                <article class="record-entry">
-                    <h3>Title</h3>
-                    <p>Lorem ipsum dolor sit amet consectetur. Quis quis id in cum.</p>
-                </article>
-            </section> */}
+            </section>
         </main>
     )
 }
