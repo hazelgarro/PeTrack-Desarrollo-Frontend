@@ -20,7 +20,7 @@ export default function Login() {
                         <PasswordInput size="medium" placeholder="Password" />
                         <h2 className="text-right text-sm text-gray-500 mb-2">Forgot your password?</h2>
                         <ButtonLogin size="small" variant="solid-green">Log In</ButtonLogin>
-                        <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="#">Sign Up</a></h3>
+                        <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="/SignUp">Sign Up</a></h3>
                     </div>
                 </div>
             </div>

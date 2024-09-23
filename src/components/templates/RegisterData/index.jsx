@@ -35,7 +35,7 @@ export default function CreateAccount() {
             <PasswordInput size="medium" placeholder="Password" />
             <PasswordInput size="medium" placeholder="Confirm password" />
             <ButtonLogin size="small" variant="solid-green">Registrarme</ButtonLogin>
-            <h1 className="text-center mt-6">Already have an account? <a className="font-bold text-petrack-green" href="#">Sign In</a></h1>
+            <h1 className="text-center mt-6">Already have an account? <a className="font-bold text-petrack-green" href="/">Sign In</a></h1>
           </div>
         </div>
       </div>
