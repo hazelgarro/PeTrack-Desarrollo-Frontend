@@ -1,11 +1,10 @@
 import pet_picture from "../../../assets/img/pet_picture.webp";
-
 import PetPhotoQr from "../../organisms/PetPhotoQR";
 import IconText from "../../molecules/IconText";
 import ProfileInfoContainer from "../../organisms/ProfileInfoContainer";
 import Modal from "../../molecules/Modal";
 import MenuIcon from "../../atoms/Icons/Menu";
-import { useModal } from "../../../hooks/useModal";
+import { useModal } from "../../../hooks/useModal.js";
 import DeleteIcon from "../../atoms/Icons/Delete";
 import Button from "../../atoms/Button";
 import Transfer from "../../atoms/Icons/Transfer";
@@ -15,7 +14,7 @@ import TextBlock from "../../molecules/TextBlock";
 import MedicalInfoCard from "../../molecules/MedicalInfoCard";
 import MedicalInfoToggle from "../../organisms/MedicalInfoToggle";
 
-export default function Profile() {
+export default function() {
     const buttons = <>
         <Button variant="border-green" variant2="content-fit" size="small">
             <div className="flex items-center gap-1">
@@ -42,7 +41,7 @@ export default function Profile() {
     const hookMenuBotones = useModal();
 
     return (
-        <main className="relative xl:mx-44 md:mx-20 m-4">
+        <main className="relative xl:mx-32 md:mx-16 mx-4">
 
             <section className="relative">
                 <PetPhotoQr petPicture={pet_picture}></PetPhotoQr>

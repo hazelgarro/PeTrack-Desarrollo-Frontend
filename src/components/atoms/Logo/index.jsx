@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
-import LogoImage from '../../../../public/assets/img/PetrackTextWithLogo.svg';
+import logoImage from "../../../assets/img/PetrackTextWithLogo.svg";
 import './styles.css'; 
 
 export default function Logo({ size }) {
   return (
     <img
-      src={LogoImage}
+      src={logoImage}
       alt="Logo"
       className={`logo ${size ? `logo--${size}` : ''}`.trim()}
     />

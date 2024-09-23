@@ -1,7 +1,7 @@
 import Image from "../../atoms/Image";
 import QrCode from "../../atoms/Icons/QrCode";
 import Button from "../../atoms/Button";
-import { useModal } from "../../../hooks/useModal";
+import { useModal } from "../../../hooks/useModal.js";
 import Modal from "../../molecules/Modal";
 
 export default function ({ petPicture }) {
