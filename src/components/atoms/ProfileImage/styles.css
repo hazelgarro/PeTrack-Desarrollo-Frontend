@@ -20,7 +20,7 @@
 
 /* Additional styles for Profile component */
 .profile-container {
-    @apply rounded-full bg-slate-300 flex items-center justify-center;
+    @apply rounded-full bg-slate-400 flex items-center justify-center;
 }
 
 .profile-image {

@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import RegisterPhotos from "./components/templates/RegisterImages";
+import RegisterPhotos from "./components/templates/RegisterImages/RegisterImagesWithBanner";
 /*<div>
   <Routes>
     <Route path="/" element={<Login />} />

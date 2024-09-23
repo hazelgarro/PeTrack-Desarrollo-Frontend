@@ -1,9 +1,9 @@
 
-import Logo from "../../atoms/Logo";
-import BgImage from "../../../assets/img/Bg.png";
+import Logo from "../../../atoms/Logo";
+import BgImage from "../../../../assets/img/Bg.png";
 import "./styles.css";
-import Button from "../../atoms/Button";
-import ProfileImage from "../../atoms/ProfileImage";
+import Button from "../../../atoms/Button";
+import ProfileImage from "../../../atoms/ProfileImage";
 
 
 export default function CreateAccount() {

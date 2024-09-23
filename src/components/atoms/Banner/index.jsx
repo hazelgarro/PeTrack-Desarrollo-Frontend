@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 export default function Banner({ imageSrc, bannerLink }) {
     return (
         <a href={bannerLink}>
-            <div className="w-full h-48 bg-slate-300 rounded-2xl border-2 border-white flex items-center justify-center">
+            <div className=" w-96 h-48 bg-slate-300 rounded-2xl  flex items-center justify-center">
                 {imageSrc ? (
                     <img 
                         src={imageSrc} 
