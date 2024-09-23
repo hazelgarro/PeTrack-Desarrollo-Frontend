@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import "./styles.css";
 
-export default function Button({ onClick = undefined, variant, variant2, size, children }) {
+export default function Button({ onClick, variant, variant2, size, children }) {
   return (
     <button onClick={onClick} className={`button ${variant ? `button--${variant}` : ""} ${variant2 ? `button--${variant2}` : ""}  ${size ? `button--${size}` : ""}`.trim()}>
       {children}

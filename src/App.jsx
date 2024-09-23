@@ -1,6 +1,6 @@
 import './App.css';
 import './index.css';
-import  Login  from "./components/templates/Register";
+import  Login  from "./components/templates/Profile";
 
 /*<div>
   <Routes>
