@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { useState } from "react";
 import EyeOffIcon from "../../atoms/Icons/ShowHide/Hide";
 import EyeShowIcon from "../../atoms/Icons/ShowHide/Show";
-import "./styles.css";
+// import "./styles.css";
 
 export default function PasswordInput({ size, placeholder }) {
     const [isVisible, setIsVisible] = useState(false);
