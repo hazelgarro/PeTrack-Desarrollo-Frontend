@@ -3,7 +3,7 @@ import { CSSTransition } from 'react-transition-group';
 import { useState } from "react";
 import EyeOffIcon from "../../atoms/Icons/ShowHide/Hide";
 import EyeShowIcon from "../../atoms/Icons/ShowHide/Show";
-// import "./styles.css";
+import "./styles.css";
 
 export default function PasswordInput({ size, placeholder }) {
     const [isVisible, setIsVisible] = useState(false);
@@ -20,7 +20,7 @@ export default function PasswordInput({ size, placeholder }) {
                 className="password-input w-full  outline-none bg-transparent box-border "
             />
             <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 hover:text-petrack-black ml-2">
-                <div className="relative">
+                <div className="custom-relative">
                     <CSSTransition
                         in={isVisible}
                         timeout={300}

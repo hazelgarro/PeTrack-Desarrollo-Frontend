@@ -6,7 +6,6 @@ import SignUp from "./components/templates/RegisterData";
 import PetProfile from "./components/templates/Profile";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
-
 function App() {
   return (
     <>
