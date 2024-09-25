@@ -1,20 +1,23 @@
 import './App.css';
 import './index.css';
-/*import Route from "./components/templates/Test";*/
-import  Login  from "./components/templates/LogIn";
-import SignUp  from "./components/templates/RegisterData";
+
+import Login from "./components/templates/LogIn";
+import SignUp from "./components/templates/RegisterData";
+import PetProfile from "./components/templates/Profile";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <div>
-     <Router>
+    <>
+      <Router>
         <Routes>
-         <Route path="/" element={<Login />} />
-         <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/" element={<Login />} />
+          <Route path="/SignUp" element={<SignUp />} />
+          <Route path="/PetProfile" element={<PetProfile />} />
         </Routes>
       </Router>
-    </div>
+      {/* <PetProfile></PetProfile> */}
+    </>
   );
 }
 
