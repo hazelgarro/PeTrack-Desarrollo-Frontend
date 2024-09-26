@@ -81,22 +81,3 @@
     background-position: center;
     background-size: cover;
 }
-
-/* Transitions for eye icons */
-.eye-icon-enter {
-    opacity: 0;
-}
-
-.eye-icon-enter-active {
-    opacity: 1;
-    transition: opacity 300ms;
-}
-
-.eye-icon-exit {
-    opacity: 1;
-}
-
-.eye-icon-exit-active {
-    opacity: 0;
-    transition: opacity 300ms;
-}

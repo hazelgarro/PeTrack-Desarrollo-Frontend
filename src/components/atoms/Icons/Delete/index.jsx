@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import "../styles.css";
-export default function ({ size = 'medium', color = 'primary', thickness = '2', ...props }) {
+
+export default function Delete({ size = 'medium', color = 'primary', thickness = '2', ...props }) {
     return (
         <svg className={`svg-icon svg-icon--${size} svg-icon--${color}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#000000"} fill={"none"} {...props}>
             <path d="M19.5 5.5L18.8803 15.5251C18.7219 18.0864 18.6428 19.3671 18.0008 20.2879C17.6833 20.7431 17.2747 21.1273 16.8007 21.416C15.8421 22 14.559 22 11.9927 22C9.42312 22 8.1383 22 7.17905 21.4149C6.7048 21.1257 6.296 20.7408 5.97868 20.2848C5.33688 19.3626 5.25945 18.0801 5.10461 15.5152L4.5 5.5" stroke="currentColor" strokeWidth={thickness} strokeLinecap="round" />
@@ -9,3 +11,9 @@ export default function ({ size = 'medium', color = 'primary', thickness = '2', 
         </svg>
     );
 }
+
+Delete.propTypes = {
+    size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+    color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
+    thickness: PropTypes.string, // Ancho del trazo del ícono
+};

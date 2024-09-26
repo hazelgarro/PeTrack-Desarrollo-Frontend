@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 
-import Info from "../../atoms/Icons/Info";
-
-const IconText = ({ iconName, text }) => (
-  <div className="flex flex-row items-end">
-    <Info iconName={iconName} className="h-6 w-6"></Info>
+const IconText = ({ children, text }) => (
+  <div className="flex flex-row items-end items-center">
+    {children}
     <p className="text-lg ml-2">{text}</p>
   </div>
 );

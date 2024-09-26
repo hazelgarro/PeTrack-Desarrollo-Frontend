@@ -1,5 +1,33 @@
-import React from 'react';
+import PropTypes from 'prop-types';
+import "../styles.css";
 
-export default function Location(props) {
-	return (<svg className="text-petrack-yellow" xmlns="http://www.w3.org/2000/svg" width="1.5em" height="1.5em" viewBox="0 0 32 32" {...props}><path fill="currentColor" d="M16 2A11.013 11.013 0 0 0 5 13a10.9 10.9 0 0 0 2.216 6.6s.3.395.349.452L16 30l8.439-9.953c.044-.053.345-.447.345-.447l.001-.003A10.9 10.9 0 0 0 27 13A11.013 11.013 0 0 0 16 2m0 15a4 4 0 1 1 4-4a4.005 4.005 0 0 1-4 4"></path><circle cx={16} cy={13} r={4} fill="none"></circle></svg>);
+export default function Location({ variant = "outline", size = "medium", color = "primary", thickness = "2", ...props }) {
+	const fillColor = variant === "outline" ? "none" : "currentColor";
+	return (
+		<svg
+			className={`svg-icon svg-icon--${size} svg-icon--${color}`}
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 24 24"
+			width={24}
+			height={24}
+			color="currentColor" // Cambiado para que use currentColor
+			fill="none"
+			{...props}
+		>
+			<path
+				d={`M13.6177 21.367C13.1841 21.773 12.6044 22 12.0011 22C11.3978 22 10.8182 21.773 10.3845 21.367C6.41302 17.626 1.09076 13.4469 3.68627 7.37966C5.08963 4.09916 8.45834 2 12.0011 2C15.5439 2 18.9126 4.09916 20.316 7.37966C22.9082 13.4393 17.599 17.6389 13.6177 21.367Z
+      M12 7.5C10.067 7.5 8.5 9.067 8.5 11C8.5 12.933 10.067 14.5 12 14.5C13.933 14.5 15.5 12.933 15.5 11C15.5 9.067 13.933 7.5 12 7.5Z`}
+				stroke="currentColor"
+				strokeWidth={thickness}
+				fill={fillColor}
+			/>
+		</svg>
+	);
 }
+
+Location.propTypes = {
+	size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+	color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
+	thickness: PropTypes.string, // Ancho del trazo del ícono
+	variant: PropTypes.oneOf(["outline", "solid"]),
+};

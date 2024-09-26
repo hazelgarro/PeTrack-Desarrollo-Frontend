@@ -1,8 +1,8 @@
 import './App.css';
 import './index.css';
 
-import Login from "./components/templates/LogIn";
-import SignUp from "./components/templates/RegisterData";
+import Login from "./components/pages/LogIn";
+import SignUp from "./components/pages/RegisterData";
 import PetProfile from "./components/templates/Profile";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import ButtonSignUp from "../../atoms/Button";
 import ButtonLogin from "../../atoms/Button";
-import Profile from "../../atoms/Profile";
+import ProfileImage from "../../atoms/ProfileImage";
 import Link from "../../atoms/Link";
 import Logo from "../../atoms/Logo"
 
@@ -10,7 +10,7 @@ export default function NavBar({ isAuthenticated }) {
         <div className="w-full bg-white">
             <nav className="flex justify-between items-center px-8 py-4">
                 <a href="/homepage-fake-link">
-                    <Logo variant="extra-small"></Logo>
+                    <Logo size="extra-small"></Logo>
                 </a>
 
                 <div className="flex space-x-4 items-center">
@@ -21,9 +21,10 @@ export default function NavBar({ isAuthenticated }) {
                     </div>
 
                     {isAuthenticated ? (
-                        <Profile 
+                        <ProfileImage 
                             imageSrc="/src/assets/img/veterinary.webp" /* NEEDS Method to get actual profile image */
                             profileLink="/user-profile-fake-link" /* NEEDS Method to get profile link */
+                            size="small"
                         />
                     ) : (
                         <>

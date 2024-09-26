@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import "../styles.css";
-export default function ({ size = 'medium', color = 'primary', thickness = '2', ...props }) {
+
+export default function Exit({ size = 'medium', color = 'primary', thickness = '2', ...props }) {
     return (
         <svg className={`svg-icon svg-icon--${size} svg-icon--${color}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#000000"} fill={"none"} {...props}>
             <path d="M14.9994 15L9 9M9.00064 15L15 9" stroke="currentColor" strokeWidth={thickness} strokeLinecap="round" strokeLinejoin="round" />
@@ -7,3 +9,9 @@ export default function ({ size = 'medium', color = 'primary', thickness = '2', 
         </svg>
     );
 }
+
+Exit.propTypes = {
+    size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+    color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
+    thickness: PropTypes.string, // Ancho del trazo del ícono
+};

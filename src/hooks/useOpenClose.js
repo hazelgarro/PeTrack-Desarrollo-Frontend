@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-export const useModal = () => {
+//Maneja estados para la apertura y cierre de modales, menús desplegables, entre otros
+export const useOpenClose = () => {
     const [isOpen, setIsOpen] = useState(false);
 
     const toggleModal = () => {

@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types';
 import "../styles.css";
-export default function ({ size = 'extra-large', color = 'primary', ...props }) {
+
+export default function Menu({ size = 'medium', color = 'primary', ...props }) {
   return (
   <svg className={`svg-icon svg-icon--${size} svg-icon--${color}`} xmlns="http://www.w3.org/2000/svg"
       width="1em" height="1em" viewBox="0 0 24 24" {...props}>
@@ -9,3 +11,8 @@ export default function ({ size = 'extra-large', color = 'primary', ...props }) 
     </svg>
   );
 }
+
+Menu.propTypes = {
+	size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+	color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
+};

@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import './styles.css';
 
-export default function Profile({ imageSrc, profileLink, size }) {
+export default function ProfileImage({ imageSrc, profileLink, size }) {
     return (
         <a href={profileLink}>
             <div className={`profile-container profile-${size}`}>
@@ -19,7 +19,7 @@ export default function Profile({ imageSrc, profileLink, size }) {
     );
 }
 
-Profile.propTypes = {
+ProfileImage.propTypes = {
     imageSrc: PropTypes.string,
     profileLink: PropTypes.string.isRequired,
     size: PropTypes.oneOf(["extra-small", "extra-large", "small", "medium", "large"]).isRequired,

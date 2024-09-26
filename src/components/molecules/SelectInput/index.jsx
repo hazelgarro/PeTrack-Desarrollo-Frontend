@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import ArrowDownIcon from "../../atoms/Icons/ArrowDown"; // Import the ArrowDownIcon
+import ArrowDownIcon from "../../atoms/Icons/Arrow"; // Import the ArrowDownIcon
 import "./styles.css";
 
 export default function SelectInput({ size, placeholder, options }) {
@@ -37,13 +37,7 @@ export default function SelectInput({ size, placeholder, options }) {
                     </option>
                 ))}
             </select>
-            <span
-                className={`input-icon ml-2 text-gray-500 ${
-                    isOpen ? "rotate-180" : ""
-                }`}
-            >
-                <ArrowDownIcon size="small" color="secondary" thickness="18" />
-            </span>
+            <ArrowDownIcon isRotated={isOpen} size="small" color="secondary" thickness="18" />
         </div>
     );
 }

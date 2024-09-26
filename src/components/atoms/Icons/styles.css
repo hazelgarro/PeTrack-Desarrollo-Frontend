@@ -10,6 +10,10 @@
     @apply text-gray-500;
 }
 
+.svg-icon--tertiary {
+    @apply text-petrack-yellow;
+}
+
 /* Custom sizes */
 .svg-icon--extra-small {
     @apply w-4 h-4;

@@ -1,11 +1,11 @@
 import Image from "../../atoms/Image";
 import QrCode from "../../atoms/Icons/QrCode";
 import Button from "../../atoms/Button";
-import { useModal } from "../../../hooks/useModal.js";
+import { useOpenClose } from "../../../hooks/useOpenClose.js";
 import Modal from "../../molecules/Modal";
 
 export default function ({ petPicture }) {
-    const hookModalQr = useModal();
+    const hookModalQr = useOpenClose();
 
     return (<div className="relative rounded-3xl overflow-hidden w-full">
         <Image imgSrc={petPicture} imgAlt={"Pet profile picture"}></Image>

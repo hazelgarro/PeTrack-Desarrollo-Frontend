@@ -13,6 +13,6 @@ Button.propTypes = {
   onClick: PropTypes.func,
   variant: PropTypes.string.isRequired,
   variant2: PropTypes.string,
-  size: PropTypes.oneOf(["small", "medium", "large"]).isRequired, // Define the possible sizes
+  size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]).isRequired, // Define the possible sizes
   children: PropTypes.node.isRequired,
 };
