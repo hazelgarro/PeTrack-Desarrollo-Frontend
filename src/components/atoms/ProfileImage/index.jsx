@@ -21,6 +21,6 @@ export default function ProfileImage({ imageSrc, profileLink, size }) {
 
 ProfileImage.propTypes = {
     imageSrc: PropTypes.string,
-    profileLink: PropTypes.string.isRequired,
+    //profileLink: PropTypes.string.isRequired,
     size: PropTypes.oneOf(["extra-small", "extra-large", "small", "medium", "large"]).isRequired,
 };

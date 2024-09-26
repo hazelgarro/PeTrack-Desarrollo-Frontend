@@ -1,0 +1,40 @@
+/* Transición del formulario saliendo hacia la izquierda */
+.form-slide-enter {
+    opacity: 0;
+    transform: translateX(0);  /* Empieza en su posición */
+  }
+  .form-slide-enter-active {
+    opacity: 1;
+    transform: translateX(0);  /* Se queda en su lugar mientras entra */
+    transition: opacity 500ms, transform 500ms;
+  }
+  .form-slide-exit {
+    opacity: 1;
+    transform: translateX(0);  /* Empieza en su posición */
+  }
+  .form-slide-exit-active {
+    opacity: 0;
+    transform: translateX(-100%);  /* Se desplaza hacia la izquierda */
+    transition: opacity 500ms, transform 500ms;
+  }
+  
+  /* Transición de las imágenes entrando desde la derecha */
+  .images-slide-enter {
+    opacity: 0;
+    transform: translateX(100%);  /* Comienza fuera de la pantalla por la derecha */
+  }
+  .images-slide-enter-active {
+    opacity: 1;
+    transform: translateX(0);  /* Se desplaza hacia el centro */
+    transition: opacity 500ms, transform 500ms;
+  }
+  .images-slide-exit {
+    opacity: 1;
+    transform: translateX(0);  /* Empieza en su posición */
+  }
+  .images-slide-exit-active {
+    opacity: 0;
+    transform: translateX(100%);  /* Se desplaza fuera de la pantalla hacia la derecha */
+    transition: opacity 500ms, transform 500ms;
+  }
+  

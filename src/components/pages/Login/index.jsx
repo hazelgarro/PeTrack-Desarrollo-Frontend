@@ -1,40 +1,59 @@
 import { useState } from "react";
 
 import TextInput from "../../atoms/TextInput";
-import SelectInput from "../../molecules/SelectInput";
 import PasswordInput from "../../molecules/PasswordInput";
-import ButtonLogin from "../../atoms/Button";
-import Form from "../../templates/Form";
+import Button from "../../atoms/Button";
+import Form from "../../organisms/Form";
+import AccountForm from "../../templates/AccountForm";
+import loginUser from "../../../utils/authentication";
 
-import createAccount from "../../../utils/register";
+export default function Login() {
 
-export default function CreateAccount() {
-    const options = [
-        { value: "1", label: "Personal" },
-        { value: "2", label: "Servicio Veterinario" },
-        { value: "3", label: "Servicio de Adopción/Refugio" },
-    ];
+    const [accountData, setAdditionalData] = useState({
+        email: "",
+        password: "",
+    });
 
-    const [inputValue, setInputValue] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
+    const handleInputChange = ({ name, value }) => {
+        setAdditionalData({
+            ...accountData,
+            [name]: value  // Actualiza solo el campo que cambió
+        });
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (inputValue.trim() === "") {
-            setErrorMessage("Este campo es obligatorio.");
-        } else {
-            setErrorMessage("");
-            console.log("Formulario enviado con valor:", inputValue);
-        }
+        alert(JSON.stringify(accountData)); // Aquí puedes manejar el envío del formulario
     };
 
     return (
-        <Form title="Welcome back! ">
-            <TextInput size="medium" placeholder="Email" />
-            <PasswordInput size="medium" placeholder="Password" />
-            <h2 className="text-right text-sm text-gray-500 mb-2">Forgot your password?</h2>
-            <ButtonLogin size="small" variant="solid-green">Log In</ButtonLogin>
-            <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="/SignUp">Sign Up</a></h3>
-        </Form>
+        // <Form title="Welcome back! ">
+        //     <TextInput size="medium" placeholder="Email" />
+        //     <PasswordInput size="medium" placeholder="Password" />
+        //     <h2 className="text-right text-sm text-gray-500 mb-2">Forgot your password?</h2>
+        //     <ButtonLogin size="small" variant="solid-green">Log In</ButtonLogin>
+        //     <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="/SignUp">Sign Up</a></h3>
+        // </Form>
+        <AccountForm>
+            <Form title="Welcome back!" onSubmit={handleSubmit}>
+                <TextInput
+                    size="medium"
+                    placeholder="Email"
+                    name="email"
+                    value={accountData.email}
+                    onChange={handleInputChange}
+                />
+                <PasswordInput
+                    size="medium"
+                    placeholder="Password"
+                    name="password"
+                    value={accountData.password}
+                    onChange={handleInputChange} />
+
+                <h2 className="text-right text-sm text-gray-500 mb-2">Forgot your password?</h2>
+                <Button type="submit" size="small" variant="solid-green">Log In</Button>
+                <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="/SignUp">Sign Up</a></h3>
+            </Form>
+        </AccountForm>
     );
 }
