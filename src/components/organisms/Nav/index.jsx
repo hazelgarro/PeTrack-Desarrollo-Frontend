@@ -3,7 +3,8 @@ import ButtonSignUp from "../../atoms/Button";
 import ButtonLogin from "../../atoms/Button";
 import ProfileImage from "../../atoms/ProfileImage";
 import Link from "../../atoms/Link";
-import Logo from "../../atoms/Logo"
+import Logo from "../../atoms/Logo";
+import userImage from "../../../assets/img/veterinary.webp";
 
 export default function NavBar({ isAuthenticated }) {
     return (
@@ -21,11 +22,12 @@ export default function NavBar({ isAuthenticated }) {
                     </div>
 
                     {isAuthenticated ? (
-                        <ProfileImage 
-                            imageSrc="/src/assets/img/veterinary.webp" /* NEEDS Method to get actual profile image */
-                            profileLink="/user-profile-fake-link" /* NEEDS Method to get profile link */
-                            size="small"
-                        />
+                        <a href="/user-profile-fake-link">
+                            <ProfileImage
+                                imageSrc={userImage}
+                                size="small"
+                            />
+                        </a>
                     ) : (
                         <>
                             <a href="/login-fake-link">

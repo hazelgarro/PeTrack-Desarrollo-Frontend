@@ -75,9 +75,9 @@
     @apply w-36; /* Adjust width for medium logo */
 }
 
-/* Page background */
-.bg-petrack-background {
-    background-image: url('/mnt/data/image.png'); /* Path to background image */
-    background-position: center;
-    background-size: cover;
-}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evitar desplazamiento lateral inesperado */
+}  

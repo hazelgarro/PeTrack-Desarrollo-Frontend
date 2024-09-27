@@ -3,7 +3,7 @@ import "./styles.css";
 
 export default function Button({type="button", onClick, variant, variant2, size, children }) {
   return (
-    <button onClick={onClick} className={`button ${variant ? `button--${variant}` : ""} ${variant2 ? `button--${variant2}` : ""}  ${size ? `button--${size}` : ""}`.trim()}>
+    <button type={type} onClick={onClick} className={`button ${variant ? `button--${variant}` : ""} ${variant2 ? `button--${variant2}` : ""}  ${size ? `button--${size}` : ""}`.trim()}>
       {children}
     </button>
   );

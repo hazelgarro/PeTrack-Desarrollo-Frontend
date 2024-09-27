@@ -24,6 +24,7 @@ import PetIcon from "../../atoms/Icons/Pet";
 import AgeIcon from "../../atoms/Icons/Age";
 
 export default function () {
+    
     const buttons = <>
         <Button variant="border-green" variant2="content-fit" size="extra-small">
             <div className="flex items-center gap-1">
@@ -51,7 +52,7 @@ export default function () {
 
     return (
         <div>
-            <NavBar isAuthenticated={false}></NavBar>
+            <NavBar isAuthenticated={true}></NavBar>
 
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">

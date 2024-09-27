@@ -16,7 +16,7 @@ export default function SelectInput({
 
     const handleChange = (event) => {
         const newValue = event.target.value;
-        onChange({ name, value: newValue });
+        onChange(newValue);  // Solo pasar el valor seleccionado
     };
 
     const toggleOpen = () => {
