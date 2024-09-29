@@ -1,5 +1,5 @@
 export default async function createAccount(email, password, userTypeId, profilePicture, phoneNumber, additionalData) {
-    const apiUrl = 'http://www.APIpetrack.somee.com/User/CreateAccount';
+    const apiUrl = 'https://www.APIpetrack.somee.com/User/CreateAccount';
 
     const accountData = {
         email,

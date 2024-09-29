@@ -1,5 +1,5 @@
 export default async function loginUser(email, password) {
-    const apiUrl = "http://www.APIPetrack.somee.com/User/Login"
+    const apiUrl = "https://www.APIPetrack.somee.com/User/Login"
 
     const accountData = {
         email,
