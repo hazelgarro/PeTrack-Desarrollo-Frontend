@@ -75,28 +75,9 @@
     @apply w-36; /* Adjust width for medium logo */
 }
 
-/* Page background */
-.bg-petrack-background {
-    background-image: url('/mnt/data/image.png'); /* Path to background image */
-    background-position: center;
-    background-size: cover;
-}
-
-/* Transitions for eye icons */
-.eye-icon-enter {
-    opacity: 0;
-}
-
-.eye-icon-enter-active {
-    opacity: 1;
-    transition: opacity 300ms;
-}
-
-.eye-icon-exit {
-    opacity: 1;
-}
-
-.eye-icon-exit-active {
-    opacity: 0;
-    transition: opacity 300ms;
-}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evitar desplazamiento lateral inesperado */
+}  

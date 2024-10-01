@@ -1,18 +1,26 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
-import ArrowDownIcon from "../../atoms/Icons/ArrowDown"; // Import the ArrowDownIcon
+import ArrowDownIcon from "../../atoms/Icons/Arrow"; // Import the ArrowDownIcon
 import "./styles.css";
 
-export default function SelectInput({ size, placeholder, options }) {
-    const [selectedValue, setSelectedValue] = useState("");
-    const [isOpen, setIsOpen] = useState(false); // Track if the select is open or closed
+export default function SelectInput({
+    size,
+    placeholder,
+    options,
+    name,
+    value,
+    onChange,
+    isRequired = true
+}) {
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleChange = (event) => {
-        setSelectedValue(event.target.value);
+        const newValue = event.target.value;
+        onChange(newValue);  // Solo pasar el valor seleccionado
     };
 
     const toggleOpen = () => {
-        setIsOpen(!isOpen); // Toggle open state
+        setIsOpen(!isOpen);
     };
 
     return (
@@ -22,10 +30,12 @@ export default function SelectInput({ size, placeholder, options }) {
             } flex items-center border rounded-full px-4 transition-all duration-300 border-gray-300 focus-within:border-gray-500 focus-within:ring-2 focus-within:ring-gray-500`}
         >
             <select
-                value={selectedValue}
-                onChange={handleChange}
+                name={name}
+                value={value}
+                required={isRequired}
+                onChange={handleChange} // Maneja el cambio correctamente
                 onClick={toggleOpen}
-                onBlur={() => setIsOpen(false)} // Close when losing focus
+                onBlur={() => setIsOpen(false)} // Cerrar el select al perder el foco
                 className="select-input w-full py-2 outline-none bg-transparent box-border"
             >
                 <option value="" disabled hidden>
@@ -37,25 +47,13 @@ export default function SelectInput({ size, placeholder, options }) {
                     </option>
                 ))}
             </select>
-            <span
-                className={`input-icon ml-2 text-gray-500 ${
-                    isOpen ? "rotate-180" : ""
-                }`}
-            >
-                <ArrowDownIcon size="small" color="secondary" thickness="18" />
-            </span>
+            <ArrowDownIcon isRotated={isOpen} size="small" color="secondary" thickness="18" />
         </div>
     );
 }
 
 SelectInput.propTypes = {
-    size: PropTypes.oneOf([
-        "small",
-        "medium",
-        "large",
-        "extra-large",
-        "extra-small",
-    ]).isRequired,
+    size: PropTypes.oneOf(["small", "medium", "large", "extra-large", "extra-small"]).isRequired,
     placeholder: PropTypes.string.isRequired,
     options: PropTypes.arrayOf(
         PropTypes.shape({
@@ -63,4 +61,8 @@ SelectInput.propTypes = {
             label: PropTypes.string.isRequired,
         })
     ).isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    isRequired: PropTypes.bool,
 };

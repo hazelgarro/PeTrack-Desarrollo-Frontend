@@ -28,11 +28,6 @@
     /* Add a smooth transition for rotation */
 }
 
-.rotate-180 {
-    transform: rotate(180deg);
-    /* Rotate the icon by 180 degrees */
-}
-
 /* Size modifiers */
 .input--extra-large {
     @apply h-14 text-xl px-6;

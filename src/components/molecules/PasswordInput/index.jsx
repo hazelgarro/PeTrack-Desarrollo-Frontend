@@ -5,7 +5,7 @@ import EyeOffIcon from "../../atoms/Icons/ShowHide/Hide";
 import EyeShowIcon from "../../atoms/Icons/ShowHide/Show";
 import "./styles.css";
 
-export default function PasswordInput({ size, placeholder }) {
+export default function PasswordInput({ size, placeholder, name, value, onChange, isRequired=true }) {
     const [isVisible, setIsVisible] = useState(false);
 
     const toggleVisibility = () => {
@@ -17,6 +17,10 @@ export default function PasswordInput({ size, placeholder }) {
             <input
                 type={isVisible ? "text" : "password"}
                 placeholder={placeholder}
+                name={name}
+                value={value}
+                onChange={(e) => onChange({ name, value: e.target.value })} 
+                required={isRequired}
                 className="password-input w-full  outline-none bg-transparent box-border "
             />
             <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 hover:text-petrack-black ml-2">
@@ -46,4 +50,8 @@ export default function PasswordInput({ size, placeholder }) {
 PasswordInput.propTypes = {
     size: PropTypes.oneOf(["small", "medium", "large", "extra-large", "extra-small"]).isRequired,
     placeholder: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    isRequired: PropTypes.bool,
 };

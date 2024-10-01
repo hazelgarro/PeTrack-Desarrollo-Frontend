@@ -1,6 +1,7 @@
 import { useState } from 'react';
+import ArrowDownIcon from '../../atoms/Icons/Arrow';
 
-export default function({title, children}){
+export default function MedicalInfoToggle({ title, children }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleCards = () => {
@@ -8,19 +9,19 @@ export default function({title, children}){
   };
 
   return (
-    <div className="my-5">
+    <>
       <div className="flex justify-start items-center cursor-pointer" onClick={toggleCards}>
-        <h2 className="text-petrack-yellow font-bold text-lg">{title}</h2>
-        <span className={`ml-2 text-petrack-yellow transform transition-transform ${isOpen ? 'rotate-180' : ''}`}>
-          ⬇️
+        <h2 className="font-mono font-medium text-2xl text-petrack-yellow">{title}</h2>
+        <span className="mx-2">
+          <ArrowDownIcon isRotated={isOpen} size="small" color="tertiary" thickness="18" />
         </span>
       </div>
 
       {isOpen && (
-        <div className="mt-4">
+        <div>
           {children}
         </div>
       )}
-    </div>
+    </>
   );
 };

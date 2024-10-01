@@ -1,21 +1,21 @@
 .profile-extra-large {
-    @apply h-48 w-48 text-xl px-6;
+    @apply h-48 w-48 text-xl;
 }
 
 .profile-large {
-    @apply h-12 w-12 text-lg px-5;
+    @apply h-12 w-12 text-lg;
 }
 
 .profile-medium {
-    @apply h-10 w-10 text-base px-4;
+    @apply h-10 w-10 text-base;
 }
 
 .profile-small {
-    @apply h-8 w-8 text-sm px-3 border-2;
+    @apply h-8 w-8 text-sm;
 }
 
 .profile-extra-small {
-    @apply h-6 w-6 text-xs px-2 border;
+    @apply h-6 w-6 text-xs;
 }
 
 /* Additional styles for Profile component */
@@ -24,7 +24,7 @@
 }
 
 .profile-image {
-    @apply w-full h-full rounded-full object-cover;
+    @apply w-full h-full rounded-full object-cover; /* Llena el contenedor */
 }
 
 .profile-placeholder {

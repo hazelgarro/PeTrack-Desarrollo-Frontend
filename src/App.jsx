@@ -1,9 +1,9 @@
 import './App.css';
 import './index.css';
 
-import Login from "./components/templates/LogIn";
-import SignUp from "./components/templates/RegisterData";
-import PetProfile from "./components/templates/Profile";
+import Login from "./components/pages/Login";
+import SignUp from "./components/pages/Register";
+import PetProfile from "./components/pages/Profile";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {

@@ -1,5 +1,5 @@
 export default async function loginUser(email, password) {
-    const apiUrl = "http://www.APIPetrack.somee.com/User/Login"
+    const apiUrl = "https://www.APIPetrack.somee.com/User/Login"
 
     const accountData = {
         email,
@@ -18,11 +18,12 @@ export default async function loginUser(email, password) {
 
         const responseData = await response.json();
 
-        if (!response.ok) {
+        if (response.ok) {
+            localStorage.setItem('token', responseData.token);
+        }else{
             console.log(response.status);
         }
         
-        console.log(responseData);
         return responseData;
 
     } catch (error) {
@@ -32,9 +33,4 @@ export default async function loginUser(email, password) {
             message: error.message || "An error occurred while creating the account."
         };
     }
-
-    /*
-    Falta guardar la cookie de sesión
-    esto se hará cuando se utilice este script en la vista
-    */
 }
