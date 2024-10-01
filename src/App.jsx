@@ -8,17 +8,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<Login />} />
-          <Route path="/SignUp" element={<SignUp />} />
-          <Route path="/PetProfile" element={<PetProfile />} />
-        </Routes>
-      </Router>
-      {/* <PetProfile></PetProfile> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/SignUp" element={<SignUp />} />
+        <Route path="/PetProfile" element={<PetProfile />} />
+      </Routes>
+    </Router>
   );
 }
 
-export default App
+export default App;
