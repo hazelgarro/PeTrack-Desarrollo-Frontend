@@ -5,8 +5,8 @@ import PasswordInput from "../../molecules/PasswordInput";
 import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
-import loginUser from "../../../utils/authentication";
 import Loader from "../../atoms/Loader";
+import loginUser from "../../../utils/authentication";
 
 export default function Login() {
     

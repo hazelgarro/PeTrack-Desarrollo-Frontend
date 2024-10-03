@@ -7,8 +7,7 @@ export default function AccountForm({ children }) {
         <div className="flex justify-center items-center min-h-screen w-full relative">
             {/* Imagen de fondo fija y responsiva */}
             <div
-                className="absolute inset-0 bg-fixed bg-cover bg-center bg-full-height"
-                style={{ backgroundImage: `url(${BgImage})` }}
+                className="bg-background-image"
             ></div>
             
             {/* Contenedor para el formulario */}

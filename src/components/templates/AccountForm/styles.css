@@ -1,76 +1,3 @@
-/* Input container styling */
-.input-container {
-    @apply flex items-center border-4 border-gray-300 rounded-full px-4;
-    @apply box-border;
-    transition: border-color 0.3s ease, ring-color 0.3s ease;
-    /* Smooth transition for border and ring colors */
-}
-
-.input-container:focus-within {
-    @apply ring-2 shadow-sm ring-gray-500;
-    /* Add a light ring when the select is focused */
-}
-
-/* Select input field */
-.select-input {
-    appearance: none;
-    -webkit-appearance: none; /* For Safari */
-    -moz-appearance: none; /* For Firefox */
-    background: transparent;
-    @apply w-full py-2 outline-none bg-transparent box-border;
-}
-
-/* Input icon styling */
-.input-icon {
-    @apply cursor-pointer text-gray-500 hover:text-gray-700 ml-2;
-    /* Styling for the icon inside the select */
-    transition: transform 0.3s ease;
-    /* Add a smooth transition for rotation */
-}
-
-.rotate-180 {
-    transform: rotate(180deg);
-    /* Rotate the icon by 180 degrees */
-}
-
-/* Input Size modifiers */
-.input--extra-large {
-    @apply h-14 text-xl px-6;
-}
-
-.input--large {
-    @apply h-12 text-lg px-5;
-}
-
-.input--medium {
-    @apply h-10 text-base px-4;
-}
-
-.input--small {
-    @apply h-8 text-sm px-3 border-2;
-}
-
-.input--extra-small {
-    @apply h-6 text-xs px-2 border;
-}
-
-/* Password input container styling */
-.password-input-container {
-    @apply flex items-center border-4 border-gray-300 rounded-full px-4;
-    @apply box-border;
-    transition: border-color 0.3s ease, ring-color 0.3s ease;
-    margin-bottom: 1rem;
-}
-
-.password-input-container:focus-within {
-    @apply ring-2 shadow-sm ring-gray-500;
-}
-
-.password-toggle {
-    @apply cursor-pointer text-gray-500 hover:text-gray-700 ml-2;
-}
-
-/* Logo */
 .logo--medium {
     @apply w-36; /* Adjust width for medium logo */
 }
@@ -80,4 +7,17 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Evitar desplazamiento lateral inesperado */
-}  
+}
+
+.bg-background-image {
+    /*@apply bg-fixed bg-cover bg-center;*/
+    @apply absolute inset-0 bg-fixed bg-cover bg-center h-full;
+    background-image: url('../../../assets/img/Bg.png');
+}
+
+/* For movile screen */
+@media (max-width: 640px) {
+    .bg-background-image {
+        background-image: url('../../../assets/img/movil_Bg.png');
+    }
+}

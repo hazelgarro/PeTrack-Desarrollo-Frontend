@@ -37,4 +37,3 @@
     transform: translateX(100%);  /* Se desplaza fuera de la pantalla hacia la derecha */
     transition: opacity 500ms, transform 500ms;
   }
-  

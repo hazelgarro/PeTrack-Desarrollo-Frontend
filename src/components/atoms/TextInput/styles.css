@@ -10,7 +10,6 @@
     /* Añade un anillo gris claro cuando el campo de entrada está en enfoque */
 }
 
-
 .input {
     @apply w-full py-2 outline-none bg-transparent box-border;
     /* Asegura que los bordes se calculen bien */
@@ -18,32 +17,7 @@
 
 .password-toggle {
     @apply cursor-pointer text-gray-500 hover:text-petrack-black ml-2;
-
 }
-
-.input--extra-large {
-    @apply h-14 text-xl px-6;
-}
-
-
-.input--large {
-    @apply h-12 text-lg px-5;
-}
-
-
-.input--medium {
-    @apply h-10 text-base px-4;
-}
-
-
-.input--small {
-    @apply h-8 text-sm px-3 border-2;
-}
-
-.input--extra-small {
-    @apply h-6 text-xs px-2 border;
-}
-
 
 .custom-relative {
     position: relative;
