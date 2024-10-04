@@ -1,17 +1,18 @@
 import PropTypes from "prop-types";
 import './styles.css';
 
-export default function ProfileImage({ imageSrc, size }) {
+export default function ProfileImage({ imageSrc = "", defaultImage = "", size, imageAlt = "Profile", onClick = null }) {
     return (
-        <div className={`profile-container profile-${size}`}>
-            {imageSrc ? (
+        <div className={`profile-container profile-${size} ${onClick ? 'cursor-pointer' : ''}`} 
+            onClick={onClick}>
+            {imageSrc || defaultImage ? (  // Usa imageSrc si existe, si no usa defaultImage
                 <img
-                    src={imageSrc}
-                    alt="Profile"
+                    src={imageSrc || defaultImage}
+                    alt={imageAlt}
                     className="profile-image"
                 />
             ) : (
-                <span className="profile-placeholder"></span>
+                <span className="profile-placeholder" />
             )}
         </div>
     );
@@ -19,5 +20,7 @@ export default function ProfileImage({ imageSrc, size }) {
 
 ProfileImage.propTypes = {
     imageSrc: PropTypes.string,
+    defaultImage: PropTypes.string,
     size: PropTypes.oneOf(["extra-small", "extra-large", "small", "medium", "large"]).isRequired,
+    onClick: PropTypes.func,
 };

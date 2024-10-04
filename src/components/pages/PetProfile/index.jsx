@@ -22,8 +22,9 @@ import GenderIcon from "../../atoms/Icons/Gender";
 import WeightIcon from "../../atoms/Icons/Weight";
 import PetIcon from "../../atoms/Icons/Pet";
 import AgeIcon from "../../atoms/Icons/Age";
+import QRCode from "react-qr-code";
 
-export default function () {
+export default function PetProfile() {
     
     const buttons = <>
         <Button variant="border-green" variant2="content-fit" size="extra-small">
@@ -56,7 +57,7 @@ export default function () {
 
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petPicture={pet_picture}></PetPhotoQr>
+                    <PetPhotoQr petPicture={pet_picture}><QRCode value="hola"></QRCode></PetPhotoQr>
                     <div className="lg:hidden">
                         {/* Hay que cambiar este botón por un componente button, pero hay que crear otra variante*/}
                         <button className="absolute bottom-4 right-4" label="Drop menu" onClick={hookMenuBotones.toggleModal}>
@@ -75,7 +76,7 @@ export default function () {
                         <h2 className="justify-center text-petrack-black text-4xl font-bold">Name</h2>
                         <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
                     </div>
-                    <ProfileInfoContainer className="mt-6 lg:mt-4">
+                    <ProfileInfoContainer>
                         <IconText text="Breed">
                             <PetIcon petType="dog" size="medium"/>
                         </IconText>

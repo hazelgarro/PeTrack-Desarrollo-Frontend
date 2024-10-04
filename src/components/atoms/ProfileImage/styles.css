@@ -28,5 +28,5 @@
 }
 
 .profile-placeholder {
-    @apply text-gray-500 text-xs;
+    @apply text-gray-700 text-sm;
 }

@@ -5,7 +5,7 @@ import Form from "../Form";
 import { useImageUpload } from "../../../hooks/useImageUpload"; // Importar el hook personalizado
 import { useState } from "react";
 
-export default function RegisterImages({ userTypeId, profileImageUrl, bannerImageUrl, onSubmit}) {
+export default function RegisterImages({ userTypeId = "1", profileImageUrl, bannerImageUrl, onSubmit }) {
     const {
         fileInputRef,
         profileImage,
@@ -24,7 +24,7 @@ export default function RegisterImages({ userTypeId, profileImageUrl, bannerImag
             setError(`Upload ${userTypeId === "1" ? '' : 'at least'} one image to continue..`);
             return; // Evitar que se envíe el formulario
         }
-        
+
         setError("");
 
         try {
@@ -71,16 +71,14 @@ export default function RegisterImages({ userTypeId, profileImageUrl, bannerImag
                     </div>
                 </div>
 
-                {/* Input para agregar una imagen, oculto pero accesible */}
                 <input
                     type="file"
                     accept="image/*"
                     ref={fileInputRef} // Asignar la referencia al input
                     className="hidden" // Ocultar el input
-                    onChange={handleFileChange} // Manejar el cambio de archivo
+                    onChange={handleFileChange}
                 />
-
-                {/* Mostrar mensaje de error si existe */}
+                
                 {error && <p className="text-red-500">{error}</p>}
 
                 <div className="flex flex-col w-full max-w-xs justify-end pt-8 gap-2">

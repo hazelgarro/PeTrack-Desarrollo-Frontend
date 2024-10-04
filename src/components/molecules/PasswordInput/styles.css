@@ -14,24 +14,17 @@
     /* Asegura que los bordes se calculen bien */
 }
 
-.password-toggle {
-    @apply cursor-pointer text-gray-500 hover:text-gray-700 ml-2;
-}
-
 .password-input--extra-large {
     @apply h-14 text-xl px-6;
 }
-
 
 .password-input--large {
     @apply h-12 text-lg px-5;
 }
 
-
 .password-input--medium {
     @apply h-10 text-base px-4;
 }
-
 
 .password-input--small {
     @apply h-8 text-sm px-3 border-2;

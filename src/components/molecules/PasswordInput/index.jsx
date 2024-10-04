@@ -23,7 +23,7 @@ export default function PasswordInput({ size, placeholder, name, value, onChange
                 required={isRequired}
                 className="password-input w-full  outline-none bg-transparent box-border "
             />
-            <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 hover:text-petrack-black ml-2">
+            <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 ml-2">
                 <div className="custom-relative">
                     <CSSTransition
                         in={isVisible}

@@ -16,9 +16,9 @@ export default function SelectInput({
 
     const handleChange = (event) => {
         const newValue = event.target.value;
-        onChange(newValue);  // Solo pasar el valor seleccionado
+        onChange({ name, value: newValue });
     };
-
+    
     const toggleOpen = () => {
         setIsOpen(!isOpen);
     };
@@ -66,3 +66,4 @@ SelectInput.propTypes = {
     onChange: PropTypes.func.isRequired,
     isRequired: PropTypes.bool,
 };
+

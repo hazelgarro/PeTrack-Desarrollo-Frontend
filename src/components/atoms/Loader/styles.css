@@ -21,7 +21,7 @@
         /* Asegúrate de que ocupe todo el contenedor */
         height: 100%;
         /* Asegúrate de que ocupe todo el contenedor */
-        background-image: url('../../../assets/img/isotipo.png');
+        background-image: url('../../../assets/img/isotipo.svg');
         /* Reemplaza con tu imagen */
         background-size: contain;
         background-repeat: no-repeat;

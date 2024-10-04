@@ -12,12 +12,13 @@ import createAccount from "../../../utils/register.js";
 import { useNavigate } from 'react-router-dom';
 import Loader from "../../atoms/Loader/index.jsx";
 
-export default function Register() {
+export default function SignUp() {
     const options = [
         { value: "1", label: "Personal" },
-        { value: "2", label: "Servicio Veterinario" },
-        { value: "3", label: "Servicio de Adopción/Refugio" },
+        { value: "2", label: "Veterinary Service" },
+        { value: "3", label: "Adoption/Shelter Service" },
     ];
+    const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
 
     const [accountData, setAccountData] = useState({
         name: "",
@@ -33,7 +34,7 @@ export default function Register() {
 
     //cambia el placeholdel del name según el tipo de usuario
     const [namePlaceholder, setNamePlaceholder] = useState("Full name");
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
@@ -44,26 +45,23 @@ export default function Register() {
                 ...prevData,
                 [name]: value
             };
-
+    
             if (newData.password === newData.confirmPassword) {
                 setErrorMessage("");
             } else {
                 setErrorMessage("Passwords do not match");
             }
+    
+            // Cambia el placeholder si el tipo de usuario es "2" o "3"
+            if (name === "userTypeId" && (value === "2" || value === "3")) {
+                setNamePlaceholder("Organization name");
+            } else if (name === "userTypeId") {
+                setNamePlaceholder("Full name");
+            }
+    
             return newData;
         });
-    };
-
-    const handleUserTypeChange = (value) => {
-        handleInputChange({ name: "userTypeId", value });
-
-        // Cambia el placeholder según el valor seleccionado
-        if (value === "2" || value === "3") {
-            setNamePlaceholder("Organization name");
-        } else {
-            setNamePlaceholder("Full name");
-        }
-    };
+    };    
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -77,8 +75,6 @@ export default function Register() {
         //pasa de formulario al formulario de las imagenes
         setIsFormSubmitted(true);
     };
-
-    const [isLoading, setIsLoading] = useState(false);//condicional para manejar una animación de carga
 
     const handleRegisterImageSubmit = async () => {
         setIsLoading(true); // Comienza la carga
@@ -140,7 +136,7 @@ export default function Register() {
                         options={options}
                         name="userTypeId"
                         value={accountData.userTypeId}
-                        onChange={handleUserTypeChange} // Usa la nueva función para manejar el cambio de tipo de usuario
+                        onChange={handleInputChange} // Usa la nueva función para manejar el cambio de tipo de usuario
                     />
                     <TextInput
                         size="medium"
