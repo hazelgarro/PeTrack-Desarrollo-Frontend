@@ -34,7 +34,7 @@ export default function SignUp() {
 
     //cambia el placeholdel del name según el tipo de usuario
     const [namePlaceholder, setNamePlaceholder] = useState("Full name");
-    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();

@@ -42,7 +42,7 @@ export default function Register() {
         petPictureTemp: ""
     });
 
-    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
 
     const navigate = useNavigate();
 

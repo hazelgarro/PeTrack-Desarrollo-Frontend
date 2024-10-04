@@ -6,7 +6,7 @@ import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
-import loginUser from "../../../utils/authentication";
+import loginUser from "../../../utils/sessionManager";
 
 export default function Login() {
     

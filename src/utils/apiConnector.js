@@ -1,4 +1,6 @@
-export default async function getData(apiUrl, body, token) {
+import { getSessionToken } from "./sessionManager";
+
+export default async function getData(apiUrl, body, needToken) {
     try {
         const headers = {
             'Content-Type': 'application/json',
@@ -6,8 +8,16 @@ export default async function getData(apiUrl, body, token) {
         };
 
         // Si se recibe un token, se agrega a los encabezados
-        if (token) {
-            headers['Authorization'] = `Bearer ${token}`;
+        if (needToken) {
+            token = getSessionToken();
+            if(token){
+                 headers['Authorization'] = `Bearer ${token}`;
+            }else{
+                return {
+                    result: false,
+                    message: responseData.message || "The user is not logged in",
+                };
+            }
         }
 
         const response = await fetch(apiUrl, {
