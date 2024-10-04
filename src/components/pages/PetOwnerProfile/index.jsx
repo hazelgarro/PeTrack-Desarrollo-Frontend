@@ -14,7 +14,7 @@ import Footer from "../../organisms/FooterContainer"
 export default function PagePetOwner() {
     return (
         <>
-            <NavBar isAuthenticated={true}></NavBar>
+            <NavBar isAuthenticated={true} variant={"menuHamburgerIcon"}></NavBar>
             <body className="relative mb-12 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
 
                 <div className="flex flex-col md:flex-row gap-8 mb-10">
