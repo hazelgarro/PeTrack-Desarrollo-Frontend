@@ -1,10 +1,10 @@
-import Logo from '../atoms/Logo';
-import SocialLink from '../atoms/SocialLink';
-import ServicesLinks from '../molecules/ServicesLinks';
-import ContactDetails from '../molecules/ContactDetails';
-import InstagramIcon from '../../assets/img/instagram.png';
-import YoutubeIcon from '../../assets/img/Youtube.png';
-import TwitterIcon from '../../assets/img/x.png';
+import Logo from '../../atoms/Logo';
+//import SocialLink from '../atoms/SocialLink';
+//import ServicesLinks from '../molecules/ServicesLinks';
+//import ContactDetails from '../molecules/ContactDetails';
+//import InstagramIcon from '../../assets/img/instagram.png';
+//import YoutubeIcon from '../../assets/img/Youtube.png';
+//import TwitterIcon from '../../assets/img/x.png';
 
 const Footer = () => (
   <footer className="bg-[#045D5A] text-white">
