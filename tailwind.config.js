@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lato', 'sans-serif'],
-        mono: ['Outfit', 'sans-serif'],
+        sans:['"Lato"', 'sans-serif'],
+        outfit:['"Outfit"', 'sans-serif'],
       },
       colors: {
         'petrack-green': 'rgba(4, 93, 90, 1)',
