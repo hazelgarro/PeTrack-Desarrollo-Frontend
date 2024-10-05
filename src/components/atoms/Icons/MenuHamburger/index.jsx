@@ -11,7 +11,7 @@ export default function MenuHamburgerIcon({ size = 'medium', color = 'primary', 
     );
 }
 
-MenuIcon.propTypes = {
+MenuHamburgerIcon.propTypes = {
     size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
     color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
     thickness: PropTypes.string, // Width of the icon's stroke

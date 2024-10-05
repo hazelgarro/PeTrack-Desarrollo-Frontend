@@ -1,18 +1,13 @@
 import { useState } from "react";
 import TextInput from "../../atoms/TextInput";
 import SelectInput from "../../molecules/SelectInput";
-import PasswordInput from "../../molecules/PasswordInput";
 import AccountForm from "../../templates/AccountForm";
 import Form from "../../organisms/Form";
 import Button from "../../atoms/Button";
-import RegisterImages from "../../organisms/RegisterImages";
 import { CSSTransition } from "react-transition-group";
 import './styles.css';
-import createAccount from "../../../utils/register.js";
 import { useNavigate } from 'react-router-dom';
 import Loader from "../../atoms/Loader/index.jsx";
-import Banner from "../../atoms/Banner/index.jsx";
-import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 import LoadImage from "../../organisms/LoadImage/index.jsx";
 
 export default function Register() {
