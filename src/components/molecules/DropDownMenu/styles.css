@@ -1,0 +1,43 @@
+.dropdown-menu {
+    @apply flex flex-col absolute right-0 mt-2 w-48 bg-white shadow-lg z-50 rounded-md border; /* Basic styling for the dropdown */
+}
+
+/* Link Styles */
+.dropdown-link {
+    @apply block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100; /* Basic link styling */
+}
+
+/* Variant Modifiers */
+.bg-primary {
+    @apply bg-blue-500 text-white; /* Example for a primary variant */
+}
+
+.bg-secondary {
+    @apply bg-gray-300 text-black; /* Example for a secondary variant */
+}
+
+/* Hover effect for links */
+.dropdown-link:hover {
+    @apply bg-gray-100; /* Hover effect for links */
+}
+
+/* Size utilities for dropdown links */
+.extra-small {
+    @apply text-xs; /* Extra small size */
+}
+
+.small {
+    @apply text-sm; /* Small size */
+}
+
+.medium {
+    @apply text-base; /* Medium size */
+}
+
+.large {
+    @apply text-lg; /* Large size */
+}
+
+.extra-large {
+    @apply text-xl; /* Extra large size */
+}

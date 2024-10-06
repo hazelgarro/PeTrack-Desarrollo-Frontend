@@ -7,6 +7,7 @@ import Link from "../../atoms/Link";
 import Logo from "../../atoms/Logo";
 import userImage from "../../../assets/img/veterinary.webp";
 import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger";
+import DropdownMenu from "../../molecules/DropDownMenu"; // Ensure the path is correct
 
 export default function NavBar({ isAuthenticated, variant = "" }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -42,12 +43,13 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 <button onClick={toggleMenu}>
                                     <MenuHamburgerIcon size="small" />
                                 </button>
-                                {isMenuOpen && (
-                                    <div className="flex flex-col absolute right-0 mt-2 w-48 bg-white shadow-lg z-50 rounded-md border">
-                                        <Link href="/settings" variant={variant} size="small" className="block px-4 py-2">Configuración</Link>
-                                        <Link href="/logout" variant={variant} size="small" className="block px-4 py-2">Cerrar Sesión</Link>
-                                    </div>
-                                )}
+                                <DropdownMenu 
+                                    isMenuOpen={isMenuOpen} 
+                                    size={"size-extra-small"}
+                                >
+                                    <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
+                                    <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
+                                </DropdownMenu>
                             </div>
                         ) : (
                             <a href="/user-profile-fake-link">
