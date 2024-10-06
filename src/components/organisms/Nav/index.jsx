@@ -45,7 +45,7 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 </button>
                                 <DropdownMenu 
                                     isMenuOpen={isMenuOpen} 
-                                    size={"size-extra-small"}
+                                    size={"medium"}
                                 >
                                     <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
                                     <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>

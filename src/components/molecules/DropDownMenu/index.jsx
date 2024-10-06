@@ -3,11 +3,9 @@ import PropTypes from "prop-types";
 
 export default function DropdownMenu({ isMenuOpen, size, children }) {
     return (
-        isMenuOpen && (
-            <div className={`dropdown-menu ${size}`}>
-                {children}
-            </div>
-        )
+        <div className={`dropdown-menu ${size} ${isMenuOpen ? 'open' : 'closed'}`}>
+            {isMenuOpen && children}
+        </div>
     );
 }
 

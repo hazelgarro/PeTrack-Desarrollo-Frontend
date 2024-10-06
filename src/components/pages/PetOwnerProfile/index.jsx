@@ -9,7 +9,6 @@ import IconEmail from "../../atoms/Icons/Email"
 import IconUser from "../../atoms/Icons/User"
 import IconPhone from "../../atoms/Icons/Phone"
 
-import Footer from "../../organisms/FooterContainer"
 
 export default function PagePetOwner() {
     return (

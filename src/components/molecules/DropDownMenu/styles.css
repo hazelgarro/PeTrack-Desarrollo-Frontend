@@ -1,5 +1,18 @@
 .dropdown-menu {
     @apply flex flex-col absolute right-0 mt-2 w-48 bg-white shadow-lg z-50 rounded-md border; /* Basic styling for the dropdown */
+    opacity: 0; /* Initial opacity */
+    transform: translateY(-10px); /* Initial position */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition for opacity and position */
+}
+
+.dropdown-menu.open {
+    opacity: 1; /* Fully visible when open */
+    transform: translateY(0); /* Move to original position */
+}
+
+.dropdown-menu.closed {
+    opacity: 0; /* Hidden when closed */
+    transform: translateY(-10px); /* Slide up */
 }
 
 /* Link Styles */
