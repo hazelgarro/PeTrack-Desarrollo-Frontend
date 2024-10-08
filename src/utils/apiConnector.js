@@ -1,6 +1,6 @@
 import { getSessionToken } from "./sessionManager";
 
-export default async function getData(apiUrl, body, needToken) {
+export default async function getData(apiUrl, body, needToken, method) {
     try {
         const headers = {
             'Content-Type': 'application/json',
@@ -9,7 +9,7 @@ export default async function getData(apiUrl, body, needToken) {
 
         // Si se recibe un token, se agrega a los encabezados
         if (needToken) {
-            token = getSessionToken();
+            let token = getSessionToken();
             if(token){
                  headers['Authorization'] = `Bearer ${token}`;
             }else{
@@ -20,11 +20,16 @@ export default async function getData(apiUrl, body, needToken) {
             }
         }
 
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(body), // Asegúrate de convertir el cuerpo a JSON
-        });
+        let fetchParams = {
+            method: method,
+            headers: headers
+        };
+
+        if (method === "POST" || method === "PUT") {
+            fetchParams.body = JSON.stringify(body); // Convierte el cuerpo a JSON
+        }
+
+        const response = await fetch(apiUrl, fetchParams);
 
         const responseData = await response.json();
         console.log("Message: " + responseData.message);
