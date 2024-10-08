@@ -36,3 +36,7 @@
 .svg-icon--extra-large {
     @apply w-10 h-10;
 }
+
+.svg-icon--extra-extra-large {
+    @apply w-28 h-32;
+}
