@@ -5,10 +5,10 @@ import WhiteContainer from "../../atoms/WhiteContainer";
 export default function Form({ title, subTitle, onSubmit, children }) {
     return (
         <WhiteContainer>
-            <div className="mb-5">
+            <div className="flex flex-col items-center mb-5">
                 <Logo size="large" type="isotipo"/>
                 <h1 className="text-4xl text-center mt-4">{title}</h1>
-                <h2 className="text-lg font-mono text-center mt-2">{subTitle}</h2>
+                <h2 className="text-lg text-center mt-2">{subTitle}</h2>
             </div>
             <form onSubmit={onSubmit} className="flex flex-col justify-between w-full max-w-md mx-auto px-1">
                 {children}
