@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import './styles.css';
 
-export default function ProfileImage({ imageSrc = "", defaultImage = "", size, imageAlt = "Profile", onClick = null }) {
+export default function ProfileImage({ imageSrc = "", defaultImage = "", size, imageAlt, onClick = null }) {
     return (
         <div className={`profile-container profile-${size} ${onClick ? 'cursor-pointer' : ''}`} 
             onClick={onClick}>
@@ -20,6 +20,7 @@ export default function ProfileImage({ imageSrc = "", defaultImage = "", size, i
 
 ProfileImage.propTypes = {
     imageSrc: PropTypes.string,
+    imageAlt: PropTypes.string,
     defaultImage: PropTypes.string,
     size: PropTypes.oneOf(["extra-small", "extra-large", "small", "medium", "large"]).isRequired,
     onClick: PropTypes.func,

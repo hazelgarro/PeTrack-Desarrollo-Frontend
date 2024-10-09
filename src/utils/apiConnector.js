@@ -1,6 +1,6 @@
 import { getSessionToken } from "./sessionManager";
 
-export default async function getData(apiUrl, body, needToken, method) {
+export async function getData(apiUrl, body, needToken, method) {
     try {
         const headers = {
             'Content-Type': 'application/json',
