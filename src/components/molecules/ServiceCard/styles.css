@@ -1,0 +1,17 @@
+.bg-background-image-vet {
+    /*@apply bg-fixed bg-cover bg-center;*/
+    @apply absolute inset-0 bg-fixed bg-cover bg-center h-full;
+    background-image: url('../../../assets/img/veterinary.webp');
+}
+
+.bg-background-image-tag {
+    /*@apply bg-fixed bg-cover bg-center;*/
+    @apply absolute inset-0 bg-fixed bg-cover bg-center h-full;
+    background-image: url('../../../assets/img/dogTag.png');
+}
+
+.bg-background-image-shelter {
+    /*@apply bg-fixed bg-cover bg-center;*/
+    @apply absolute inset-0 bg-fixed bg-cover bg-center h-full;
+    background-image: url('../../../assets/img/dogTag.png');
+}

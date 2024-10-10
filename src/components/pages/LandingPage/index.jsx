@@ -7,6 +7,10 @@ import FeatureCard from "../../molecules/FeatureCard";
 import Location from "../../atoms/Icons/Location";
 import Paw from "../../atoms/Icons/Paw";
 import Servicesbg from "../../../assets/img/LandingBanner.png";
+import ServiceCard from "../../molecules/ServiceCard";
+import Vet from "../../../assets/img/veterinary.webp";
+import Tag from "../../../assets/img/dogTag.png";
+import Shelter from "../../../assets/img/dogShelter.png";
 export default function LandingPage() {
     return ( 
         <div className="w-full bg-white">
@@ -43,9 +47,11 @@ export default function LandingPage() {
                     <p className="text-6xl font-bold text-white">Servicios y <br/> Herramientas para <br/> Tu Mascota</p>
                     <img src={Servicesbg} alt=""/>
             </div>
-            <div className="">
+            <div className="-mt-44 mx-72">
                 <ThreeColContainer>
-
+                    <ServiceCard image={Vet} text="Veterinarias"></ServiceCard>
+                    <ServiceCard image={Tag} text="Consigue placa"></ServiceCard>
+                    <ServiceCard image={Shelter} text="Refugios"></ServiceCard>
                 </ThreeColContainer>
             </div>
 
