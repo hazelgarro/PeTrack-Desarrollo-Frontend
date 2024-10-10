@@ -18,7 +18,7 @@ function App() {
         <Route path="/SignUp" element={<SignUp />} />
         <Route path="/PetRegister" element={<PetRegister />} />
         <Route path="/PetProfile" element={<PetProfile />} />
-        <Route path="/PetOwnerProfile" element={<PetOwnerProfile />} />
+        <Route path="/PetOwnerProfile/:id" element={<PetOwnerProfile />} />
         <Route path="/Landing" element={<LandingPage />} />
       </Routes>
     </Router>
