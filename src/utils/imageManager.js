@@ -25,7 +25,7 @@ async function uploadToCloudinary(image, publicId, options = {}) {
 export async function uploadImage(image, folder) {
     try {
         const generatedPublicId = `${folder}/picture_${uuidv4()}`;
-        const uploadResult = await uploadToCloudinary(image, generatedPublicId);
+        await console.log(uploadToCloudinary(image, generatedPublicId));
 
         const optimizedUrl = cloudinary.url(generatedPublicId, {
             fetch_format: 'auto',
@@ -33,12 +33,8 @@ export async function uploadImage(image, folder) {
         });
 
         return {
-            result: uploadResult,
-            message: "Image uploaded successfully",
-            uploadedImage: {
-                imageUrl: optimizedUrl,
-                publicId: generatedPublicId
-            }
+            imageUrl: optimizedUrl,
+            publicId: generatedPublicId
         };
 
     } catch (error) {
@@ -95,7 +91,7 @@ export async function replaceImage(imagePath, publicId) {
             overwrite: true,
             format: 'webp',
         });
-        
+
         console.log('Image replaced successfully:', uploadResult);
         return { result: true, message: 'Image replaced successfully' };
     } catch (error) {

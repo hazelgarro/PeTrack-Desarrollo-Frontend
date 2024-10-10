@@ -12,6 +12,7 @@ import LoadImage from "../../organisms/LoadImage/index.jsx";
 
 export default function Register() {
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
+    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
 
     const speciesOptions = [
         { value: "1", label: "Dog" },
@@ -24,43 +25,52 @@ export default function Register() {
     ];
 
     const [petData, setPetData] = useState({
-        name: "",
+        name: "Copito",
         dateOfBirth: "",
-        species: "",
-        gender: "",
-        breed: "",
-        ownerId: "",
-        ownerType: "",
-        location: "",
+        species: "Dog",
+        breed: "Zaguate",
+        gender: "male",
+        weight: "1kg",
+        location: "Esparza",
+        ownerId: "1",
+        ownerType: "O",
         healthIssues: "",
         petPicture: "",
-        petPictureTemp: ""
+        imagePublicId: "",
     });
 
-    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-    const navigate = useNavigate();
+    const [petPictureTemp, setPetPictureTemp] = useState ("");
 
     const handleInputChange = ({ name, value }) => {
-        setPetData((prevData) => {
-            const newData = {
-                ...prevData,
-                [name]: value
-            };
-            return newData;
-        });
+        if((name != "petPictureTemp")){
+            setPetData((prevData) => {
+                const newData = {
+                    ...prevData,
+                    [name]: value
+                };
+                return newData;
+            });
+        }else{
+            setPetPictureTemp(value);
+        }
     };
 
     const handleFirstSubmit = (e) => {
         e.preventDefault();
-
-        //pasa de formulario al formulario de las imagenes
         setIsFormSubmitted(true);
     };
 
-    const handleRegisterImageSubmit = async () => {
+    const handleFinalSubmit = async (e) => {
         e.preventDefault();
+        console.log("Codigo para guardar perrito");
     }
+
+    const handleSkip = (e) => {
+        const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
+        if(userResponse){
+            handleFinalSubmit(e);
+        }
+    };
 
     return (
         <AccountForm className="relative flex justify-center items-center min-h-screen">
@@ -116,22 +126,30 @@ export default function Register() {
             </CSSTransition>
 
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
-                <Form title="Add additional info" subTitle="We're almost done" onSubmit={handleRegisterImageSubmit}>
+                <Form title="Add additional info" subTitle="We're almost done" onSubmit={handleFinalSubmit}>
                     <div className="relative flex flex-col items-center">
                         <div className="w-full mb-5">
-                            <LoadImage name="petPictureTemp" image={petData.petPictureTemp} imageType="rectangular" onChange={handleInputChange} />
+                            <LoadImage name="petPictureTemp" image={petPictureTemp} imageType="rectangular" onChange={handleInputChange} />
                         </div>
                         <TextInput
                             size="medium"
-                            placeholder="Location" // Placeholder dinámico
-                            name="name"
-                            value={petData.name}
+                            placeholder="Location"
+                            name="location"
+                            value={petData.location}
                             isRequired={false}
                             onChange={handleInputChange}
                         />
                         <TextInput
                             size="medium"
-                            placeholder="Health issues" // Placeholder dinámico
+                            placeholder="Weight"
+                            name="weight"
+                            value={petData.weight}
+                            isRequired={false}
+                            onChange={handleInputChange}
+                        />
+                        <TextInput
+                            size="medium"
+                            placeholder="Health issues"
                             name="healthIssues"
                             value={petData.healthIssues}
                             isRequired={false}
@@ -139,7 +157,7 @@ export default function Register() {
                         />
                         <div className="flex flex-col w-full justify-end mt-4 gap-2">
                             <Button size="small" variant="solid-green" type="submit">Continue</Button>
-                            <Button size="small">Skip</Button>
+                            <Button onClick={handleSkip} size="small">Skip</Button>
                         </div>
                     </div>
                 </Form>

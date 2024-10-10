@@ -6,10 +6,12 @@ import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
-import loginUser from "../../../utils/sessionManager";
+import {loginUser, getSessionToken} from "../../../utils/sessionManager";
+import { useSession } from '../../../context/SessionContext';
 
 export default function Login() {
-    
+    const { userData, isAuthenticated, updateSessionState } = useSession();
+
     const [accountData, setAdditionalData] = useState({
         email: "",
         password: "",
@@ -30,23 +32,28 @@ export default function Login() {
         setIsLoading(true);
 
         try {
-            const apiData = await loginUser(
+            const apiResponse = await loginUser(
                 accountData.email,
                 accountData.password
             );
 
             setIsLoading(false);
 
-            if(apiData.result){
+            if (apiResponse.result) {
                 let message;
-                if(apiData.userTypeId === "O"){
-                    message= "Bienvenido "+ apiData.details.CompleteName;
-                }else{
-                    message= "Bienvenidos "+ apiData.details.Name;
+                if (apiResponse.userTypeId === "O") {
+                    message = "Bienvenid@ " + apiResponse.data.details.CompleteName;
+                } else {
+                    message = "Bienvenidos " + apiResponse.data.details.CompleteName;
                 }
+                updateSessionState();
+                console.log(isAuthenticated);
                 alert(JSON.stringify(message));
-            }else{
-                alert(JSON.stringify(apiData.message));
+            } else {
+                setErrorMessage(apiResponse.message);
+                setTimeout(() => {
+                    setErrorMessage(null);
+                }, 4000);
             }
 
         } catch (error) {
