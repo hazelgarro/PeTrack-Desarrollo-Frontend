@@ -12,9 +12,6 @@ export const SessionContextProvider = ({ children }) => {
     }, []);
 
     const updateSessionState = () => {
-
-        console.log(getSessionToken());
-        console.log(getUserData());
         if (getSessionToken()) {
             setUserData(getUserData());
             setIsAuthenticated(true);

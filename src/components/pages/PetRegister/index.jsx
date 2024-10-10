@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import TextInput from "../../atoms/TextInput";
 import SelectInput from "../../molecules/SelectInput";
 import AccountForm from "../../templates/AccountForm";
@@ -9,8 +9,13 @@ import './styles.css';
 import { useNavigate } from 'react-router-dom';
 import Loader from "../../atoms/Loader/index.jsx";
 import LoadImage from "../../organisms/LoadImage/index.jsx";
+import { useSession } from '../../../context/SessionContext';
 
 export default function Register() {
+    const { userData, isAuthenticated, updateSessionState } = useSession();
+
+    
+
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
     const [isFormSubmitted, setIsFormSubmitted] = useState(true);
 
@@ -32,7 +37,7 @@ export default function Register() {
         gender: "male",
         weight: "1kg",
         location: "Esparza",
-        ownerId: "1",
+        ownerId: "",
         ownerType: "O",
         healthIssues: "",
         petPicture: "",
