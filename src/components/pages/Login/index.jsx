@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import { useNavigate } from 'react-router-dom';
 import TextInput from "../../atoms/TextInput";
 import PasswordInput from "../../molecules/PasswordInput";
 import Button from "../../atoms/Button";
@@ -11,6 +11,7 @@ import { useSession } from '../../../context/SessionContext';
 
 export default function Login() {
     const { userData, isAuthenticated, updateSessionState } = useSession();
+    const navigate = useNavigate();
 
     const [accountData, setAdditionalData] = useState({
         email: "",
@@ -47,8 +48,8 @@ export default function Login() {
                     message = "Bienvenidos " + apiResponse.data.details.CompleteName;
                 }
                 updateSessionState();
-                console.log(isAuthenticated);
                 alert(JSON.stringify(message));
+                navigate("/");
             } else {
                 setErrorMessage(apiResponse.message);
                 setTimeout(() => {

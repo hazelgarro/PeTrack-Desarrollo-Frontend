@@ -10,14 +10,27 @@ import { useNavigate } from 'react-router-dom';
 import Loader from "../../atoms/Loader/index.jsx";
 import LoadImage from "../../organisms/LoadImage/index.jsx";
 import { useSession } from '../../../context/SessionContext';
+import { uploadImage } from '../../../utils/imageManager.js'
+import { getData } from "../../../utils/apiConnector.js";
 
-export default function Register() {
+export default function PetRegister() {
     const { userData, isAuthenticated, updateSessionState } = useSession();
 
-    
+    const navigate = useNavigate(); // Llama a useNavigate
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            alert("The session was closed or the user is not logged in");
+            navigate("/Login");
+        }
+    }, [isAuthenticated, userData]);//Se ejecuta en cada actualización de isAuthenticated
+
 
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
-    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    let isSkipping = false;
 
     const speciesOptions = [
         { value: "1", label: "Dog" },
@@ -30,24 +43,24 @@ export default function Register() {
     ];
 
     const [petData, setPetData] = useState({
-        name: "Copito",
+        name: "",
         dateOfBirth: "",
-        species: "Dog",
-        breed: "Zaguate",
-        gender: "male",
-        weight: "1kg",
-        location: "Esparza",
+        species: "",
+        breed: "",
+        gender: "",
+        weight: "",
+        location: "",
         ownerId: "",
-        ownerType: "O",
+        ownerType: "",
         healthIssues: "",
         petPicture: "",
         imagePublicId: "",
     });
 
-    const [petPictureTemp, setPetPictureTemp] = useState ("");
+    const [petPictureTemp, setPetPictureTemp] = useState("");
 
     const handleInputChange = ({ name, value }) => {
-        if((name != "petPictureTemp")){
+        if ((name != "petPictureTemp")) {
             setPetData((prevData) => {
                 const newData = {
                     ...prevData,
@@ -55,7 +68,7 @@ export default function Register() {
                 };
                 return newData;
             });
-        }else{
+        } else {
             setPetPictureTemp(value);
         }
     };
@@ -67,12 +80,94 @@ export default function Register() {
 
     const handleFinalSubmit = async (e) => {
         e.preventDefault();
-        console.log("Codigo para guardar perrito");
-    }
+
+        if (!isSkipping) {
+            // Verifica si al menos un campo o la imagen han sido completados
+            if (!petPictureTemp && !petData.location && !petData.weight && !petData.healthIssues) {
+                setErrorMessage("Please fill at least one field or select a picture.");
+                setTimeout(() => {
+                    setErrorMessage(null);
+                }, 5000);
+                return; // Detiene la ejecución si no hay datos válidos
+            }
+        }
+
+        await updateSessionState();
+
+        if (userData) {
+            setIsLoading(true);
+
+            try {
+                let imageUploadResult = null;
+
+                try {
+                    if (petPictureTemp) {
+                        // Intentamos subir la imagen usando la función uploadImage
+                        imageUploadResult = await uploadImage(petPictureTemp);
+
+
+                    }
+                } catch (error) {
+                    console.error("Error uploading pet picture:", error);
+                    setErrorMessage("There was an issue uploading the image. Please try again.");
+                    setTimeout(() => {
+                        setErrorMessage(null);
+                    }, 5000);
+
+                    throw new Error("There was an issue uploading the image. Please try again.");
+                }
+
+                const petPicture = imageUploadResult ? imageUploadResult.imageUrl : petData.petPicture;
+                const imagePublicId = imageUploadResult ? imageUploadResult.publicId : petData.imagePublicId;
+
+                // Crea un nuevo objeto con los datos de la mascota, incluyendo la imagen subida y el publicId
+                const newPetData = {
+                    ...petData,
+                    ownerId: userData.id,
+                    ownerType: userData.userTypeId,
+                    petPicture: petPicture,
+                    imagePublicId: imagePublicId,
+                };
+
+                try {
+                    const apiUrl = "https://www.APIPetrack.somee.com/Pet/RegisterPet";
+                    const registerResult = await getData(apiUrl, newPetData, true, "POST");
+
+                    alert(registerResult.message);
+
+                    if(registerResult.result){
+                        navigate(`/PetProfile:${registerResult.data.petId}`);
+                    }else{
+                        window.location.reload();
+                    }
+
+                } catch (error) {
+                    alert(registerResult.message);
+                    setIsFormSubmitted(false);
+                }
+
+            } catch (error) {
+                console.error("Error during pet registration:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    };
 
     const handleSkip = (e) => {
+        e.preventDefault();
         const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
-        if(userResponse){
+
+        if (userResponse) {
+            isSkipping = true;
+            setPetData((prevData) => ({
+                ...prevData,
+                location: "",
+                weight: "",
+                healthIssues: "",
+            }));
+            setPetPictureTemp("");
+
             handleFinalSubmit(e);
         }
     };
@@ -160,6 +255,9 @@ export default function Register() {
                             isRequired={false}
                             onChange={handleInputChange}
                         />
+
+                        {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
+
                         <div className="flex flex-col w-full justify-end mt-4 gap-2">
                             <Button size="small" variant="solid-green" type="submit">Continue</Button>
                             <Button onClick={handleSkip} size="small">Skip</Button>

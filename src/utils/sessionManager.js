@@ -1,3 +1,5 @@
+import { getData } from "./apiConnector";
+
 export async function loginUser(email, password) {
     const apiUrl = "https://www.APIPetrack.somee.com/User/Login";
 
@@ -19,24 +21,15 @@ export async function loginUser(email, password) {
         const responseData = await response.json();
 
         if (response.ok) {
-            const userData = responseData.data;
             const token = responseData.data.token;
-            delete userData.token;
-            delete userData.result;
 
-            // Guardar token en cookie con expiración de 1 hora sin HttpOnly
             const expires = new Date(Date.now() + 60 * 60 * 1000).toUTCString();
             document.cookie = `sessionToken=${token}; expires=${expires}; path=/; SameSite=Strict`;
-
-            // Guardar userData como JSON string en la cookie
-            document.cookie = `userData=${encodeURIComponent(JSON.stringify(userData))}; expires=${expires}; path=/; SameSite=Strict`;
-
         } else {
             console.log(response.status);
         }
 
         return responseData;
-
     } catch (error) {
         console.log(error.message || "An error occurred while creating the account.");
         return {
@@ -51,9 +44,30 @@ export function getSessionToken() {
     return token ? token : null;
 }
 
-export function getUserData() {
-    const userDataString = getCookieData('userData');
-    return userDataString ? JSON.parse(decodeURIComponent(userDataString)) : null;
+export async function verifyLogin() {
+    const token = getSessionToken(); // Obtener token solo una vez
+
+    if (token) {
+        const apiUrl = "https://www.APIPetrack.somee.com/User/VerifyLogin";
+        const body = { token };
+
+        try {
+            const response = await getData(apiUrl, body, false, "POST");
+            return response; // Retorna la respuesta de la API directamente
+        } catch (error) {
+            return {
+                result: false,
+                message: "Error verifying login: " + (error.message || "Unknown error"),
+                data:{}
+            };
+        }
+    }
+
+    return {
+        result: false,
+        message: "The user is not logged in",
+        data:{}
+    };
 }
 
 function getCookieData(name) {
@@ -67,5 +81,4 @@ function getCookieData(name) {
 
 export function logoutUser() {
     document.cookie = 'sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = 'userData=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 }

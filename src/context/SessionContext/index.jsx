@@ -1,22 +1,27 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { getSessionToken, getUserData } from '../../utils/sessionManager.js';
+import { verifyLogin } from '../../utils/sessionManager.js';
 
 const SessionContext = createContext();
 
 export const SessionContextProvider = ({ children }) => {
-    const [userData, setUserData] = useState(null);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [userData, setUserData] = useState({});
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
 
     useEffect(() => {
         updateSessionState();
     }, []);
 
-    const updateSessionState = () => {
-        if (getSessionToken()) {
-            setUserData(getUserData());
-            setIsAuthenticated(true);
+    const updateSessionState = async () => {
+        try {
+            const apiResponse = await verifyLogin();  // Esperar a que verifyLogin() resuelva la promesa
+            setUserData(apiResponse.data);
+            setIsAuthenticated(apiResponse.result);
+        } catch (error) {
+            console.error("Error updating session state:", error);
+            setUserData({});
+            setIsAuthenticated(false);
         }
-    }
+    };
 
     return (
         <SessionContext.Provider value={{ userData, isAuthenticated, updateSessionState }}>

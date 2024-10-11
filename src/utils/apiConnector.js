@@ -32,7 +32,6 @@ export async function getData(apiUrl, body, needToken, method) {
         const response = await fetch(apiUrl, fetchParams);
 
         const responseData = await response.json();
-        console.log("Message: " + responseData.message);
 
         if (!response.ok) {
             return {

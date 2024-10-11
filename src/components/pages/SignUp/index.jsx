@@ -61,7 +61,7 @@ export default function SignUp() {
     
             return newData;
         });
-    };    
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();

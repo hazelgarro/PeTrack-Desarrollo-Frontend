@@ -1,62 +1,67 @@
 import { v4 as uuidv4 } from 'uuid';
-import { v2 as cloudinary } from 'cloudinary';
+import { Cloudinary } from '@cloudinary/url-gen';
 
-cloudinary.config({
-    cloud_name: 'dg2l6tblc',
-    api_key: '915636439722653',
-    api_secret: 'QCQ_ubacuA0wCrgfp9KllJMdNkg'
+const cloud_name = "dg2l6tblc";
+const presetName = "petrack_preset"
+
+const cloudinary = new Cloudinary({
+    cloud: {
+        cloudName: cloud_name,
+    },
 });
 
-async function uploadToCloudinary(image, publicId, options = {}) {
+//Los presets escogidos en 
+async function uploadToCloudinary(localImageUrl, publicId) {
     try {
-        const uploadResult = await cloudinary.uploader.upload(image, {
-            public_id: publicId,
-            format: options.format || 'webp', // Permite cambiar el formato a través de opciones
-            ...options
+        const response = await fetch(localImageUrl);
+        const blob = await response.blob(); // Convertimos la respuesta a blob
+
+        const imageFile = new File([blob], "image", { type: blob.type });
+
+        const data = new FormData();
+        data.append('file', imageFile); // Adjuntamos el archivo
+        data.append('upload_preset', presetName); // Adjuntamos el preset
+        data.append('public_id', publicId);
+        // Eliminamos el parámetro format de aquí
+
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+            method: 'POST',
+            body: data,
         });
 
-        return uploadResult;
+        return cloudinaryResponse.json();
     } catch (error) {
-        console.error("Error uploading image:", error);
-        throw new Error(`Failed to upload image: ${error.message}`);
+        console.error('Error uploading image:', error);
     }
 }
 
-export async function uploadImage(image, folder) {
-    try {
-        const generatedPublicId = `${folder}/picture_${uuidv4()}`;
-        await console.log(uploadToCloudinary(image, generatedPublicId));
+// Función que consume uploadToCloudinary
+export async function uploadImage(localImageUrl) {
+    if (!localImageUrl) {
+        throw new Error("No image was provided.");
+    }
 
-        const optimizedUrl = cloudinary.url(generatedPublicId, {
-            fetch_format: 'auto',
-            quality: 'auto'
-        });
+    try {
+        const generatedPublicId = `picture_${uuidv4()}`; // Generamos un publicId único
+        const uploadResult = await uploadToCloudinary(localImageUrl, generatedPublicId); // Llamamos a uploadToCloudinary
+
+        // Verificamos si hubo un resultado exitoso en la subida
+        if (!uploadResult || uploadResult.error) {
+            throw new Error(uploadResult.error ? uploadResult.error.message : "Upload failed");
+        }
+
+        const optimizedUrl = cloudinary.image(uploadResult.public_id)
+        .format('webp')
+        .quality('auto')
+        .toURL();
 
         return {
             imageUrl: optimizedUrl,
-            publicId: generatedPublicId
+            publicId: uploadResult.public_id // Aseguramos que usamos el public_id retornado
         };
-
     } catch (error) {
         console.error("Error uploading image:", error);
         throw new Error(`Failed to upload image: ${error.message}`);
-    }
-}
-
-//Devuelve una url con una imagen reducida, esto para agilizar cargas en determinados casos
-export async function getCroppedUrl(publicId, width, height) {
-    try {
-        const croppedUrl = cloudinary.url(publicId, {
-            crop: 'auto',
-            gravity: 'auto',
-            width: width,
-            height: height
-        });
-
-        return croppedUrl;
-    } catch (error) {
-        console.error("Error getting cropped URL:", error);
-        throw new Error(`Failed to get cropped URL: ${error.message}`);
     }
 }
 

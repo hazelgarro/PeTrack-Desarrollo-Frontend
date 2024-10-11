@@ -9,19 +9,19 @@ import PetOwnerProfile from "./components/pages/PetOwnerProfile"
 import LandingPage from "./components/pages/LandingPage";
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {SessionContextProvider} from './context/SessionContext';
+import { SessionContextProvider } from './context/SessionContext';
 
 function App() {
   return (
     <SessionContextProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/Login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/PetRegister" element={<PetRegister />} />
-          <Route path="/PetProfile" element={<PetProfile />} />
+          <Route path="/PetProfile:id" element={<PetProfile />} />
           <Route path="/PetOwnerProfile/:id" element={<PetOwnerProfile />} />
-          <Route path="/Landing" element={<LandingPage />} />
         </Routes>
       </Router>
     </SessionContextProvider>
