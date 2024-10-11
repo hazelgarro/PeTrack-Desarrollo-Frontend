@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ButtonSignUp from "../../atoms/Button";
@@ -26,22 +27,18 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
     return (
         <div className="w-full bg-white">
             <nav className="flex justify-between items-center px-8 py-4">
-                <a href="/Homepage">
+                <a href="/homepage-fake-link">
                     <Logo size="extra-small" />
                 </a>
 
                 <div className="flex space-x-4 items-center">
                     <div className="p-2">
-                        <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
+                        <Link href="/home" variant={variant} size="small">Inicio</Link>
                         <Link href="/about" variant={variant} size="small">Veterinarias</Link>
                         <Link href="/contact" variant={variant} size="small">Adopción</Link>
                     </div>
 
                     {isAuthenticated ? (
-<<<<<<< HEAD
-                        <>
-                            <a href="/PetOwnerProfile">
-=======
                         currentVariant === "menuHamburgerIcon" ? (
                             <div className="relative">
                                 <button onClick={toggleMenu}>
@@ -49,7 +46,7 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 </button>
                                 <DropdownMenu 
                                     isMenuOpen={isMenuOpen} 
-                                    size={"medium"}
+                                    size={"size-extra-small"}
                                 >
                                     <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
                                     <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
@@ -57,55 +54,20 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                             </div>
                         ) : (
                             <a href="/user-profile-fake-link">
->>>>>>> 3bf95354274f278c14c696d06848e66558282826
                                 <ProfileImage imageSrc={userImage} size="small" />
                             </a>
                         )
                     ) : (
                         <>
-                            <a href="/Login">
-                                <ButtonLogin variant={`${variant}`} size="extra-small">Login</ButtonLogin>
+                            <a href="/login-fake-link">
+                                <ButtonLogin variant={`border-${variant}`} size="extra-small">Login</ButtonLogin>
                             </a>
-                            <a href="/Signup">
-                                <ButtonSignUp variant={`${variant}`} size="extra-small">Sign Up</ButtonSignUp>
+                            <a href="/signup-fake-link">
+                                <ButtonSignUp variant={`solid-${variant}`} size="extra-small">Sign Up</ButtonSignUp>
                             </a>
                         </>
                     )}
                 </div>
-<<<<<<< HEAD
-
-                {/* Icono de menú hamburguesa en móvil */}
-                <div className="md:hidden">
-                    {isAuthenticated ? (
-                        <div className="relative">
-                            <button onClick={toggleMenu}>
-                                <MenuHamburgerIcon size="small" />
-                            </button>
-                            <DropdownMenu 
-                                isMenuOpen={isMenuOpen} 
-                                size={"medium"}
-                                onClose={() => setIsMenuOpen(false)} // Añade un método para cerrar el menú
-                            >
-                                <Link href="/home" variant={variant} className="dropdown-link">Inicio</Link>
-                                <Link href="/about" variant={variant} className="dropdown-link">Veterinarias</Link>
-                                <Link href="/contact" variant={variant} className="dropdown-link">Adopción</Link>
-                                <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
-                                <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
-                            </DropdownMenu>
-                        </div>
-                    ) : (
-                        <div className="flex space-x-2">
-                            <a href="/Login">
-                                <ButtonLogin variant={`${variant}`} size="extra-small">Login</ButtonLogin>
-                            </a>
-                            <a href="/Signup">
-                                <ButtonSignUp variant={`${variant}`} size="extra-small">Sign Up</ButtonSignUp>
-                            </a>
-                        </div>
-                    )}
-                </div>
-=======
->>>>>>> 3bf95354274f278c14c696d06848e66558282826
             </nav>
         </div>
     );
