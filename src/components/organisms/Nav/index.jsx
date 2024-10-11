@@ -27,13 +27,13 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
     return (
         <div className="w-full bg-white">
             <nav className="flex justify-between items-center px-8 py-4">
-                <a href="/homepage-fake-link">
+                <a href="/Homepage">
                     <Logo size="extra-small" />
                 </a>
 
                 <div className="flex space-x-4 items-center">
                     <div className="p-2">
-                        <Link href="/home" variant={variant} size="small">Inicio</Link>
+                        <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
                         <Link href="/about" variant={variant} size="small">Veterinarias</Link>
                         <Link href="/contact" variant={variant} size="small">Adopción</Link>
                     </div>
@@ -53,16 +53,16 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 </DropdownMenu>
                             </div>
                         ) : (
-                            <a href="/user-profile-fake-link">
+                            <a href="/PetOwnerProfile">
                                 <ProfileImage imageSrc={userImage} size="small" />
                             </a>
                         )
                     ) : (
                         <>
-                            <a href="/login-fake-link">
+                            <a href="/Login">
                                 <ButtonLogin variant={`border-${variant}`} size="extra-small">Login</ButtonLogin>
                             </a>
-                            <a href="/signup-fake-link">
+                            <a href="/Signup">
                                 <ButtonSignUp variant={`solid-${variant}`} size="extra-small">Sign Up</ButtonSignUp>
                             </a>
                         </>

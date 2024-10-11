@@ -10,7 +10,7 @@ import ServicesContainer from "../../organisms/ServicesContainer";
 export default function HomePage() {
     return ( 
         <div className="w-full bg-white">
-            <Nav variant="solid-green"></Nav>
+            <Nav variant="green"></Nav>
             <Welcome></Welcome>
             <div className="flex justify-center items-center pt-16">
                 <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Mis Mascotas</p>

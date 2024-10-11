@@ -12,7 +12,7 @@ import Smartphone from "../../../assets/img/Smartphone.png";
 export default function LandingPage() {
     return (
         <div className="w-full bg-white">
-            <Nav variant="solid-green"></Nav>
+            <Nav variant="green"></Nav>
 
             <WelcomeContainer></WelcomeContainer>
             <div className=" items-center mx-6 md:mx-24 lg:mx-72 my-10 md:my-20 flex flex-col gap-6 md:gap-8">
