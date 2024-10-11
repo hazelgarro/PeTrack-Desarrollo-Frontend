@@ -18,9 +18,7 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
     }, [variant]);
 
     const toggleMenu = () => {
-        if (currentVariant === "menuHamburgerIcon") {
-            setIsMenuOpen(!isMenuOpen);
-        }
+        setIsMenuOpen(!isMenuOpen);
     };
 
     return (
@@ -30,7 +28,8 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                     <Logo size="extra-small" />
                 </a>
 
-                <div className="flex space-x-4 items-center">
+                {/* Mostrar icono de menú en móvil y enlaces en desktop */}
+                <div className="hidden md:flex space-x-4 items-center">
                     <div className="p-2">
                         <Link href="/home" variant={variant} size="small">Inicio</Link>
                         <Link href="/about" variant={variant} size="small">Veterinarias</Link>
@@ -38,33 +37,51 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                     </div>
 
                     {isAuthenticated ? (
-                        currentVariant === "menuHamburgerIcon" ? (
-                            <div className="relative">
-                                <button onClick={toggleMenu}>
-                                    <MenuHamburgerIcon size="small" />
-                                </button>
-                                <DropdownMenu 
-                                    isMenuOpen={isMenuOpen} 
-                                    size={"medium"}
-                                >
-                                    <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
-                                    <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
-                                </DropdownMenu>
-                            </div>
-                        ) : (
+                        <>
                             <a href="/user-profile-fake-link">
                                 <ProfileImage imageSrc={userImage} size="small" />
                             </a>
-                        )
+                        </>
                     ) : (
                         <>
                             <a href="/login-fake-link">
-                                <ButtonLogin variant={`border-${variant}`} size="extra-small">Login</ButtonLogin>
+                                <ButtonLogin variant={`${variant}`} size="extra-small">Login</ButtonLogin>
                             </a>
                             <a href="/signup-fake-link">
-                                <ButtonSignUp variant={`solid-${variant}`} size="extra-small">Sign Up</ButtonSignUp>
+                                <ButtonSignUp variant={`${variant}`} size="extra-small">Sign Up</ButtonSignUp>
                             </a>
                         </>
+                    )}
+                </div>
+
+                {/* Icono de menú hamburguesa en móvil */}
+                <div className="md:hidden">
+                    {isAuthenticated ? (
+                        <div className="relative">
+                            <button onClick={toggleMenu}>
+                                <MenuHamburgerIcon size="small" />
+                            </button>
+                            <DropdownMenu 
+                                isMenuOpen={isMenuOpen} 
+                                size={"medium"}
+                                onClose={() => setIsMenuOpen(false)} // Añade un método para cerrar el menú
+                            >
+                                <Link href="/home" variant={variant} className="dropdown-link">Inicio</Link>
+                                <Link href="/about" variant={variant} className="dropdown-link">Veterinarias</Link>
+                                <Link href="/contact" variant={variant} className="dropdown-link">Adopción</Link>
+                                <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
+                                <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
+                            </DropdownMenu>
+                        </div>
+                    ) : (
+                        <div className="flex space-x-2">
+                            <a href="/login-fake-link">
+                                <ButtonLogin variant={`${variant}`} size="extra-small">Login</ButtonLogin>
+                            </a>
+                            <a href="/signup-fake-link">
+                                <ButtonSignUp variant={`${variant}`} size="extra-small">Sign Up</ButtonSignUp>
+                            </a>
+                        </div>
                     )}
                 </div>
             </nav>
