@@ -6,11 +6,14 @@ import CardsContainer from "../../organisms/cardsContainer";
 import Card from "../../molecules/Card";
 import Button from "../../atoms/Button";
 import ServicesContainer from "../../organisms/ServicesContainer";
+import { useSession } from "../../../context/SessionContext";
 
 export default function HomePage() {
+    const { isAuthenticated } = useSession();
+    
     return ( 
         <div className="w-full bg-white">
-            <Nav variant="green"></Nav>
+            <Nav isAuthenticated={isAuthenticated} variant="green"></Nav>
             <Welcome></Welcome>
             <div className="flex justify-center items-center pt-16">
                 <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Mis Mascotas</p>

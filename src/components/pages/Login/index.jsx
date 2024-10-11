@@ -49,7 +49,7 @@ export default function Login() {
                 }
                 updateSessionState();
                 alert(JSON.stringify(message));
-                navigate("/");
+                navigate("/Homepage");
             } else {
                 setErrorMessage(apiResponse.message);
                 setTimeout(() => {

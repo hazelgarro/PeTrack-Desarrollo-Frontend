@@ -1,6 +1,6 @@
-import pet_picture from "../../../assets/img/pet_picture.webp";
 import PetPhotoQr from "../../organisms/PetPhotoQR";
 
+import { useParams } from 'react-router-dom';
 import IconText from "../../molecules/IconText";
 import MenuIcon from "../../atoms/Icons/Menu";
 import LocationIcon from "../../atoms/Icons/Location/index.jsx";
@@ -23,11 +23,87 @@ import WeightIcon from "../../atoms/Icons/Weight";
 import PetIcon from "../../atoms/Icons/Pet";
 import AgeIcon from "../../atoms/Icons/Age";
 import QRCode from "react-qr-code";
+import { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { getData } from "../../../utils/apiConnector.js";
+import { getFormattedDate } from "../../../utils/dateFormater.js";
+import Missed from "../../atoms/Icons/Missed/";
+import { useSession } from '../../../context/SessionContext';
 
 export default function PetProfile() {
+    const { id } = useParams();
+    const navigate = useNavigate();
+    const { userData, isAuthenticated } = useSession();
+
+    const [petData, setPetData] = useState({
+        name: "",
+        dateOfBirth: "",
+        species: "",
+        breed: "",
+        gender: "",
+        weight: "",
+        location: "",
+        ownerId: "",
+        ownerType: "",
+        healthIssues: "",
+        petPicture: "",
+        imagePublicId: "",
+    });
+
+    useEffect(() => {
+        if (!id) {
+            console.error('No se encontró el ID de la mascota');
+            navigate("/");  // Redirige si no hay un ID
+        } else {
+            fetchPet();
+            console.log(petData);
+            console.log(userData);
+        }
+    }, [id]);
+
+    async function fetchPet() {
+        try {
+            const apiUrl = `https://www.APIPetrack.somee.com/Pet/SearchById/${id}`;
+            const apiRespond = await getData(apiUrl, null, false, 'GET');
+
+            if (apiRespond && apiRespond.result) {
+                setPetData(apiRespond.data);
+            } else if (apiRespond) {
+                alert(apiRespond.message);
+                navigate("/"); // Redirige en caso de error conocido
+            } else {
+                alert("Unexpected error");
+                navigate("/");
+            }
+        } catch (error) {
+            console.error('Error al obtener los datos de la mascota:', error);
+            alert('Error al obtener los datos de la mascota. Intente más tarde.');
+        }
+    }
+
+    async function handleDeletePet() {
+        const isConfirmed = window.confirm(`Are you sure you want to eliminate ${petData.name}?`);
     
+        if (isConfirmed) {
+            const apiUrl = `https://www.APIPetrack.somee.com/Pet/DeletePet/${id}`;
+    
+            try {
+                const apiRespond = await getData(apiUrl, null, true, "GET");
+
+                alert(apiRespond.message);
+                if(apiRespond.result){
+                    navigate("/Homepage");
+                }
+
+            } catch (error) {
+                alert("Error deleting pet");
+            }
+        }
+    }
+    
+
     const buttons = <>
-        <Button variant="border-green" variant2="content-fit" size="extra-small">
+        <Button variant="border-green" variant2="content-fit" size="extra-small" onClick={handleDeletePet}>
             <div className="flex items-center gap-1">
                 <DeleteIcon size="medium"></DeleteIcon> <span>Delete</span>
             </div>
@@ -53,61 +129,73 @@ export default function PetProfile() {
 
     return (
         <div>
-            <NavBar isAuthenticated={true}></NavBar>
+            <NavBar isAuthenticated={isAuthenticated}></NavBar>
 
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petPicture={pet_picture}><QRCode value="hola"></QRCode></PetPhotoQr>
-                    <div className="lg:hidden">
-                        {/* Hay que cambiar este botón por un componente button, pero hay que crear otra variante*/}
-                        <button className="absolute bottom-4 right-4" label="Drop menu" onClick={hookMenuBotones.toggleModal}>
-                            <MenuIcon size="extra-large" />
-                        </button>
+                    <PetPhotoQr petPicture={petData.petPicture}><QRCode value={window.location.href} ></QRCode></PetPhotoQr>
 
-                        <Modal isOpen={hookMenuBotones.isOpen} toggleModal={hookMenuBotones.toggleModal}>
-                            <div className="flex flex-wrap justify-start gap-4">
-                                {buttons}
-                            </div>
-                        </Modal>
-                    </div>
+
+                    {isAuthenticated && userData.Id === petData.ownerId ? (
+                        <div className="lg:hidden">
+                            {/* Hay que cambiar este botón por un componente button, pero hay que crear otra variante*/}
+                            <button className="absolute bottom-4 right-4" label="Drop menu" onClick={hookMenuBotones.toggleModal}>
+                                <MenuIcon size="extra-large" />
+                            </button>
+
+                            <Modal isOpen={hookMenuBotones.isOpen} toggleModal={hookMenuBotones.toggleModal}>
+                                <div className="flex flex-wrap justify-start gap-4">
+                                    {buttons}
+                                </div>
+                            </Modal>
+                        </div>
+                    ) : null }
                 </section>
                 <section>
-                    <div className="flex w-full justify-between my-4">
-                        <h2 className="justify-center text-petrack-black text-4xl font-bold">Name</h2>
-                        <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
+                    <div className="flex w-full justify-between my-4 items-center">
+                        <h2 className="justify-center text-petrack-black text-4xl font-bold">{petData.name}</h2>
+                        {isAuthenticated && userData.Id === petData.ownerId ? (
+                            <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
+                        ) : (
+                            <Link to={`/PetOwnerProfile/${petData.ownerId}`}> {/* Cambia "/ruta-deseada" por la ruta que desees */}
+                                <Button variant="solid-green" size="extra-small" className="ml-4">
+                                    <div className="flex items-center gap-2">
+                                        <Missed color="white" />
+                                        <span>Am I lost?</span>
+                                    </div>
+                                </Button>
+                            </Link>
+                        )}
                     </div>
                     <ProfileInfoContainer>
-                        <IconText text="Breed">
-                            <PetIcon petType="dog" size="medium"/>
+                        <IconText text={petData.breed}>
+                            <PetIcon petType={petData.breed ? petData.breed.toLowerCase() : ""} size="medium" />
                         </IconText>
-                        <IconText text="Gender">
-                            <GenderIcon size="large"/>
+                        <IconText text={petData.gender}>
+                            <GenderIcon gender={petData.gender} size="large" />
                         </IconText>
-                        <IconText text="2 years">
+                        <IconText text={getFormattedDate(petData.dateOfBirth)}>
                             <AgeIcon />
                         </IconText>
-                        <IconText iconName="weight" text="Weight">
-                            <WeightIcon size=""/>
+                        <IconText iconName="weight" text={petData.weight ? petData.weight : "No Data"}>
+                            <WeightIcon />
                         </IconText>
-                        <IconText text="Esparza, Costa Rica">
-                            <LocationIcon size=""/>
+                        <IconText text={petData.location ? petData.location : "No Data"} >
+                            <LocationIcon />
                         </IconText>
                     </ProfileInfoContainer>
                 </section>
                 <section className="my-6">
-                    <TextBlock title="About (name)">
-                        <p className="text-petrack-black mt-2 mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae deleniti est, asperiores quisquam modi, tempore voluptates dolorum illum laudantium fugiat ex, consectetur facere assumenda ducimus. Quae fugit tempora eius tempore.</p>
-                    </TextBlock>
-                    <TextBlock title="Especifications">
-                        <p className="text-petrack-black mt-2 mb-4">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Recusandae deleniti est, asperiores quisquam modi, tempore voluptates dolorum illum laudantium fugiat ex, consectetur facere assumenda ducimus. Quae fugit tempora eius tempore.</p>
+                    <TextBlock title="Health Issues">
+                        <p className="text-petrack-black mt-2 mb-4">{petData.healthIssues ? petData.healthIssues : "No Data"}</p>
                     </TextBlock>
                 </section>
-                <section>
-                    <MedicalInfoToggle title="Medical Record">
+                {/* <section>
+                    <MedicalInfoToggle title="Health Issues">
                         <MedicalInfoCard></MedicalInfoCard>
                         <MedicalInfoCard></MedicalInfoCard>
                     </MedicalInfoToggle>
-                </section>
+                </section> */}
             </main>
         </div>
     )

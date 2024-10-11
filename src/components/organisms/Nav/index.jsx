@@ -9,10 +9,15 @@ import Logo from "../../atoms/Logo";
 import userImage from "../../../assets/img/veterinary.webp";
 import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger";
 import DropdownMenu from "../../molecules/DropDownMenu"; // Ensure the path is correct
+import { logoutUser } from "../../../utils/sessionManager.js";
+import { useSession } from '../../../context/SessionContext';
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar({ isAuthenticated, variant = "" }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentVariant, setCurrentVariant] = useState(variant);
+    const { updateSessionState } = useSession();
+    const navigate = useNavigate();
 
     useEffect(() => {
         setCurrentVariant(variant);
@@ -23,6 +28,18 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
             setIsMenuOpen(!isMenuOpen);
         }
     };
+
+    const logout = (e) => {
+        e.preventDefault();
+
+        const isConfirmed = window.confirm("Are you sure you want to log out?");
+
+        if (isConfirmed) {
+            logoutUser(); // Llama a la función que maneja el cierre de sesión
+            updateSessionState(); // Actualiza el estado de la sesión si es necesario
+            navigate("/"); // Redirige a la página principal
+        }
+    }
 
     return (
         <div className="w-full bg-white">
@@ -44,12 +61,12 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 <button onClick={toggleMenu}>
                                     <MenuHamburgerIcon size="small" />
                                 </button>
-                                <DropdownMenu 
-                                    isMenuOpen={isMenuOpen} 
+                                <DropdownMenu
+                                    isMenuOpen={isMenuOpen}
                                     size={"size-extra-small"}
                                 >
                                     <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
-                                    <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
+                                    <Link onClick={logout} variant={variant} className="dropdown-link">Cerrar Sesión</Link>
                                 </DropdownMenu>
                             </div>
                         ) : (

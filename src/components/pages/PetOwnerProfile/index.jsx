@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom'; // Para obtener el parámetro ID de la URL
+import { useParams } from 'react-router-dom';
 import { getData } from '../../../utils/apiConnector.js';
 
 import NavBar from "../../organisms/Nav";
@@ -12,25 +12,39 @@ import IconEmail from "../../atoms/Icons/Email";
 import IconUser from "../../atoms/Icons/User";
 import IconPhone from "../../atoms/Icons/Phone";
 import imageUserDefault from '../../../assets/img/UserDefault.svg';
+import { useSession } from '../../../context/SessionContext';
+import { useNavigate } from 'react-router-dom';
 
 export default function PagePetOwner() {
-    const { id } = useParams(); // Suponiendo que el ID del dueño de la mascota está en la URL
-    const [ownerData, setOwnerData] = useState({name: ""});
+    const { id } = useParams();
+    const [ownerData, setOwnerData] = useState({});
+    const navigate = useNavigate();
+
+    const { userData, isAuthenticated} = useSession();//Maneja el estado de la sesión
+
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         // Llamar a la API para obtener los datos del perfil del dueño
-        const fetchData = async () => {
-            const data = await getData(`https://www.APIPetrack.somee.com/User/DetailsUser/${id}`, null, false, "GET");
-            if (data) {
-                setOwnerData(data.data);
-                console.log(data);
-            }
-            setLoading(false);
-        };
+        if (id) {
+            const fetchData = async () => {
+                const data = await getData(`https://www.APIPetrack.somee.com/User/DetailsUser/${id}`, null, false, "GET");
+                if (data) {
+                    setOwnerData(data.data);
+                    console.log(data);
+                }
+                setLoading(false);
+            };
 
-        fetchData();
-    }, [id]);
+            fetchData();
+        } else if (!isAuthenticated) {
+            alert("The session was closed or the user is not logged in");
+            navigate("/Login");
+        } else if (userData) {
+            setOwnerData(userData);
+            setLoading(false);
+        }
+    }, [id, userData, isAuthenticated]);
 
     if (loading) {
         return <div>Loading...</div>;
@@ -42,11 +56,11 @@ export default function PagePetOwner() {
 
     return (
         <>
-            <NavBar isAuthenticated={true} variant={"menuHamburgerIcon"}></NavBar>
+            <NavBar isAuthenticated={isAuthenticated} variant={"menuHamburgerIcon"}></NavBar>
             <div className="relative mb-12 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <div className="flex flex-col md:flex-row gap-8 mb-10">
                     <div className="self-center">
-                        <ProfileImage defaultImage={imageUserDefault}  size="extra-large"></ProfileImage>
+                        <ProfileImage defaultImage={imageUserDefault} size="extra-large"></ProfileImage>
                     </div>
                     <div className="flex flex-col justify-center text-center md:text-left">
                         <h1 className="text-petrack-green text-4xl md:text-6xl font-bold mb-2 font-outfit">{ownerData.CompleteName}</h1>

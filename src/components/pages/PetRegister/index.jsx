@@ -33,13 +33,13 @@ export default function PetRegister() {
     let isSkipping = false;
 
     const speciesOptions = [
-        { value: "1", label: "Dog" },
-        { value: "2", label: "Cat" },
+        { value: "Dog", label: "Dog" },
+        { value: "Cat", label: "Cat" },
     ];
 
     const genderOptions = [
-        { value: "1", label: "Male" },
-        { value: "2", label: "Female" },
+        { value: "Male", label: "Male" },
+        { value: "Female", label: "Female" },
     ];
 
     const [petData, setPetData] = useState({
@@ -102,10 +102,7 @@ export default function PetRegister() {
 
                 try {
                     if (petPictureTemp) {
-                        // Intentamos subir la imagen usando la función uploadImage
                         imageUploadResult = await uploadImage(petPictureTemp);
-
-
                     }
                 } catch (error) {
                     console.error("Error uploading pet picture:", error);
@@ -120,7 +117,6 @@ export default function PetRegister() {
                 const petPicture = imageUploadResult ? imageUploadResult.imageUrl : petData.petPicture;
                 const imagePublicId = imageUploadResult ? imageUploadResult.publicId : petData.imagePublicId;
 
-                // Crea un nuevo objeto con los datos de la mascota, incluyendo la imagen subida y el publicId
                 const newPetData = {
                     ...petData,
                     ownerId: userData.id,
@@ -130,19 +126,19 @@ export default function PetRegister() {
                 };
 
                 try {
+                    alert(JSON.stringify(newPetData, null, 2));
                     const apiUrl = "https://www.APIPetrack.somee.com/Pet/RegisterPet";
                     const registerResult = await getData(apiUrl, newPetData, true, "POST");
 
                     alert(registerResult.message);
 
                     if(registerResult.result){
-                        navigate(`/PetProfile:${registerResult.data.petId}`);
+                        navigate(`/PetProfile/${registerResult.data.petId}`);
                     }else{
                         window.location.reload();
                     }
-
                 } catch (error) {
-                    alert(registerResult.message);
+                    alert("Error during pet registration:", error);
                     setIsFormSubmitted(false);
                 }
 

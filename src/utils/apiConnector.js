@@ -36,16 +36,16 @@ export async function getData(apiUrl, body, needToken, method) {
         if (!response.ok) {
             return {
                 result: false,
-                message: responseData.message || "An error occurred while creating the account."
+                message: responseData.message || "An error occurred."
             };
         }
         return responseData;
 
     } catch (error) {
-        console.log("Error message: " + (error.message || "An error occurred while creating the account."));
+        console.log("Error message: " + (error.message || "An error occurred."));
         return {
             result: false,
-            message: error.message || "An error occurred while creating the account."
+            message: error.message || "An error occurred."
         };
     }
 }

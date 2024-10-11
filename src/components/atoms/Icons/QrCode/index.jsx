@@ -18,5 +18,5 @@ export default function QrCode({ size = 'medium', color = 'primary', thickness =
 QrCode.propTypes = {
     size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
     color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
-    thickness: PropTypes.string, // Ancho del trazo del ícono
+    thickness: PropTypes.string,
 };

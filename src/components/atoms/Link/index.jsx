@@ -1,9 +1,10 @@
 import PropTypes from "prop-types";
 import "./styles.css"; // Import the CSS file for the variants
 
-export default function Link({ href, variant, size, children }) {
+export default function Link({ href, variant, size, children, onClick=null }) {
     return (
-        <a
+        <a 
+            onClick={onClick}
             href={href}
             className={`link ${variant ? `link--${variant}` : ""} ${size ? `link--${size}` : ""}`}
         >
@@ -17,4 +18,5 @@ Link.propTypes = {
     variant: PropTypes.string.isRequired, // Color variant (e.g., "green")
     size: PropTypes.oneOf(["small", "medium", "large"]).isRequired, // Size variant
     children: PropTypes.node.isRequired, // Link text or content
+    onclick: PropTypes.func,
 };

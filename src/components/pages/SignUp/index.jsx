@@ -15,8 +15,7 @@ import Loader from "../../atoms/Loader/index.jsx";
 export default function SignUp() {
     const options = [
         { value: "1", label: "Personal" },
-        { value: "2", label: "Veterinary Service" },
-        { value: "3", label: "Adoption/Shelter Service" },
+        { value: "2", label: "Adoption/Shelter Service" },
     ];
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
 
@@ -95,8 +94,7 @@ export default function SignUp() {
 
         const userTypesId = {
             1: "O",
-            2: "V",
-            3: "S",
+            2: "S",
         };
 
         try {

@@ -21,12 +21,12 @@ function App() {
           <Route path="/Login" element={<Login />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/PetRegister" element={<PetRegister />} />
-          <Route path="/PetProfile:id" element={<PetProfile />} />
-          <Route path="/PetOwnerProfile/:id" element={<PetOwnerProfile />} />
+          <Route path="/PetProfile/:id" element={<PetProfile />} />
+          <Route path="/PetOwnerProfile/:id?" element={<PetOwnerProfile />} />
           <Route path="/Homepage" element={<HomePage />} />
         </Routes>
-      </Router>
-    </SessionContextProvider>
+      </Router >
+    </SessionContextProvider >
   );
 }
 
