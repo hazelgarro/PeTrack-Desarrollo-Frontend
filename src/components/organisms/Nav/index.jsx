@@ -18,7 +18,9 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
     }, [variant]);
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        if (currentVariant === "menuHamburgerIcon") {
+            setIsMenuOpen(!isMenuOpen);
+        }
     };
 
     return (
@@ -28,8 +30,7 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                     <Logo size="extra-small" />
                 </a>
 
-                {/* Mostrar icono de menú en móvil y enlaces en desktop */}
-                <div className="hidden md:flex space-x-4 items-center">
+                <div className="flex space-x-4 items-center">
                     <div className="p-2">
                         <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
                         <Link href="/about" variant={variant} size="small">Veterinarias</Link>
@@ -37,11 +38,29 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                     </div>
 
                     {isAuthenticated ? (
+<<<<<<< HEAD
                         <>
                             <a href="/PetOwnerProfile">
+=======
+                        currentVariant === "menuHamburgerIcon" ? (
+                            <div className="relative">
+                                <button onClick={toggleMenu}>
+                                    <MenuHamburgerIcon size="small" />
+                                </button>
+                                <DropdownMenu 
+                                    isMenuOpen={isMenuOpen} 
+                                    size={"medium"}
+                                >
+                                    <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
+                                    <Link href="/logout" variant={variant} className="dropdown-link">Cerrar Sesión</Link>
+                                </DropdownMenu>
+                            </div>
+                        ) : (
+                            <a href="/user-profile-fake-link">
+>>>>>>> 3bf95354274f278c14c696d06848e66558282826
                                 <ProfileImage imageSrc={userImage} size="small" />
                             </a>
-                        </>
+                        )
                     ) : (
                         <>
                             <a href="/Login">
@@ -53,6 +72,7 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                         </>
                     )}
                 </div>
+<<<<<<< HEAD
 
                 {/* Icono de menú hamburguesa en móvil */}
                 <div className="md:hidden">
@@ -84,6 +104,8 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                         </div>
                     )}
                 </div>
+=======
+>>>>>>> 3bf95354274f278c14c696d06848e66558282826
             </nav>
         </div>
     );
