@@ -5,22 +5,24 @@ import Welcome from "../../organisms/WelcomeContainer";
 import CardsContainer from "../../organisms/cardsContainer";
 import Card from "../../molecules/Card";
 import Button from "../../atoms/Button";
+import ServicesContainer from "../../organisms/ServicesContainer";
 
 export default function HomePage() {
     return ( 
         <div className="w-full bg-white">
-            <Nav></Nav>
+            <Nav variant="solid-green"></Nav>
             <Welcome></Welcome>
             <div className="flex justify-center items-center pt-16">
-                <p className="text-3xl md:text-5xl ml-14 font-medium text-petrack-green text-center">Mis Mascotas</p>
+                <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Mis Mascotas</p>
             </div>
             <div className="mx-12 sm:mx-24 md:mx-44 my-20">
                 <CardsContainer>
-                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord" ></Card>
-                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord" ></Card>
-                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord" ></Card>
+                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord"></Card>
+                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord"></Card>
+                    <Card typeCard="pet" imgSrc={Pet} imgAlt="MedicalRecord"></Card>
                 </CardsContainer>
             </div>
+            <ServicesContainer></ServicesContainer>
             <div className="grid gap-5 md:gap-10 pt-24">
                 <h2 className="text-3xl md:text-8xl font-bold text-petrack-green text-center">Cambia una vida</h2>
                 <p className="text-xl md:text-4xl font-semibold text-center">Adopta una mascota</p>

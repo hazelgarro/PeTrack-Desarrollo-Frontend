@@ -184,7 +184,7 @@ export default function SignUp() {
                     </Button>
                     <h3 className="text-center pt-5">
                         Don't have an account?{" "}
-                        <a className="font-bold text-petrack-green" href="/">
+                        <a className="font-bold text-petrack-green" href="/Login">
                             Sign In
                         </a>
                     </h3>
