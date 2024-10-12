@@ -119,14 +119,13 @@ export default function PetRegister() {
 
                 const newPetData = {
                     ...petData,
-                    ownerId: userData.id,
-                    ownerType: userData.userTypeId,
+                    ownerId: userData.Id,
+                    ownerType: userData.UserTypeId,
                     petPicture: petPicture,
                     imagePublicId: imagePublicId,
                 };
 
                 try {
-                    alert(JSON.stringify(newPetData, null, 2));
                     const apiUrl = "https://www.APIPetrack.somee.com/Pet/RegisterPet";
                     const registerResult = await getData(apiUrl, newPetData, true, "POST");
 

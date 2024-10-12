@@ -53,11 +53,9 @@ export default function PetProfile() {
     useEffect(() => {
         if (!id) {
             console.error('No se encontró el ID de la mascota');
-            navigate("/");  // Redirige si no hay un ID
+            navigate("/");
         } else {
             fetchPet();
-            console.log(petData);
-            console.log(userData);
         }
     }, [id]);
 
@@ -169,7 +167,7 @@ export default function PetProfile() {
                     </div>
                     <ProfileInfoContainer>
                         <IconText text={petData.breed}>
-                            <PetIcon petType={petData.breed ? petData.breed.toLowerCase() : ""} size="medium" />
+                            <PetIcon petType={petData.species ? petData.species.toLowerCase() : ""} size="medium" />
                         </IconText>
                         <IconText text={petData.gender}>
                             <GenderIcon gender={petData.gender} size="large" />
