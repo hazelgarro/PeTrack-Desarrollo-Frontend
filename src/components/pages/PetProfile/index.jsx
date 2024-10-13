@@ -22,7 +22,6 @@ import GenderIcon from "../../atoms/Icons/Gender";
 import WeightIcon from "../../atoms/Icons/Weight";
 import PetIcon from "../../atoms/Icons/Pet";
 import AgeIcon from "../../atoms/Icons/Age";
-import QRCode from "react-qr-code";
 import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { getData } from "../../../utils/apiConnector.js";
@@ -131,7 +130,7 @@ export default function PetProfile() {
 
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petPicture={petData.petPicture}><QRCode value={window.location.href} ></QRCode></PetPhotoQr>
+                    <PetPhotoQr petPicture={petData.petPicture} petName={petData.name}></PetPhotoQr>
 
 
                     {isAuthenticated && userData.Id === petData.ownerId ? (
