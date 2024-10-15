@@ -1,12 +1,13 @@
 import Proptypes from "prop-types";
-
 import Image from "../../atoms/Image";
-import Gender from "../../atoms/Icons/Gender"
+import Gender from "../../atoms/Icons/Gender";
 import Location from "../../atoms/Icons/Location";
+
+import { getFormattedDate } from "../../../utils/dateFormater";
 
 //hover:scale-100 hover:shadow-xl transition-transform duration-300
 
-export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="pet photo" }) {
+export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="pet photo", name, species, breed, gender, location, dateOfBirth}) {
     return (
         <a href={link} className="block transform">
             <div className="relative rounded overflow-hidden">
@@ -22,15 +23,15 @@ export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="
                 ) : null}
             </div>
 
-            {typeCard != "service" ? (
+            {typeCard !== "service" ? (
                 <>
                     <div className="p-4">
                         <div className="flex justify-between">
                             <div>
-                                <h2 className="text-xl font-bold">Clifford</h2>
-                                <p>Dog breed</p>
+                                <h2 className="text-xl font-bold">{name}</h2>
+                                <p>{species} | {breed}</p>
                             </div>
-                            <Gender color="secondary" size="large"></Gender>
+                            <Gender gender={gender} color="secondary" size="large"></Gender>
                         </div>
 
                         {typeCard === "adoption_pet" ? (
@@ -38,9 +39,9 @@ export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="
                                 <div className="flex justify-between">
                                     <div className="flex">
                                         <Location variant="solid" color="tertiary"></Location>
-                                        <p className="ml-2 text-gray-600">Esparza, Puntarenas</p>
+                                        <p className="ml-2 text-gray-600">{location || "ND"}</p>
                                     </div>
-                                    <p className="text-gray-600">3 years</p>
+                                    <p className="text-gray-600">{getFormattedDate(dateOfBirth)}</p>
                                 </div>
                             </>
                         ) : null}
@@ -49,11 +50,19 @@ export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="
                 </>
             ) : null}
         </a>
-    )
+    );
 }
 
-
-Card.proptotypes = {
+Card.propTypes = {
     typeCard: Proptypes.oneOf(["service", "pet", "adoption_pet"]),
+    link: Proptypes.string, 
+    title: Proptypes.string,
     imgSrc: Proptypes.string.isRequired,
+    imgAlt: Proptypes.string,
+    name: Proptypes.string,
+    species: Proptypes.string,
+    breed: Proptypes.string,
+    gender: Proptypes.string,
+    location: Proptypes.string,
+    dateOfBirth: Proptypes.string,
 };

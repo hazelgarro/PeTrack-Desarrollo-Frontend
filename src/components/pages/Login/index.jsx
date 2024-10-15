@@ -43,9 +43,9 @@ export default function Login() {
             if (apiResponse.result) {
                 let message;
                 if (apiResponse.userTypeId === "O") {
-                    message = "Bienvenid@ " + apiResponse.data.details.CompleteName;
+                    message = "Bienvenid@ " + apiResponse.data.details.completeName;
                 } else {
-                    message = "Bienvenidos " + apiResponse.data.details.CompleteName;
+                    message = "Bienvenidos " + apiResponse.data.details.completeName;
                 }
                 updateSessionState();
                 alert(JSON.stringify(message));

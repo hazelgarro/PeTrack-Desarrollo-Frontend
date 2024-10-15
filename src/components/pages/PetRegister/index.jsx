@@ -119,8 +119,8 @@ export default function PetRegister() {
 
                 const newPetData = {
                     ...petData,
-                    ownerId: userData.Id,
-                    ownerType: userData.UserTypeId,
+                    ownerId: userData.id,
+                    ownerType: userData.userTypeId,
                     petPicture: petPicture,
                     imagePublicId: imagePublicId,
                 };
