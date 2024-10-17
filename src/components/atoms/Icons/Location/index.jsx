@@ -26,7 +26,7 @@ export default function Location({ variant = "outline", size = "medium", color =
 }
 
 Location.propTypes = {
-	size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+	size: PropTypes.oneOf(["extra-small", "small", "medium", "large", "extra-large"]),
 	color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
 	thickness: PropTypes.string, // Ancho del trazo del ícono
 	variant: PropTypes.oneOf(["outline", "solid"]),

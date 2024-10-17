@@ -80,7 +80,7 @@ export default function PagePetOwner() {
                     <div className="flex flex-col justify-center text-center md:text-left">
                         <h1 className="text-petrack-green text-4xl md:text-6xl font-bold mb-2 font-outfit">{ownerData.completeName}</h1>
                         <div className="flex justify-center md:justify-start gap-2">
-                            <IconLocation size="large" color="tertiary" variant="fill"></IconLocation>
+                            <IconLocation size="large" color="tertiary" variant="solid"></IconLocation>
                             <h2 className="text-petrack-black text-2xl md:text-3xl font-bold">{ownerData.location || 'Not available'}</h2>
                         </div>
                     </div>
@@ -117,7 +117,7 @@ export default function PagePetOwner() {
                     <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {ownerData.pets && ownerData.pets.length > 0 ? (
                             ownerData.pets.map((pet) => (
-                                <Card imgSrc={pet.petPicture || petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
+                                <Card link={`/PetProfile/${pet.id}`} imgSrc={pet.petPicture || petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
                             ))
                         ) : (
                             <p>No pets found.</p>

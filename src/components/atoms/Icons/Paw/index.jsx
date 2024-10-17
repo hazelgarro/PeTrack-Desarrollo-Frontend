@@ -24,7 +24,7 @@ export default function Paw({ variant = "outline", size = "medium", color = "pri
 }
 
 Paw.propTypes = {
-	size: PropTypes.oneOf(["extra-small", "small", "medium", "large"]),
+	size: PropTypes.oneOf(["extra-small", "small", "medium", "large", "extra-large"]),
 	color: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
 	thickness: PropTypes.string, // Ancho del trazo del ícono
 	variant: PropTypes.oneOf(["outline", "solid"]),

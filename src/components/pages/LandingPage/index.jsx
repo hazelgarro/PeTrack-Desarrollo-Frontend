@@ -19,7 +19,7 @@ export default function LandingPage() {
             <WelcomeContainer></WelcomeContainer>
             <div className=" items-center mx-6 md:mx-24 lg:mx-72 my-10 md:my-20 flex flex-col gap-6 md:gap-8">
                 <div className="flex justify-center my-4 md:my-12 w-56 sm:w-56 lg:w-96">
-                    <Logo />
+                    <Logo size="extra-large"/>
                 </div>
 
 
