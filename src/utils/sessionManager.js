@@ -31,10 +31,10 @@ export async function loginUser(email, password) {
 
         return responseData;
     } catch (error) {
-        console.log(error.message || "An error occurred while creating the account.");
+        console.log(error.message || "An error occurred while trying to log in.");
         return {
             result: false,
-            message: error.message || "An error occurred while creating the account."
+            message: error.message || "An error occurred while trying to log in."
         };
     }
 }

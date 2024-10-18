@@ -14,22 +14,10 @@ import { uploadImage } from '../../../utils/imageManager.js'
 import { getData } from "../../../utils/apiConnector.js";
 
 export default function PetRegister() {
-    const { userData, isAuthenticated, updateSessionState } = useSession();
-
-    const navigate = useNavigate(); // Llama a useNavigate
-
-    useEffect(() => {
-        if (!isAuthenticated) {
-            alert("The session was closed or the user is not logged in");
-            navigate("/Login");
-        }
-    }, [isAuthenticated, userData]);//Se ejecuta en cada actualización de isAuthenticated
-
-
+    const { userData, isAuthenticated, updateSessionState } = useSession();//estados globales de la sesión
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-
     let isSkipping = false;
 
     const speciesOptions = [
@@ -59,6 +47,15 @@ export default function PetRegister() {
 
     const [petPictureTemp, setPetPictureTemp] = useState("");
 
+    const navigate = useNavigate(); // Llama a useNavigate
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            alert("The session was closed or the user is not logged in");
+            navigate("/Login");
+        }
+    }, [isAuthenticated, userData]);//Se ejecuta en cada actualización de isAuthenticated
+
     const handleInputChange = ({ name, value }) => {
         if ((name != "petPictureTemp")) {
             setPetData((prevData) => {
@@ -76,6 +73,24 @@ export default function PetRegister() {
     const handleFirstSubmit = (e) => {
         e.preventDefault();
         setIsFormSubmitted(true);
+    };
+
+    const handleSkip = (e) => {
+        e.preventDefault();
+        const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
+
+        if (userResponse) {
+            isSkipping = true;
+            setPetData((prevData) => ({
+                ...prevData,
+                location: "",
+                weight: "",
+                healthIssues: "",
+            }));
+            setPetPictureTemp("");
+
+            handleFinalSubmit(e);
+        }
     };
 
     const handleFinalSubmit = async (e) => {
@@ -105,17 +120,17 @@ export default function PetRegister() {
                         imageUploadResult = await uploadImage(petPictureTemp);
                     }
                 } catch (error) {
+                    setIsLoading(false);
                     console.error("Error uploading pet picture:", error);
                     setErrorMessage("There was an issue uploading the image. Please try again.");
                     setTimeout(() => {
                         setErrorMessage(null);
                     }, 5000);
-
                     throw new Error("There was an issue uploading the image. Please try again.");
                 }
 
-                const petPicture = imageUploadResult ? imageUploadResult.imageUrl : petData.petPicture;
-                const imagePublicId = imageUploadResult ? imageUploadResult.publicId : petData.imagePublicId;
+                const petPicture = imageUploadResult ? imageUploadResult.imageUrl : "";
+                const imagePublicId = imageUploadResult ? imageUploadResult.publicId : "";
 
                 const newPetData = {
                     ...petData,
@@ -128,42 +143,27 @@ export default function PetRegister() {
                 try {
                     const apiUrl = "https://www.APIPetrack.somee.com/Pet/RegisterPet";
                     const registerResult = await getData(apiUrl, newPetData, true, "POST");
-
+                    setIsLoading(false);
                     alert(registerResult.message);
 
-                    if(registerResult.result){
+                    if (registerResult.result) {
                         navigate(`/PetProfile/${registerResult.data.petId}`);
-                    }else{
-                        window.location.reload();
+                    } else {
+                        setIsFormSubmitted(false);
                     }
                 } catch (error) {
+                    setIsLoading(false);
                     alert("Error during pet registration:", error);
                     setIsFormSubmitted(false);
                 }
-
             } catch (error) {
+                setIsLoading(false);
                 console.error("Error during pet registration:", error);
+                alert("Error during pet registration:");
             } finally {
                 setIsLoading(false);
+                isSkipping = false;
             }
-        }
-    };
-
-    const handleSkip = (e) => {
-        e.preventDefault();
-        const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
-
-        if (userResponse) {
-            isSkipping = true;
-            setPetData((prevData) => ({
-                ...prevData,
-                location: "",
-                weight: "",
-                healthIssues: "",
-            }));
-            setPetPictureTemp("");
-
-            handleFinalSubmit(e);
         }
     };
 
@@ -260,7 +260,6 @@ export default function PetRegister() {
                     </div>
                 </Form>
             </CSSTransition>
-
         </AccountForm>
     );
 }

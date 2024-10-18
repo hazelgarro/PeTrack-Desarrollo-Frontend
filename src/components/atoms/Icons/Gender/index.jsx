@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import "../styles.css";
 
-export default function Gender({ gender, size = 'large', color ='primary', ...props }) {
+export default function Gender({ gender="", size = 'large', color ='primary', ...props }) {
   return (
     gender.toLowerCase() === 'female' ? (
       <svg className={`svg-icon svg-icon--${size} svg-icon--${color}`} xmlns="http://www.w3.org/2000/svg" width={24} height={24} viewBox="0 0 24 24" {...props}>

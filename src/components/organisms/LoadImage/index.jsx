@@ -8,6 +8,7 @@ export default function LoadImage({ name, image, defaultImage, imageType, onChan
     const fileInputRef = useRef(null);
 
     const handleFileChange = (event) => {
+        event.preventDefault();
         const file = event.target.files[0];
 
         if (!file) {
@@ -60,6 +61,8 @@ export default function LoadImage({ name, image, defaultImage, imageType, onChan
 }
 
 LoadImage.propTypes = {
+    name: PropTypes.string.isRequired,
+    defaultImage: PropTypes.string,
     image: PropTypes.string.isRequired,
     imageType: PropTypes.oneOf(["rounded", "rectangular"]).isRequired,
     onChange: PropTypes.func.isRequired, // Prop para manejar el cambio de imagen

@@ -5,46 +5,47 @@ import PasswordInput from "../../molecules/PasswordInput";
 import AccountForm from "../../templates/AccountForm";
 import Form from "../../organisms/Form";
 import Button from "../../atoms/Button";
-import RegisterImages from "../../organisms/RegisterImages";
 import { CSSTransition } from "react-transition-group";
 import './styles.css';
-import createAccount from "../../../utils/register.js";
 import { useNavigate } from 'react-router-dom';
 import Loader from "../../atoms/Loader/index.jsx";
 import LoadImage from "../../organisms/LoadImage/index.jsx";
+import { getData } from "../../../utils/apiConnector.js";
+import { loginUser } from "../../../utils/sessionManager.js";
+import { uploadImage } from '../../../utils/imageManager.js';
 
 export default function SignUp() {
+    const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
+    const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isSkipping, setIsSkipping] = useState(false);
+
     const options = [
         { value: "O", label: "Personal" },
         { value: "S", label: "Adoption/Shelter Service" },
     ];
-    const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
 
     const [accountData, setAccountData] = useState({
         name: "",
         email: "",
         password: "",
-        userTypeId: "S",
-        profilePicture: "name-picture.png",
+        userTypeId: "",
         phoneNumber: "",
         confirmPassword: "",
-        profileImageUrl: "",
-        bannerImageUrl: ""
+        address: "",
+        workingDays: "",
+        workingHours: "",
     });
 
-    const [tempImages, setTempImagenes] = useState({ tempProfile: "", tempBanner: "" });
-    const [error, setError] = useState("");
+    const [tempImages, setTempImagenes] = useState({ tempProfile: "", tempCover: "" });
 
     //cambia el placeholdel del name según el tipo de usuario
     const [namePlaceholder, setNamePlaceholder] = useState("Full name");
-    const [isFormSubmitted, setIsFormSubmitted] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const navigate = useNavigate();
 
-
     const handleInputChange = ({ name, value }) => {
-        if (name !== "tempProfile" && name !== "tempBanner") {
+        if (name !== "tempProfile" && name !== "tempCover") {
             setAccountData((prevData) => {
                 const newData = {
                     ...prevData,
@@ -58,15 +59,13 @@ export default function SignUp() {
                 }
 
                 // Cambia el placeholder si el tipo de usuario es "2" o "3"
-                if (name === "userTypeId" && (value === "2" || value === "3")) {
-                    setNamePlaceholder("Organization name");
-                } else if (name === "userTypeId") {
-                    setNamePlaceholder("Full name");
+                if (name === "userTypeId") {
+                    value === "O" ? setNamePlaceholder("Full name") : setNamePlaceholder("Organization name");
                 }
 
                 return newData;
             });
-        }else{
+        } else {
             setTempImagenes((prevData) => {
                 const newData = {
                     ...prevData,
@@ -76,10 +75,9 @@ export default function SignUp() {
                 return newData;
             });
         }
-
     };
 
-    const handleSubmit = (e) => {
+    const handleFirtsSubmit = (e) => {
         e.preventDefault();
 
         if (accountData.password !== accountData.confirmPassword) {
@@ -88,49 +86,120 @@ export default function SignUp() {
             return;
         }
 
-        //pasa de formulario al formulario de las imagenes
         setIsFormSubmitted(true);
     };
 
-    const handleRegisterImageSubmit = async () => {
-        setIsLoading(true); // Comienza la carga
+    const handleSkip = (e) => {
+        e.preventDefault();
+        const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
+
+        if (userResponse) {
+            setIsSkipping(true);
+            setTempImagenes({ tempProfile: "", tempCover: "" })
+            handleFinalSubmit(e);
+        }
+    };
+
+    const handleFinalSubmit = async (e) => {
+        e.preventDefault();
 
         let additionalData;
+        let profileUploadResult = null;
+        let coverUploadResult = null;
+        let body;
 
-        if (accountData.userTypeId === "1") {
-            additionalData = { CompleteName: accountData.name };
+        // Verifica si al menos un campo o la imagen han sido completados
+        if (!isSkipping) {
+            if (!tempImages.tempProfile && !tempImages.tempCover) {
+                setErrorMessage("Please select at least one picture.");
+                setTimeout(() => {
+                    setErrorMessage(null);
+                }, 5000);
+                return;
+            }
+        }
+
+        setIsLoading(true);
+
+        try {
+            if (tempImages.tempProfile) {
+                console.log("Uploading profile image...");
+                profileUploadResult = await uploadImage(tempImages.tempProfile);
+                console.log("Profile image uploaded:", profileUploadResult);
+            }
+        
+            if (tempImages.tempCover) {
+                console.log("Uploading cover image...");
+                coverUploadResult = await uploadImage(tempImages.tempCover);
+                console.log("Cover image uploaded:", coverUploadResult);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            alert("There was an issue uploading the image. Please try again.");
+            setErrorMessage("There was an issue uploading the image. Please try again.");
+            setTimeout(() => {
+                setErrorMessage(null);
+            }, 5000);
+            return;
+        }
+
+        if (accountData.userTypeId === "O") {
+            additionalData = { completeName: accountData.name };
         } else {
             additionalData = {
-                Name: accountData.name,
-                Address: "",
-                CoverPicture: accountData.bannerImageUrl,
-                WorkingDays: "",
-                WorkingHours: "",
+                name: accountData.name,
+                address: accountData.address,
+                coverPicture: coverUploadResult ? coverUploadResult.imageUrl : "",
+                imagePublicIdCover: coverUploadResult ? coverUploadResult.publicId : "",
+                workingDays: accountData.workingDays,
+                workingHours: accountData.workingHours,
             };
         }
 
-        try {
-            const apiUserData = await createAccount(
-                accountData.email,
-                accountData.password,
-                accountData.userTypeId,
-                accountData.profilePicture,
-                accountData.phoneNumber,
-                additionalData,
-            );
-            setIsLoading(false);
-            alert(JSON.stringify(apiUserData.message));
+        body = {
+            email: accountData.email,
+            password: accountData.password,
+            userTypeId: accountData.userTypeId,
+            profilePicture: profileUploadResult ? profileUploadResult.imageUrl : "",
+            imagePublicId: profileUploadResult ? profileUploadResult.publicId : "",
+            phoneNumber: accountData.phoneNumber,
+            additionalData: additionalData
+        }
 
-            if (apiUserData.result) {
-                navigate('/');
+        try {
+            const apiUrl = "https://www.APIPetrack.somee.com/User/CreateAccount";
+            const apiResponse = await getData(apiUrl, body, false, "POST");
+
+            setIsLoading(false);
+
+            if (apiResponse.result) {
+                const userResponse = confirm("The user has been created successfully.\nDo you want to log in with your new user?");
+                if (userResponse) {
+                    try {
+                        const loginResult = await loginUser(accountData.email, accountData.password);
+                        if (!loginResult.result) {
+                            alert(loginResult.message);
+                        }
+                    } catch (error) {
+                        console.log(error);
+                        alert("An error occurred while trying to log in.");
+                    }finally{
+                        navigate("/");
+                    }
+                } else {
+                    navigate("/");
+                }
             } else {
+                alert(apiResponse.message);
                 setIsFormSubmitted(false);
             }
         } catch (error) {
-            alert("Error al crear la cuenta: " + error.message);
-            console.error("Error:", error);
-        } finally {
             setIsLoading(false);
+            console.error("Error during registration:", error);
+            alert("Error during registration:");
+        }
+        finally {
+            setIsSkipping(false);
         }
     }
 
@@ -139,7 +208,7 @@ export default function SignUp() {
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
 
             <CSSTransition in={!isFormSubmitted} timeout={500} classNames="form-slide" unmountOnExit>
-                <Form title="Create account" subTitle="What type of account do you want to register?" onSubmit={handleSubmit}>
+                <Form title="Create account" subTitle="What type of account do you want to register?" onSubmit={handleFirtsSubmit}>
                     <SelectInput
                         size="medium"
                         placeholder="Tipo de Usuario"
@@ -201,12 +270,12 @@ export default function SignUp() {
                 </Form>
             </CSSTransition>
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
-                <Form title="Perfil" subTitle={`Select an image for your profile${accountData.userTypeId === "O" ? '' : ' and cover'}`} onSubmit={handleSubmit}>
+                <Form title="Perfil" subTitle={`Select an image for your profile${accountData.userTypeId === "O" ? '' : ' and cover'}`} onSubmit={handleFinalSubmit}>
                     <div className="relative w-full flex flex-col items-center px-4">
 
                         {accountData.userTypeId === "S" && (
                             <div className="absolute w-full -top-2 flex justify-center z-0">
-                                <LoadImage name="tempBanner" image={tempImages.tempBanner} imageType="rectangular" onChange={handleInputChange} />
+                                <LoadImage name="tempCover" image={tempImages.tempCover} imageType="rectangular" onChange={handleInputChange} />
                             </div>
                         )}
 
@@ -214,11 +283,11 @@ export default function SignUp() {
                             <LoadImage name="tempProfile" image={tempImages.tempProfile} imageType="rounded" onChange={handleInputChange} />
                         </div>
 
-                        {error && <p className="text-red-500">{error}</p>}
+                        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
                         <div className="flex flex-col w-full max-w-xs justify-end pt-8 gap-2">
                             <Button size="small" variant="solid-green" type="submit">Continue</Button>
-                            <Button onClick={handleRegisterImageSubmit} size="small">Skip</Button>
+                            <Button onClick={handleSkip} size="small">Skip</Button>
                         </div>
                     </div>
                 </Form>
