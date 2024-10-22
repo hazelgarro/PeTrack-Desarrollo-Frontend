@@ -8,6 +8,7 @@ import PetProfile from "./components/pages/PetProfile";
 import PetOwnerProfile from "./components/pages/PetOwnerProfile"
 import LandingPage from "./components/pages/LandingPage";
 import HomePage from './components/pages/HomePage';
+import ShelterProfile from './components/pages/ShelterProfile';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SessionContextProvider } from './context/SessionContext';
@@ -23,6 +24,7 @@ function App() {
           <Route path="/PetRegister" element={<PetRegister />} />
           <Route path="/PetProfile/:id" element={<PetProfile />} />
           <Route path="/PetOwnerProfile/:id?" element={<PetOwnerProfile />} />
+          <Route path="/ShelterProfile/:id?" element={<ShelterProfile />} />
           <Route path="/Homepage" element={<HomePage />} />
         </Routes>
       </Router >
