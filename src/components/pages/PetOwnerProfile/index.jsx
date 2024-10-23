@@ -42,7 +42,7 @@ export default function PagePetOwner() {
             fetchUserData();
         } else if (!isAuthenticated) {
             alert("The session was closed or the user is not logged in");
-            navigate("/Login");
+            navigate("/");
         } else if (userData) {
             setOwnerData(userData);
 

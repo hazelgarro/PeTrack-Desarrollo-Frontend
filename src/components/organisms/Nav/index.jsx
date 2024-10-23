@@ -13,10 +13,11 @@ import { logoutUser } from "../../../utils/sessionManager.js";
 import { useSession } from '../../../context/SessionContext';
 import { useNavigate } from "react-router-dom";
 
+
 export default function NavBar({ isAuthenticated, variant = "" }) {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentVariant, setCurrentVariant] = useState(variant);
-    const { updateSessionState } = useSession();
+    const { userData, updateSessionState } = useSession();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -70,17 +71,17 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                 </DropdownMenu>
                             </div>
                         ) : (
-                            <a href="/PetOwnerProfile">
-                                <ProfileImage imageSrc={userImage} size="small" />
+                            <a href={userData.userTypeId === "O" ? "/PetOwnerProfile" : "/ShelterProfile"}>
+                                <ProfileImage imageSrc={userData.profilePicture} size="small" />
                             </a>
                         )
                     ) : (
                         <>
                             <a href="/Login">
-                                <ButtonLogin variant={`border-${variant}`} size="extra-small">Login</ButtonLogin>
+                                <ButtonLogin variant={`border-green`} size="extra-small">Login</ButtonLogin>
                             </a>
                             <a href="/Signup">
-                                <ButtonSignUp variant={`solid-${variant}`} size="extra-small">Sign Up</ButtonSignUp>
+                                <ButtonSignUp variant={`solid-green`} size="extra-small">Sign Up</ButtonSignUp>
                             </a>
                         </>
                     )}
