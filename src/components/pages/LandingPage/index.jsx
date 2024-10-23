@@ -9,6 +9,7 @@ import ServicesContainer from "../../organisms/ServicesContainer";
 import Button from "../../atoms/Button";
 import Smartphone from "../../../assets/img/Smartphone.png";
 import { useSession } from "../../../context/SessionContext";
+import Footer from "../../organisms/Footer";
 
 export default function LandingPage() {
     const { isAuthenticated } = useSession();
@@ -68,6 +69,7 @@ export default function LandingPage() {
                     <img src={Smartphone} alt="" />
                 </div>
             </div>
+            <Footer></Footer>
         </div>
     );
 }
