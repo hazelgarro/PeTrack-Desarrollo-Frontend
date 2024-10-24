@@ -127,7 +127,7 @@ export default function SignUp() {
                 profileUploadResult = await uploadImage(tempImages.tempProfile);
                 console.log("Profile image uploaded:", profileUploadResult);
             }
-        
+
             if (tempImages.tempCover) {
                 console.log("Uploading cover image...");
                 coverUploadResult = await uploadImage(tempImages.tempCover);
@@ -183,7 +183,7 @@ export default function SignUp() {
                     } catch (error) {
                         console.log(error);
                         alert("An error occurred while trying to log in.");
-                    }finally{
+                    } finally {
                         navigate("/");
                     }
                 } else {
@@ -215,7 +215,7 @@ export default function SignUp() {
                         options={options}
                         name="userTypeId"
                         value={accountData.userTypeId}
-                        onChange={handleInputChange} // Usa la nueva función para manejar el cambio de tipo de usuario
+                        onChange={handleInputChange}
                     />
                     <TextInput
                         size="medium"
@@ -271,7 +271,7 @@ export default function SignUp() {
             </CSSTransition>
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
                 <Form title="Perfil" subTitle={`Select an image for your profile${accountData.userTypeId === "O" ? '' : ' and cover'}`} onSubmit={handleFinalSubmit}>
-                    <div className="relative w-full flex flex-col items-center px-4">
+                    <div className="relative w-full flex flex-col items-center">
 
                         {accountData.userTypeId === "S" && (
                             <div className="absolute w-full -top-2 flex justify-center z-0">
@@ -279,13 +279,44 @@ export default function SignUp() {
                             </div>
                         )}
 
-                        <div className={`relative z-10 mt-${accountData.userTypeId === "O" ? '' : '16'}`}>
+                        <div className={`relative mb-5 z-10 mt-${accountData.userTypeId === "O" ? '' : '16'}`}>
                             <LoadImage name="tempProfile" image={tempImages.tempProfile} imageType="rounded" onChange={handleInputChange} />
                         </div>
 
+                        {accountData.userTypeId === "S" && (
+                            <>
+                                <TextInput
+                                    size="medium"
+                                    placeholder="Phone number"
+                                    name="phoneNumber"
+                                    type="tel"
+                                    isRequired={false}
+                                    value={accountData.phoneNumber}
+                                    onChange={handleInputChange}
+                                />
+                                <TextInput
+                                    size="medium"
+                                    placeholder="Phone number"
+                                    name="phoneNumber"
+                                    type="tel"
+                                    isRequired={false}
+                                    value={accountData.phoneNumber}
+                                    onChange={handleInputChange}
+                                /><TextInput
+                                    size="medium"
+                                    placeholder="Phone number"
+                                    name="phoneNumber"
+                                    type="tel"
+                                    isRequired={false}
+                                    value={accountData.phoneNumber}
+                                    onChange={handleInputChange}
+                                />
+                            </>
+                        )}
+
                         {errorMessage && <p className="text-red-500">{errorMessage}</p>}
 
-                        <div className="flex flex-col w-full max-w-xs justify-end pt-8 gap-2">
+                        <div className="flex flex-col w-full max-w-xs justify-end pt-4 gap-2">
                             <Button size="small" variant="solid-green" type="submit">Continue</Button>
                             <Button onClick={handleSkip} size="small">Skip</Button>
                         </div>

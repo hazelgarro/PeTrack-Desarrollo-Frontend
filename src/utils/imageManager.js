@@ -10,7 +10,7 @@ const cloudinary = new Cloudinary({
     },
 });
 
-// Función que sube la imagen a Cloudinary
+// Función que sube o reemplaza una imagen en Cloudinary
 async function uploadToCloudinary(localImageUrl, publicId) {
     try {
         const response = await fetch(localImageUrl);
@@ -26,7 +26,10 @@ async function uploadToCloudinary(localImageUrl, publicId) {
         const data = new FormData();
         data.append('file', imageFile);
         data.append('upload_preset', presetName);
-        data.append('public_id', publicId);
+
+        // Si se proporciona un `publicId`, lo usamos; si no, generamos uno nuevo
+        const generatedPublicId = publicId || `picture_${uuidv4()}`;
+        data.append('public_id', generatedPublicId);
 
         const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
             method: 'POST',
@@ -46,15 +49,15 @@ async function uploadToCloudinary(localImageUrl, publicId) {
     }
 }
 
-// Función que consume uploadToCloudinary
-export async function uploadImage(localImageUrl) {
+// Función que consume uploadToCloudinary para subir o reemplazar una imagen
+export async function uploadImage(localImageUrl, publicId = null) {
     if (!localImageUrl) {
         throw new Error("No image was provided.");
     }
 
     try {
-        const generatedPublicId = `picture_${uuidv4()}`;
-        const uploadResult = await uploadToCloudinary(localImageUrl, generatedPublicId);
+        // Llama a uploadToCloudinary con o sin publicId
+        const uploadResult = await uploadToCloudinary(localImageUrl, publicId);
 
         // Verificamos que la respuesta tenga un public_id válido
         if (!uploadResult || !uploadResult.public_id) {
@@ -94,24 +97,5 @@ export async function deleteImage(publicId) {
     } catch (error) {
         console.error('Error attempting to delete the image:', error);
         return { result: false, message: error.message };
-    }
-}
-
-export async function replaceImage(imagePath, publicId) {
-    try {
-        if (!publicId) {
-            throw new Error('No public_id provided for replacing the image.');
-        }
-
-        const uploadResult = await uploadToCloudinary(imagePath, publicId, {
-            overwrite: true,
-            format: 'webp',
-        });
-
-        console.log('Image replaced successfully:', uploadResult);
-        return { result: true, message: 'Image replaced successfully' };
-    } catch (error) {
-        console.error('Error replacing the image:', error);
-        throw new Error(`Failed to replace image: ${error.message}`); // Mensaje de error más informativo
     }
 }

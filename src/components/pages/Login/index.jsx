@@ -12,6 +12,8 @@ import { useSession } from '../../../context/SessionContext';
 export default function Login() {
     const { userData, isAuthenticated, updateSessionState } = useSession();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
     const [accountData, setAdditionalData] = useState({
         email: "",
@@ -24,9 +26,6 @@ export default function Login() {
             [name]: value  // Actualiza solo el campo que cambió
         });
     };
-
-    const [isLoading, setIsLoading] = useState(false);
-    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -42,10 +41,10 @@ export default function Login() {
 
             if (apiResponse.result) {
                 let message;
-                if (apiResponse.userTypeId === "O") {
+                if (apiResponse.data.userTypeId === "O") {
                     message = "Bienvenid@ " + apiResponse.data.details.completeName;
                 } else {
-                    message = "Bienvenidos " + apiResponse.data.details.completeName;
+                    message = "Bienvenidos " + apiResponse.data.details.name;
                 }
                 updateSessionState();
                 alert(JSON.stringify(message));
