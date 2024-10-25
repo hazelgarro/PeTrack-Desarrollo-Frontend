@@ -5,7 +5,6 @@ import Button from "../../atoms/Button";
 import IconEdit from "../../atoms/Icons/Edit";
 import Form from "../../organisms/Form";
 import TextInput from "../../atoms/TextInput";
-import Loader from "../../atoms/Loader";
 import { getData } from "../../../utils/apiConnector.js";
 import { useSession } from '../../../context/SessionContext';
 
@@ -13,7 +12,6 @@ export default function EditUser({ accountData }) {
     const { isOpen, toggleModal } = useOpenClose();
     const {updateSessionState} = useSession();
 
-    const [errorMessage, setErrorMessage] = useState("");
     const [userData, setUserData] = useState(accountData);
     const [namePlaceholder, setNamePlaceholder] = useState("Full name");
 
@@ -133,8 +131,6 @@ export default function EditUser({ accountData }) {
                             />
                         </>
                     )}
-
-                    {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
 
                     <Button type="submit" size="small" variant="solid-green">
                         Save

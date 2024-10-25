@@ -89,6 +89,7 @@ export default function NavBar({ variant = "" }) {
                         <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
                         <Link href="/about" variant={variant} size="small">Veterinarias</Link>
                         <Link href="/contact" variant={variant} size="small">Adopción</Link>
+                        <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
                     </div>
 
                     {isAuthenticated ? (
