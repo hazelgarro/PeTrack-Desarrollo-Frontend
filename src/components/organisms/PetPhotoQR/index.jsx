@@ -1,25 +1,39 @@
-import PetImage from "../../atoms/Image"; // Renombrado a 'PetImage'
+import PetImage from "../../atoms/Image"; // Renamed to 'PetImage'
 import QrCodeIcon from "../../atoms/Icons/QrCode";
 import Button from "../../atoms/Button";
 import { useOpenClose } from "../../../hooks/useOpenClose.js";
 import Modal from "../../molecules/Modal";
-import { QRCode } from "react-qrcode-logo"; // Cambiado a 'react-qrcode-logo'
-import React, { useRef } from 'react';
+import { QRCode } from "react-qrcode-logo"; // Changed to 'react-qrcode-logo'
+import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import imgLogo from "../../../assets/img/isotipo.svg";
+import EditPicture from "../EditPicture";
+import { useSession } from "../../../context/SessionContext";
 
-export default function PetPhotoQR({ petPicture, petName = "Pet Name" }) {
+export default function PetPhotoQR({ petAccountData }) {
+    const { userData, updateSessionState } = useSession();
     const hookModalQr = useOpenClose();
     const svgRef = useRef(null);
 
-    const downloadQR = () => {
-        const svg = svgRef.current.querySelector('canvas'); // Ahora seleccionamos el canvas
-        const pngFile = svg.toDataURL('image/png'); // Obtenemos los datos del canvas directamente
+    const [petPicture, setPetPicture] = useState("");
 
-        // Crear el enlace de descarga
+    useEffect(() => {
+        updateSessionState();
+        updateImage(petAccountData.petPicture);
+    }, [petAccountData]);
+
+    const updateImage = (imgUrl) => {
+        setPetPicture(imgUrl);
+    }
+
+    const downloadQR = () => {
+        const canvas = svgRef.current.querySelector('canvas'); // Now selecting the canvas
+        const pngFile = canvas.toDataURL('image/png'); // Get the data directly from the canvas
+
+        // Create the download link
         const downloadLink = document.createElement('a');
         downloadLink.href = pngFile;
-        downloadLink.download = `${petName}_QR.png`;
+        downloadLink.download = `${petAccountData.name}_QR.png`;
         document.body.appendChild(downloadLink);
         downloadLink.click();
         document.body.removeChild(downloadLink);
@@ -27,27 +41,34 @@ export default function PetPhotoQR({ petPicture, petName = "Pet Name" }) {
 
     return (
         <div className="relative rounded-3xl overflow-hidden w-full">
-            <PetImage imgSrc={petPicture} imgAlt={"Pet profile picture"} /> {/* Usar 'PetImage' */}
+            <PetImage imgSrc={petPicture} imgAlt={"Pet profile picture"} /> {/* Use 'PetImage' */}
+
             <div className="absolute top-2 right-2 p-3">
                 <Button onClick={hookModalQr.toggleModal} variant="solid-green" size="extra-small">
                     <div className="flex items-center">
-                        <QrCodeIcon className="mr-2" />QR Code for {petName}
+                        <QrCodeIcon className="mr-2" />QR Code for {petAccountData.name}
                     </div>
                 </Button>
             </div>
+            {userData.id === petAccountData.ownerId &&
+                <div className="absolute bottom-2 left-2 p-3">
+                    <EditPicture type="pet" imageSrc={petPicture} petData={petAccountData} updateImage={updateImage} />
+                </div>
+            }
+
             <div>
                 <Modal isOpen={hookModalQr.isOpen} toggleModal={hookModalQr.toggleModal}>
                     <div className="flex flex-col items-center gap-6 w-48 text-center">
-                        <h2 className="text-petrack-green text-xl font-outfit font-bold">QR Code for {petName}</h2>
+                        <h2 className="text-petrack-green text-xl font-outfit font-bold">QR Code for {petAccountData.name}</h2>
                         <div ref={svgRef}>
                             <QRCode
-                                value={window.location.href}
+                                value={window.location.href} // Make sure this is the desired URL
                                 size={200}
-                                logoImage={imgLogo} // Aquí se especifica la imagen del logotipo
-                                logoWidth={40} // Ajusta el tamaño del logotipo
+                                logoImage={imgLogo} // Specify logo image
+                                logoWidth={40} // Adjust logo size
                                 logoHeight={40}
-                                qrStyle="dots" // Puedes usar diferentes estilos: "dots" o "squares"
-                                eyeRadius={10} // Ajustar el radio de los "ojos" del QR
+                                qrStyle="dots" // Different styles: "dots" or "squares"
+                                eyeRadius={10} // Adjust eye radius of the QR
                             />
                         </div>
                         <Button onClick={downloadQR} variant="solid-green" size="extra-small">Download</Button>
@@ -59,6 +80,8 @@ export default function PetPhotoQR({ petPicture, petName = "Pet Name" }) {
 }
 
 PetPhotoQR.propTypes = {
-    petPicture: PropTypes.string,
-    petName: PropTypes.string,
+    petAccountData: PropTypes.shape({
+        petPicture: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+    }).isRequired, // PropType for petAccountData with required name
 };

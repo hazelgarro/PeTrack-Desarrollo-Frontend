@@ -12,42 +12,53 @@ export default function LoadImage({ name, image, defaultImage, imageType, onChan
         const file = event.target.files[0];
 
         if (!file) {
+            alert("No se seleccionó ningún archivo."); // User feedback for no file
             console.error("No se seleccionó ningún archivo.");
             return;
         }
 
         const reader = new FileReader();
-
         reader.onloadend = () => {
             onChange({ name, value: reader.result });
         };
 
-        reader.readAsDataURL(file); // Lee la imagen como URL
+        reader.readAsDataURL(file); // Read the image as a URL
     };
 
     const handleAddImageClick = () => {
         fileInputRef.current.click();
     };
 
+    // Function to render the image based on imageType
+    const renderImage = () => {
+        const ImageComponent = imageType === "rectangular" ? Banner : ProfileImage;
+        return (
+            <ImageComponent
+                imageSrc={image}
+                defaultImage={defaultImage}
+                onClick={handleAddImageClick}
+                {...(imageType === "rectangular" ? {} : { size: "extra-large" })} // Add size prop conditionally
+            />
+        );
+    };
+
+    const button = (
+        <Button
+            size="extra-small"
+            variant="solid-green"
+            variant2="content-fit"
+            onClick={handleAddImageClick}
+            aria-label="Upload Image"
+        >
+            +
+        </Button>
+    );
+    
     return (
         <div className="relative w-full flex flex-col items-center text-center">
-            {/* Mostrar la imagen actual en el formato adecuado */}
-            {imageType === "rectangular" ? (
-                <Banner imageSrc={image} defaultImage={defaultImage} onClick={handleAddImageClick}/>  // Muestra la imagen como banner
-            ) : (
-                <ProfileImage size="extra-large" imageSrc={image} defaultImage={defaultImage} onClick={handleAddImageClick}/>  // Muestra la imagen como perfil
-            )}
-
-            <div className={`absolute ${imageType === "rectangular" ? 'bottom-2 right-3' : 'bottom-3 right-14'}`}>
-                <Button
-                    size="extra-small"
-                    variant="solid-green"
-                    variant2="content-fit"
-                    onClick={handleAddImageClick}
-                >
-                    +
-                </Button>
-            </div>
+            {/* Render the appropriate image */}
+            {imageType !== "button" && renderImage()}
+    
             <input
                 name={name}
                 type="file"
@@ -56,6 +67,14 @@ export default function LoadImage({ name, image, defaultImage, imageType, onChan
                 className="hidden"
                 onChange={handleFileChange}
             />
+    
+            {imageType === "button" ? (
+                button // Just use button directly without additional curly braces
+            ) : (
+                <div className={`absolute ${imageType === "rectangular" ? 'bottom-2 right-3' : 'bottom-3 right-5'}`}>
+                    {button} {/* Use button directly here too */}
+                </div>
+            )}
         </div>
     );
 }
@@ -64,6 +83,11 @@ LoadImage.propTypes = {
     name: PropTypes.string.isRequired,
     defaultImage: PropTypes.string,
     image: PropTypes.string.isRequired,
-    imageType: PropTypes.oneOf(["rounded", "rectangular"]).isRequired,
-    onChange: PropTypes.func.isRequired, // Prop para manejar el cambio de imagen
+    imageType: PropTypes.oneOf(["rounded", "rectangular", "button"]).isRequired,
+    onChange: PropTypes.func.isRequired, // Prop for handling image change
+};
+
+// Default prop for optional properties
+LoadImage.defaultProps = {
+    defaultImage: '',
 };

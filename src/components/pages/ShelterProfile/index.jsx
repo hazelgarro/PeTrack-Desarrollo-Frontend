@@ -26,6 +26,7 @@ import Card from '../../molecules/Card/index.jsx';
 import EditUser from '../../organisms/EditUser/index.jsx';
 import EditPicture from '../../organisms/EditPicture/index.jsx';
 import Image from '../../atoms/Image/index.jsx';
+import Banner from '../../atoms/Banner/index.jsx';
 
 export default function ShelterProfile() {
     const { id } = useParams();
@@ -91,10 +92,8 @@ export default function ShelterProfile() {
             <NavBar variant="menuHamburgerIcon"></NavBar>
             <div className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-
-                    {/* <PetPhotoQr petPicture={shelterData.coverPicture} petName={shelterData.name} /> */}
-                    <Image imgSrc={shelterData.coverPicture}></Image>
-
+                    
+                    {id ? <Banner imageSrc={shelterData.coverPicture}></Banner> : <EditPicture type="cover" imageSrc={shelterData.coverPicture}></EditPicture>}
                 </section>
                 <section >
                     <div className="flex gap-6 justify-start my-4 items-center ">

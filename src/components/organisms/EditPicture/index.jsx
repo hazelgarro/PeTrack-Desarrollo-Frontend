@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
 import LoadImage from "../LoadImage";
 import { useEffect, useState } from "react";
-import { useSession } from '../../../context/SessionContext';
+import { useSession } from "../../../context/SessionContext";
 import { uploadImage } from "../../../utils/imageManager";
 import { getData } from "../../../utils/apiConnector";
 
-export default function EditPicture({ type = "profile", imageSrc, petData}) {
+export default function EditPicture({ type = "profile", imageSrc, petData, updateImage}) {
     const { userData, updateSessionState } = useSession();
     const [currentImage, setCurrentImage] = useState(imageSrc);
 
@@ -15,47 +15,43 @@ export default function EditPicture({ type = "profile", imageSrc, petData}) {
 
     const handleImageChange = async ({ value }) => {
         setCurrentImage(value);
-        let pictureUploadResult;
 
-        //Se maneja la subida y edición de imagenes ya sean de la mascota, portada o perfil
-        if (type !== "pet") {
-            if (type === "profile") {
-                pictureUploadResult = await uploadImage(value);
-            } else {
-                pictureUploadResult = await uploadImage(value);
+        try {
+            const pictureUploadResult = await uploadImage(value);
+            if (!pictureUploadResult || !pictureUploadResult.imageUrl || !pictureUploadResult.publicId) {
+                throw new Error("Error uploading image. Please try again.");
             }
-            console.log(pictureUploadResult);
 
-            if (pictureUploadResult.imageUrl && pictureUploadResult.publicId) {
-                let body = userData;
-
-                if (type === "profile") {
-                    body.profilePicture = pictureUploadResult.imageUrl;
-                    body.imagePublicId = pictureUploadResult.publicId;
-                } else {
-                    body.coverPicture = pictureUploadResult.imageUrl;
-                    body.imagePublicIdCover = pictureUploadResult.publicId;
-                }
-
-                try {
-                    const apiUrl = `https://www.APIPetrack.somee.com/User/EditUser/${userData.id}`;
-                    const apiResponse = await getData(apiUrl, body, true, "PUT");
-
-                    if (apiResponse.result) {
-                        updateSessionState();
-                        alert("Image changed successfully");
-                    } else {
-                        alert(apiResponse.message);
-                    }
-                } catch (error) {
-                    console.error("Error editing image:", error);
-                    alert("Error editing image");
-                }
+            let apiUrl, body;
+            if (type !== "pet") {
+                // User image update
+                apiUrl = `https://www.APIPetrack.somee.com/User/EditUser/${userData.id}`;
+                body = {
+                    ...userData,
+                    ...(type === "profile"
+                        ? { profilePicture: pictureUploadResult.imageUrl, imagePublicId: pictureUploadResult.publicId }
+                        : { coverPicture: pictureUploadResult.imageUrl, imagePublicIdCover: pictureUploadResult.publicId })
+                };
             } else {
-                alert("Error editing image");
+                // Pet image update
+                apiUrl = `https://www.APIPetrack.somee.com/Pet/EditPet/${petData.id}`;
+                body = {
+                    ...petData,
+                    petPicture: pictureUploadResult.imageUrl,
+                    imagePublicId: pictureUploadResult.publicId
+                };
             }
-        }else{
-            //aquí irá el código para manejar el edit de la imagen de la mascota
+
+            const apiResponse = await getData(apiUrl, body, true, "PUT");
+            if (!apiResponse.result) {
+                throw new Error(apiResponse.message || "Error updating image in database.");
+            }
+            updateImage(pictureUploadResult.imageUrl);
+            updateSessionState();
+            alert("Image changed successfully");
+        } catch (error) {
+            console.error("Error editing image:", error);
+            alert(error.message || "Error editing image");
         }
     };
 
@@ -63,7 +59,7 @@ export default function EditPicture({ type = "profile", imageSrc, petData}) {
         <LoadImage
             name="profile"
             image={currentImage}
-            imageType={type === "profile" ? "rounded" : "rectangular"}
+            imageType={type === "pet" ? "button" : type === "profile" ? "rounded" : "rectangular"}
             onChange={handleImageChange}
         />
     );
@@ -72,4 +68,5 @@ export default function EditPicture({ type = "profile", imageSrc, petData}) {
 EditPicture.propTypes = {
     type: PropTypes.oneOf(["profile", "cover", "pet"]),
     imageSrc: PropTypes.string.isRequired,
+    petData: PropTypes.object // Asegura que petData sea requerido solo si type === "pet"
 };

@@ -25,6 +25,7 @@ import { getFormattedDate } from "../../../utils/dateFormater.js";
 import Missed from "../../atoms/Icons/Missed/";
 import { useSession } from '../../../context/SessionContext';
 import EditPet from "../../organisms/EditPet/index.jsx";
+import Banner from "../../atoms/Banner/index.jsx";
 
 export default function PetProfile() {
     const { id } = useParams();
@@ -119,14 +120,13 @@ export default function PetProfile() {
         </>
     );
 
-    
-
     return (
         <div>
             <NavBar />
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petPicture={petData.petPicture} petName={petData.name} />
+                    <PetPhotoQr petAccountData={petData}/>
+                    
                     {isAuthenticated && userData.id === petData.ownerId ? (
                         <div className="lg:hidden">
                             <button className="absolute bottom-4 right-4" label="Drop menu" onClick={hookMenuBotones.toggleModal}>
