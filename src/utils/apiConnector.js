@@ -15,7 +15,7 @@ export async function getData(apiUrl, body, needToken, method) {
             }else{
                 return {
                     result: false,
-                    message: responseData.message || "The user is not logged in",
+                    message: "The user is not logged in",
                 };
             }
         }
@@ -25,9 +25,9 @@ export async function getData(apiUrl, body, needToken, method) {
             headers: headers
         };
 
-        if (method === "POST" || method === "PUT") {
+        if (body && (method === "POST" || method === "PUT")) {
             fetchParams.body = JSON.stringify(body); // Convierte el cuerpo a JSON
-        }
+        }        
 
         const response = await fetch(apiUrl, fetchParams);
 

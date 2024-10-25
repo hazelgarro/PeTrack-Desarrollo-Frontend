@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ButtonSignUp from "../../atoms/Button";
@@ -7,22 +6,26 @@ import ProfileImage from "../../atoms/ProfileImage";
 import Link from "../../atoms/Link";
 import Logo from "../../atoms/Logo";
 import userImage from "../../../assets/img/veterinary.webp";
+import { useOpenClose } from "../../../hooks/useOpenClose";
 import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger";
 import DropdownMenu from "../../molecules/DropDownMenu"; // Ensure the path is correct
 import { logoutUser } from "../../../utils/sessionManager.js";
 import { useSession } from '../../../context/SessionContext';
 import { useNavigate } from "react-router-dom";
+import { getData } from "../../../utils/apiConnector.js";
+import ChangePassword from "../ChangePassword/index.jsx";
 
 
-export default function NavBar({ isAuthenticated, variant = "" }) {
+export default function NavBar({ variant = "" }) {
+    const { isOpen, toggleModal } = useOpenClose();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentVariant, setCurrentVariant] = useState(variant);
-    const { userData, updateSessionState } = useSession();
+    const { userData, updateSessionState, isAuthenticated } = useSession();
     const navigate = useNavigate();
 
     useEffect(() => {
         setCurrentVariant(variant);
-    }, [variant]);
+    }, [variant, isAuthenticated]);
 
     const toggleMenu = () => {
         if (currentVariant === "menuHamburgerIcon") {
@@ -36,10 +39,40 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
         const isConfirmed = window.confirm("Are you sure you want to log out?");
 
         if (isConfirmed) {
-            logoutUser(); // Llama a la función que maneja el cierre de sesión
-            updateSessionState(); // Actualiza el estado de la sesión si es necesario
-            navigate("/"); // Redirige a la página principal
+            logoutUser();
+            updateSessionState();
+            navigate("/");
         }
+    }
+
+    const deleteAccount = async (e) => {
+        e.preventDefault();
+
+        const isConfirmed = window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.");
+
+        if (isConfirmed) {
+            try {
+                const apiUrl = `https://www.APIPetrack.somee.com/User/DeleteAccount/${userData.id}`;
+                const apiResponse = await getData(apiUrl, null, true, "DELETE");
+
+                if (apiResponse.result) {
+                    alert("The user has been successfully deleted");
+                    logoutUser();
+                    updateSessionState();
+                    navigate("/");
+                } else {
+                    alert(apiResponse.message);
+                }
+            } catch (error) {
+                console.log("Error deleting account", error);
+                alert("Error deleting account");
+            }
+        }
+    }
+
+    const onClickPasswordChange = () =>{
+        toggleMenu();
+        toggleModal();
     }
 
     return (
@@ -48,6 +81,8 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                 <a href="/Homepage">
                     <Logo size="extra-small" />
                 </a>
+
+                <ChangePassword userId={userData.id} isOpen={isOpen} toggleModal={toggleModal}></ChangePassword>
 
                 <div className="flex space-x-4 items-center">
                     <div className="p-2">
@@ -66,8 +101,10 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
                                     isMenuOpen={isMenuOpen}
                                     size={"size-extra-small"}
                                 >
-                                    <Link href="/settings" variant={variant} className="dropdown-link">Configuración</Link>
-                                    <Link onClick={logout} variant={variant} className="dropdown-link">Cerrar Sesión</Link>
+                                    <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
+                                    <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
+                                    <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
+                                    
                                 </DropdownMenu>
                             </div>
                         ) : (
@@ -92,6 +129,5 @@ export default function NavBar({ isAuthenticated, variant = "" }) {
 }
 
 NavBar.propTypes = {
-    isAuthenticated: PropTypes.bool.isRequired,
     variant: PropTypes.string,
 };

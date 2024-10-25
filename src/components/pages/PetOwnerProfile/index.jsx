@@ -74,22 +74,20 @@ export default function PagePetOwner() {
     return (
         <>
             {loading && <Loader />} {/* Muestra el loader mientras se carga */}
-            <NavBar isAuthenticated={isAuthenticated} variant={"menuHamburgerIcon"}></NavBar>
+            <NavBar variant={"menuHamburgerIcon"}></NavBar>
 
             <div className="relative mb-12 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <div className="flex flex-col md:flex-row gap-8 mb-10">
                     <div className="self-center">
                         {id ?<ProfileImage imageSrc={ownerData.profilePicture} defaultImage={imageUserDefault} size="extra-large"></ProfileImage>:
                         <EditPicture imageSrc={ownerData.profilePicture} type='profile'></EditPicture>}
-                        
-                        
                     </div>
                     <div className="flex flex-col justify-center text-center md:text-left">
                         <h1 className="text-petrack-green text-4xl md:text-6xl font-bold mb-2 font-outfit">{ownerData.completeName || "User name"}</h1>
 
-                        <div className="flex justify-center md:justify-start gap-2">
+                        {!id && <div className="flex justify-center md:justify-start gap-2">
                             <EditUser accountData={ownerData}></EditUser>
-                        </div>
+                        </div>}
                     </div>
                 </div>
 

@@ -126,7 +126,7 @@ export default function PetProfile() {
 
     return (
         <div>
-            <NavBar isAuthenticated={isAuthenticated}></NavBar>
+            <NavBar></NavBar>
 
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">

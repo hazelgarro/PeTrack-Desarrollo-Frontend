@@ -13,12 +13,16 @@ import LoadImage from "../../organisms/LoadImage/index.jsx";
 import { getData } from "../../../utils/apiConnector.js";
 import { loginUser } from "../../../utils/sessionManager.js";
 import { uploadImage } from '../../../utils/imageManager.js';
+import { useSession } from '../../../context/SessionContext';
 
 export default function SignUp() {
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
     const [isFormSubmitted, setIsFormSubmitted] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    const [isSkipping, setIsSkipping] = useState(false);
+
+    let isSkipping = false;
+
+    const { updateSessionState } = useSession();
 
     const options = [
         { value: "O", label: "Personal" },
@@ -84,6 +88,9 @@ export default function SignUp() {
             setErrorMessage("Passwords do not match");
             setIsFormSubmitted(false);
             return;
+        } else if (accountData.password.length < 8) {
+            setErrorMessage("The password must be a minimum of 8 characters.");
+            return;
         }
 
         setIsFormSubmitted(true);
@@ -91,11 +98,18 @@ export default function SignUp() {
 
     const handleSkip = (e) => {
         e.preventDefault();
-        const userResponse = confirm("Additional information will not be saved, are you sure you want to continue?");
+        const userResponse = confirm("Additional information will not be saved.\nAre you sure you want to continue?");
 
         if (userResponse) {
-            setIsSkipping(true);
-            setTempImagenes({ tempProfile: "", tempCover: "" })
+            isSkipping = true;
+            setAccountData((prevData) => ({
+                ...prevData,
+                address: "",
+                workingDays: "",
+                workingHours: "",
+            }));
+            setTempImagenes({ tempProfile: "", tempCover: "" });
+
             handleFinalSubmit(e);
         }
     };
@@ -110,8 +124,11 @@ export default function SignUp() {
 
         // Verifica si al menos un campo o la imagen han sido completados
         if (!isSkipping) {
-            if (!tempImages.tempProfile && !tempImages.tempCover) {
-                setErrorMessage("Please select at least one picture.");
+            if (!tempImages.tempProfile && !tempImages.tempCover && !accountData.address && !accountData.workingDays && !accountData.workingHours) {
+                const errorMessage = userTypeId === "0" ? "Please select an image" : "Please select an image or enter a data";
+
+                setErrorMessage(errorMessage);
+
                 setTimeout(() => {
                     setErrorMessage(null);
                 }, 5000);
@@ -180,10 +197,12 @@ export default function SignUp() {
                         if (!loginResult.result) {
                             alert(loginResult.message);
                         }
+                        updateSessionState();
                     } catch (error) {
                         console.log(error);
                         alert("An error occurred while trying to log in.");
                     } finally {
+
                         navigate("/");
                     }
                 } else {
@@ -199,7 +218,7 @@ export default function SignUp() {
             alert("Error during registration:");
         }
         finally {
-            setIsSkipping(false);
+            isSkipping = false;
         }
     }
 
@@ -270,7 +289,7 @@ export default function SignUp() {
                 </Form>
             </CSSTransition>
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
-                <Form title="Perfil" subTitle={`Select an image for your profile${accountData.userTypeId === "O" ? '' : ' and cover'}`} onSubmit={handleFinalSubmit}>
+                <Form title="Perfil" subTitle={`${accountData.userTypeId === "O" ? 'Add a profile picture' : 'Add extra information'}`} onSubmit={handleFinalSubmit}>
                     <div className="relative w-full flex flex-col items-center">
 
                         {accountData.userTypeId === "S" && (
@@ -283,41 +302,40 @@ export default function SignUp() {
                             <LoadImage name="tempProfile" image={tempImages.tempProfile} imageType="rounded" onChange={handleInputChange} />
                         </div>
 
+                        {/* información exclusiva del refugio */}
                         {accountData.userTypeId === "S" && (
                             <>
                                 <TextInput
                                     size="medium"
-                                    placeholder="Phone number"
-                                    name="phoneNumber"
-                                    type="tel"
-                                    isRequired={false}
-                                    value={accountData.phoneNumber}
+                                    placeholder="Address"
+                                    name="address"
+                                    value={accountData.address}
                                     onChange={handleInputChange}
+                                    isRequired={false}
                                 />
                                 <TextInput
                                     size="medium"
-                                    placeholder="Phone number"
-                                    name="phoneNumber"
-                                    type="tel"
-                                    isRequired={false}
-                                    value={accountData.phoneNumber}
+                                    placeholder="Working Days"
+                                    name="workingDays"
+                                    value={accountData.workingDays}
                                     onChange={handleInputChange}
-                                /><TextInput
+                                    isRequired={false}
+                                />
+                                <TextInput
                                     size="medium"
-                                    placeholder="Phone number"
-                                    name="phoneNumber"
-                                    type="tel"
-                                    isRequired={false}
-                                    value={accountData.phoneNumber}
+                                    placeholder="Working Hours"
+                                    name="workingHours"
+                                    value={accountData.workingHours}
                                     onChange={handleInputChange}
+                                    isRequired={false}
                                 />
                             </>
                         )}
 
-                        {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+                        {errorMessage && <p className="mb-4 text-red-500">{errorMessage}</p>}
 
                         <div className="flex flex-col w-full max-w-xs justify-end pt-4 gap-2">
-                            <Button size="small" variant="solid-green" type="submit">Continue</Button>
+                            <Button size="small" variant="solid-green" type="submit">Save</Button>
                             <Button onClick={handleSkip} size="small">Skip</Button>
                         </div>
                     </div>

@@ -20,10 +20,11 @@ export default function EditPicture({ type = "profile", imageSrc, petData}) {
         //Se maneja la subida y edición de imagenes ya sean de la mascota, portada o perfil
         if (type !== "pet") {
             if (type === "profile") {
-                pictureUploadResult = await uploadImage(value, userData.imagePublicId);
+                pictureUploadResult = await uploadImage(value);
             } else {
-                pictureUploadResult = await uploadImage(value, userData.imagePublicIdCover);
+                pictureUploadResult = await uploadImage(value);
             }
+            console.log(pictureUploadResult);
 
             if (pictureUploadResult.imageUrl && pictureUploadResult.publicId) {
                 let body = userData;

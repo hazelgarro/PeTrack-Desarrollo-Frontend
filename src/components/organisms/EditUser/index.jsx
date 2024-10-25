@@ -110,6 +110,7 @@ export default function EditUser({ accountData }) {
                                 placeholder="Address"
                                 name="address"
                                 value={userData.address}
+                                onChange={handleInputChange}
                                 isRequired={false}
                             />
                             <p className="px-5">Working Days</p>

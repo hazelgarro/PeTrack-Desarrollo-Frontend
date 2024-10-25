@@ -6,11 +6,11 @@ import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
-import {loginUser, getSessionToken} from "../../../utils/sessionManager";
+import {loginUser} from "../../../utils/sessionManager";
 import { useSession } from '../../../context/SessionContext';
 
 export default function Login() {
-    const { userData, isAuthenticated, updateSessionState } = useSession();
+    const { updateSessionState } = useSession();
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -53,7 +53,7 @@ export default function Login() {
                 setErrorMessage(apiResponse.message);
                 setTimeout(() => {
                     setErrorMessage(null);
-                }, 4000);
+                }, 7000);
             }
 
         } catch (error) {

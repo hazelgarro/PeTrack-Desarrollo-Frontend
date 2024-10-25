@@ -23,6 +23,9 @@ import { useSession } from '../../../context/SessionContext';
 import catImage from '../../../assets/img/Cat.png'
 import CardsContainer from '../../organisms/cardsContainer/index.jsx';
 import Card from '../../molecules/Card/index.jsx';
+import EditUser from '../../organisms/EditUser/index.jsx';
+import EditPicture from '../../organisms/EditPicture/index.jsx';
+import Image from '../../atoms/Image/index.jsx';
 
 export default function ShelterProfile() {
     const { id } = useParams();
@@ -85,14 +88,20 @@ export default function ShelterProfile() {
 
     return (
         <div>
-            <NavBar isAuthenticated={isAuthenticated} variant="menuHamburgerIcon"></NavBar>
+            <NavBar variant="menuHamburgerIcon"></NavBar>
             <div className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petPicture={shelterData.coverPicture} petName={shelterData.name}></PetPhotoQr>
+
+                    {/* <PetPhotoQr petPicture={shelterData.coverPicture} petName={shelterData.name} /> */}
+                    <Image imgSrc={shelterData.coverPicture}></Image>
+
                 </section>
-                <section>
-                    <div className="flex w-full justify-between my-4 items-center">
-                        <h2 className="justify-center text-petrack-black text-6xl font-bold text-petrack-green mt-6 mb-6">{shelterData.name}</h2>
+                <section >
+                    <div className="flex gap-6 justify-start my-4 items-center ">
+                        <h2 className="justify-center text-6xl font-bold text-petrack-green mt-6 mb-6">{shelterData.name}</h2>
+                        {!id && <div className="flex justify-center md:justify-start mt-4">
+                            <EditUser accountData={shelterData}></EditUser>
+                        </div>}
                     </div>
                     <div className='flex gap-12'>
                         <IconText text={shelterData.workingDays || "No Data"}>
@@ -135,6 +144,6 @@ export default function ShelterProfile() {
                     </CardsContainer>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
