@@ -41,7 +41,7 @@ export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="
                                         <Location variant="solid" color="tertiary"></Location>
                                         <p className="ml-2 text-gray-600">{location || "ND"}</p>
                                     </div>
-                                    <p className="text-gray-600">{getFormattedDate(dateOfBirth)}</p>
+                                    <p className="text-gray-600">{dateOfBirth ? getFormattedDate(dateOfBirth) : "ND"}</p>
                                 </div>
                             </>
                         ) : null}
