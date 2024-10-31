@@ -142,7 +142,7 @@ export default function PetProfile() {
                 </section>
                 <section>
                     <div className="flex w-full justify-between my-4 items-center">
-                        <h2 className="justify-center text-petrack-black text-4xl font-bold">{petData.name}</h2>
+                        <h2 className="justify-center text-petrack-green text-6xl font-bold">{petData.name}</h2>
                         {isAuthenticated && userData.id === petData.ownerId ? (
                             <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
                         ) : (
