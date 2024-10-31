@@ -28,6 +28,7 @@ import EditPicture from '../../organisms/EditPicture/index.jsx';
 import Image from '../../atoms/Image/index.jsx';
 import Banner from '../../atoms/Banner/index.jsx';
 
+
 export default function ShelterProfile() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -102,7 +103,7 @@ export default function ShelterProfile() {
                             <EditUser accountData={shelterData}></EditUser>
                         </div>}
                     </div>
-                    <div className='flex gap-12'>
+                    <ProfileInfoContainer>
                         <IconText text={shelterData.workingDays || "No Data"}>
                             <Clock size="medium" />
                         </IconText>
@@ -115,7 +116,7 @@ export default function ShelterProfile() {
                         <IconText text={shelterData.phoneNumber || "No Data"}>
                             <PhoneIcon />
                         </IconText>
-                    </div>
+                    </ProfileInfoContainer>
                 </section>
                 <div className='grid grid-cols-2 mt-24'>
                     <div className='bg-petrack-yellow rounded-3xl'>
