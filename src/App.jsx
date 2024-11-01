@@ -24,7 +24,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/AccountRecovery" element={<AccountRecovery />} />
-          <Route path="/ResetPassword/:hash?" element={<ResetPassword />} />
+          <Route path="/ResetPassword/:token?" element={<ResetPassword />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/PetRegister" element={<PetRegister />} />
           <Route path="/PetProfile/:id" element={<PetProfile />} />
