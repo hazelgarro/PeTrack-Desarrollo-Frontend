@@ -25,8 +25,8 @@ export default function SignUp() {
     const { updateSessionState } = useSession();
 
     const options = [
-        { value: "O", label: "Personal" },
-        { value: "S", label: "Adoption/Shelter Service" },
+        { value: "O", label: "Dueño de mascota" },
+        { value: "S", label: "Refugio" },
     ];
 
     const [accountData, setAccountData] = useState({
@@ -44,7 +44,7 @@ export default function SignUp() {
     const [tempImages, setTempImagenes] = useState({ tempProfile: "", tempCover: "" });
 
     //cambia el placeholdel del name según el tipo de usuario
-    const [namePlaceholder, setNamePlaceholder] = useState("Full name");
+    const [namePlaceholder, setNamePlaceholder] = useState("Nombre completo");
 
     const navigate = useNavigate();
 
@@ -59,12 +59,12 @@ export default function SignUp() {
                 if (newData.password === newData.confirmPassword) {
                     setErrorMessage("");
                 } else {
-                    setErrorMessage("Passwords do not match");
+                    setErrorMessage("Las contraseñas no coinciden");
                 }
 
                 // Cambia el placeholder si el tipo de usuario es "2" o "3"
                 if (name === "userTypeId") {
-                    value === "O" ? setNamePlaceholder("Full name") : setNamePlaceholder("Organization name");
+                    value === "O" ? setNamePlaceholder("Nombre completo") : setNamePlaceholder("Nombre de la organización");
                 }
 
                 return newData;
@@ -227,7 +227,7 @@ export default function SignUp() {
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
 
             <CSSTransition in={!isFormSubmitted} timeout={500} classNames="form-slide" unmountOnExit>
-                <Form title="Create account" subTitle="What type of account do you want to register?" onSubmit={handleFirtsSubmit}>
+                <Form title="Crear cuenta" subTitle="Ingresa tus datosj" onSubmit={handleFirtsSubmit}>
                     <SelectInput
                         size="medium"
                         placeholder="Tipo de Usuario"
@@ -245,7 +245,7 @@ export default function SignUp() {
                     />
                     <TextInput
                         size="medium"
-                        placeholder="Email"
+                        placeholder="Correo electrónico"
                         name="email"
                         type="email"
                         value={accountData.email}
@@ -253,7 +253,7 @@ export default function SignUp() {
                     />
                     <TextInput
                         size="medium"
-                        placeholder="Phone number"
+                        placeholder="Numero de teléfono"
                         name="phoneNumber"
                         type="tel"
                         isRequired={false}
@@ -262,14 +262,14 @@ export default function SignUp() {
                     />
                     <PasswordInput
                         size="medium"
-                        placeholder="Password"
+                        placeholder="Contraseña"
                         name="password"
                         value={accountData.password}
                         onChange={handleInputChange}
                     />
                     <PasswordInput
                         size="medium"
-                        placeholder="Confirm password"
+                        placeholder="Confirma tu contraseña"
                         name="confirmPassword"
                         value={accountData.confirmPassword}
                         onChange={handleInputChange}
@@ -278,12 +278,12 @@ export default function SignUp() {
                     {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
 
                     <Button type="submit" size="small" variant="solid-green">
-                        Sign Up
+                        Registrarse
                     </Button>
                     <h3 className="text-center pt-5">
-                        Don't have an account?{" "}
+                        ¿Ya posee un cuenta?{" "}
                         <a className="font-bold text-petrack-green" href="/Login">
-                            Sign In
+                            Iniciar sesión
                         </a>
                     </h3>
                 </Form>

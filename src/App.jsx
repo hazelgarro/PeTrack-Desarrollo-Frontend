@@ -2,6 +2,7 @@ import './App.css';
 import './index.css';
 
 import Login from "./components/pages/Login";
+import ResetPassword from "./components/pages/ResetPassword";
 import SignUp from "./components/pages/SignUp";
 import PetRegister from "./components/pages/PetRegister";
 import PetProfile from "./components/pages/PetProfile";
@@ -13,6 +14,7 @@ import ShelterListPage from './components/pages/SheltersListPage';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SessionContextProvider } from './context/SessionContext';
+import AccountRecovery from './components/pages/AccountRecovery';
 
 function App() {
   return (
@@ -21,6 +23,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/Login" element={<Login />} />
+          <Route path="/AccountRecovery" element={<AccountRecovery />} />
+          <Route path="/ResetPassword/:hash?" element={<ResetPassword />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/PetRegister" element={<PetRegister />} />
           <Route path="/PetProfile/:id" element={<PetProfile />} />

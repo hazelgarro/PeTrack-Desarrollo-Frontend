@@ -1,0 +1,57 @@
+.paper-plane-container {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    top: -4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    overflow: visible;
+}
+
+.paper-plane {
+    width: 40px;
+}
+
+.shake {
+    animation: shake 0.3s infinite;
+}
+
+.fly {
+    animation: fly 2s ease forwards;
+}
+
+@keyframes shake {
+    0% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+    25% {
+        transform: translate(2px, -2px) rotate(2deg);
+    }
+    50% {
+        transform: translate(-2px, 2px) rotate(-2deg);
+    }
+    75% {
+        transform: translate(2px, -2px) rotate(2deg);
+    }
+    100% {
+        transform: translate(0, 0) rotate(0deg);
+    }
+}
+
+@keyframes fly {
+    0% {
+        transform: translateY(0);
+    }
+    10% {
+        transform: translate(-10px, 10px);
+    }
+    40% {
+        transform: translate(-15px, 15px);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(100vw, -100vh);
+        opacity: 0;
+    }
+}

@@ -67,10 +67,10 @@ export default function Login() {
     return (
         <AccountForm>
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
-            <Form title="Welcome back!" subTitle="Please enter your details" onSubmit={handleSubmit}>
+            <Form title="¡Bienvenido de nuevo!" subTitle="Por favor ingresa tus credenciales" onSubmit={handleSubmit}>
                 <TextInput
                     size="medium"
-                    placeholder="Email"
+                    placeholder="Correo electrónico"
                     name="email"
                     type="email"
                     value={accountData.email}
@@ -78,16 +78,16 @@ export default function Login() {
                 />
                 <PasswordInput
                     size="medium"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     name="password"
                     value={accountData.password}
                     onChange={handleInputChange}
                 />
                 {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
 
-                <h2 className="text-right text-sm text-gray-500 mb-2">Forgot your password?</h2>
-                <Button type="submit" size="small" variant="solid-green">Log In</Button>
-                <h3 className="text-center pt-5">Don't have an account? <a className="font-bold text-petrack-green" href="/SignUp">Sign Up</a></h3>
+                <a href="/AccountRecovery" className="text-right text-sm text-gray-500 mb-2">¿Olvidaste tu contraseña?</a>
+                <Button type="submit" size="small" variant="solid-green">Ingresar</Button>
+                <h3 className="text-center pt-5">¿No tienes una cuenta? <a className="font-bold text-petrack-green" href="/SignUp">Crear cuenta</a></h3>
             </Form>
         </AccountForm>
     );

@@ -49,7 +49,7 @@ export default function PagePetOwner() {
             setOwnerData(userData);
 
             const fetchPetData = async () => {
-                const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner/${userData.id}`, null, true, "GET");
+                const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner`, null, true, "GET");
                 if (respond.result) {
                     setOwnerData(prevState => ({
                         ...prevState,       // Mantiene los campos existentes (name, age, address, etc.)

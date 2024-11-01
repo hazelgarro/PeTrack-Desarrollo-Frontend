@@ -1,14 +1,7 @@
 import { useParams } from 'react-router-dom';
 import IconText from "../../molecules/IconText";
-import MenuIcon from "../../atoms/Icons/Menu";
 import LocationIcon from "../../atoms/Icons/Location/index.jsx";
-import DeleteIcon from "../../atoms/Icons/Delete";
-import TransferIcon from "../../atoms/Icons/Transfer";
-import HistoryIcon from "../../atoms/Icons/History";
-import EditIcon from "../../atoms/Icons/Edit";
 import ProfileInfoContainer from "../../organisms/ProfileInfoContainer";
-import Modal from "../../molecules/Modal";
-import { useOpenClose } from "../../../hooks/useOpenClose.js";
 import ButtonAdopt from "../../atoms/Button";
 import petPicture from '../../../assets/img/pet_picture.webp';
 import NavBar from "../../organisms/Nav";
@@ -18,14 +11,12 @@ import { getData } from "../../../utils/apiConnector.js";
 import EmailIcon from "../../atoms/Icons/Email/index.jsx";
 import PhoneIcon from "../../atoms/Icons/Phone/index.jsx";
 import Clock from "../../atoms/Icons/Clock";
-import PetPhotoQr from "../../organisms/PetPhotoQR";
 import { useSession } from '../../../context/SessionContext';
 import catImage from '../../../assets/img/Cat.png'
 import CardsContainer from '../../organisms/cardsContainer/index.jsx';
 import Card from '../../molecules/Card/index.jsx';
 import EditUser from '../../organisms/EditUser/index.jsx';
 import EditPicture from '../../organisms/EditPicture/index.jsx';
-import Image from '../../atoms/Image/index.jsx';
 import Banner from '../../atoms/Banner/index.jsx';
 
 
@@ -42,11 +33,12 @@ export default function ShelterProfile() {
         phoneNumber: "",
         address: "",
         workingDays: "",
-        workingHours: ""
+        workingHours: "",
+        pets: {},
     });
 
     const fetchPetData = async () => {
-        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner/${userData.id}`, null, true, "GET");
+        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterData.id}`, null, true, "GET");
         if (respond.result) {
             setShelterData(prevState => ({
                 ...prevState,       // Mantiene los campos existentes (name, age, address, etc.)
@@ -58,14 +50,14 @@ export default function ShelterProfile() {
     useEffect(() => {
         if (id) {
             fetchShelter();
+            fetchPetData();
         } else if (!isAuthenticated) {
             alert('No se encontró el ID del refugio');
             navigate("/");
         } else {
             setShelterData(userData);
+            fetchPetData();
         }
-
-        fetchPetData();
     }, [id, userData, isAuthenticated]);
 
     async function fetchShelter() {
