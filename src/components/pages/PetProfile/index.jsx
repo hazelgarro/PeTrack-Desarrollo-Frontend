@@ -79,15 +79,15 @@ export default function PetProfile() {
 
     async function handleDeletePet() {
         const isConfirmed = window.confirm(`Are you sure you want to eliminate ${petData.name}?`);
-    
+
         if (isConfirmed) {
             const apiUrl = `https://www.APIPetrack.somee.com/Pet/DeletePet/${id}`;
-    
+
             try {
                 const apiRespond = await getData(apiUrl, null, true, "DELETE");
 
                 alert(apiRespond.message);
-                if(apiRespond.result){
+                if (apiRespond.result) {
                     navigate("/Homepage");
                 }
 
@@ -96,13 +96,17 @@ export default function PetProfile() {
             }
         }
     }
-    
+
     const updatePetData = (updatedData) => {
         setPetData(updatedData);
-        if(hookMenuBotones.isOpen){
+        if (hookMenuBotones.isOpen) {
             hookMenuBotones.toggleModal();
         }
     };
+
+    const handleAdoption = () => {
+        
+    }
 
     const buttons = (
         <>
@@ -125,8 +129,8 @@ export default function PetProfile() {
             <NavBar />
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    <PetPhotoQr petAccountData={petData}/>
-                    
+                    <PetPhotoQr petAccountData={petData} />
+
                     {isAuthenticated && userData.id === petData.ownerId ? (
                         <div className="lg:hidden">
                             <button className="absolute bottom-4 right-4" label="Drop menu" onClick={hookMenuBotones.toggleModal}>
@@ -138,14 +142,14 @@ export default function PetProfile() {
                                 </div>
                             </Modal>
                         </div>
-                    ) : null }
+                    ) : null}
                 </section>
                 <section>
                     <div className="flex w-full justify-between my-4 items-center">
                         <h2 className="justify-center text-petrack-green text-6xl font-bold">{petData.name}</h2>
                         {isAuthenticated && userData.id === petData.ownerId ? (
                             <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
-                        ) : (
+                        ) : (petData.ownerType === "O" ?
                             <Link to={`/PetOwnerProfile/${petData.ownerId}`}>
                                 <Button variant="solid-green" size="extra-small" className="ml-4">
                                     <div className="flex items-center gap-2">
@@ -154,6 +158,13 @@ export default function PetProfile() {
                                     </div>
                                 </Button>
                             </Link>
+                            :
+                            <Button onClick={handleAdoption} variant="solid-green" size="extra-small" className="ml-4">
+                                <div className="flex items-center gap-2">
+                                    <Missed color="white" />
+                                    <span>Solicitar Adopción</span>
+                                </div>
+                            </Button>
                         )}
                     </div>
                     <ProfileInfoContainer>
