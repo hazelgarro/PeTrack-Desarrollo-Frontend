@@ -104,9 +104,33 @@ export default function PetProfile() {
         }
     };
 
-    const handleAdoption = () => {
-        
+// Remove one of the duplicate handleAdoption declarations
+const handleAdoption = async () => {
+    if (!isAuthenticated) {
+        alert("Por favor, inicie sesión para enviar una solicitud de adopción.");
+        return;
     }
+
+    const adoptionRequestData = {
+        petId: petData.id,         // ID de la mascota a adoptar
+        newOwnerId: userData.id,    // ID del usuario solicitante
+    };
+
+    try {
+        const apiUrl = "https://www.APIPetrack.somee.com/Adoption/RequestAdoption";
+        const response = await getData(apiUrl, adoptionRequestData, true, "POST");
+
+        if (response.result) {
+            alert(response.message);
+        } else {
+            alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
+        }
+    } catch (error) {
+        console.error("Error al enviar la solicitud de adopción:", error);
+        alert("Error al enviar la solicitud de adopción. Intente más tarde.");
+    }
+};
+
 
     const buttons = (
         <>
