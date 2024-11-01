@@ -30,11 +30,11 @@ function App() {
           <Route path="/PetProfile/:id" element={<PetProfile />} />
           <Route path="/PetOwnerProfile/:id?" element={<PetOwnerProfile />} />
           <Route path="/ShelterProfile/:id?" element={<ShelterProfile />} />
-          <Route path="/Homepage" element={<HomePage />} />
+          <Route path="/Homepage/:id?" element={<HomePage />} />
           <Route path="/ShelterListPage" element={<ShelterListPage />} />
         </Routes>
       </Router >
-    </SessionContextProvider >
+    </SessionContextProvider>
   );
 }
 
