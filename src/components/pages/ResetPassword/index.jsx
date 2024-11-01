@@ -28,7 +28,7 @@ export default function ResetPassword() {
                 [name]: value
             };
 
-            if (newData.password === newData.confirmPassword) {
+            if (newData.newPassword === newData.confirmPassword) {
                 setErrorMessage("");
             } else {
                 setErrorMessage("Las contraseñas no coinciden");
