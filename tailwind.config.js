@@ -14,6 +14,7 @@ export default {
         'petrack-green': 'rgba(4, 93, 90, 1)',
         'petrack-yellow': 'rgba(233, 144, 3, 1)',
         'petrack-black': 'rgba(22, 22, 22, 1)',
+        'petrack-red': 'rgba(216, 84, 84, 1)',
       },
     },
   },

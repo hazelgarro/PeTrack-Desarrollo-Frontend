@@ -3,6 +3,10 @@
     @apply bg-petrack-green font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300;
 }
 
+.button--solid-red {
+    @apply bg-petrack-red font-bold text-white rounded-full border border-transparent cursor-pointer hover:scale-105 duration-300;
+}
+
 .button--border-green {
     @apply border-2 border-petrack-green font-bold text-petrack-green rounded-full cursor-pointer hover:scale-105 duration-300;
 }
