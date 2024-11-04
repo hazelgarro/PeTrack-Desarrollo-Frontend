@@ -8,7 +8,7 @@ import ServicesContainer from "../../organisms/ServicesContainer";
 import { useSession } from "../../../context/SessionContext";
 import { getData } from '../../../utils/apiConnector.js';
 import Pet from "../../../assets/img/pet_picture.webp";
-import CardNotification from "../../molecules/CardNotification"
+import CardNotification from "../../molecules/CardNotification";
 
 export default function HomePage() {
     const { userData, isAuthenticated } = useSession();
@@ -40,7 +40,6 @@ export default function HomePage() {
                                 "GET"
                             );
                             if (requestResponse.result) {
-                                // Store each request with additional pet details
                                 requestResponse.data.forEach((request) => {
                                     allRequests.push({ ...request, petName: pet.name, petPicture: pet.petPicture });
                                 });
@@ -59,6 +58,39 @@ export default function HomePage() {
 
         fetchPetsAndRequests();
     }, [isAuthenticated, userData]);
+
+    const handleRequestAction = async (requestId, action) => {
+        try {
+            // Determina la URL correcta según la acción
+            const endpoint = action === "AcceptRequest"
+                ? `https://www.APIPetrack.somee.com/Adoption/AcceptAdoptionRequest/${requestId}`
+                : `https://www.APIPetrack.somee.com/Adoption/RejectAdoptionRequest/${requestId}`;
+        
+            // Llama a la API con el método PUT tanto para aceptar como para rechazar
+            const response = await getData(
+                endpoint,
+                null,
+                true,
+                "PUT"
+            );
+    
+            if (response.result) {
+                setAdoptionRequests((prevRequests) =>
+                    prevRequests.map((req) =>
+                        req.id === requestId ? { ...req, isAccepted: action === "AcceptRequest" ? "Accepted" : "Rejected" } : req
+                    )
+                );
+                alert(response.message);
+            } else {
+                alert(response.message);
+            }
+        } catch (error) {
+            console.error(`Error ${action === "AcceptRequest" ? "accepting" : "rejecting"} request:`, error);
+        }
+    };
+    
+    
+    
 
     if (loading) {
         return <div>Loading...</div>;
@@ -115,22 +147,24 @@ export default function HomePage() {
                     <div>
                         {adoptionRequests.map((request) => (
                             <CardNotification
-                                key={request.id}
-                                typeCard="adoption_request"
-                                imgSrc={request.petPicture || 'default_pet_picture.jpg'}
-                                imgAlt={request.petName}
-                                name={request.petName}
-                                requesterEmail={request.requester.email}
-                                status={request.isAccepted === 'Accepted' ? 'Aceptada' : 'Pendiente'}
-                                requestDate={new Date(request.requestDate).toLocaleDateString()}
-                            />
+                            key={request.id}
+                            typeCard="adoption_request"
+                            imgSrc={request.petPicture || 'default_pet_picture.jpg'}
+                            imgAlt={request.petName}
+                            name={request.petName}
+                            requesterEmail={request.requester.email}
+                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : 'Pendiente'}
+                            requestDate={new Date(request.requestDate).toLocaleDateString()}
+                            onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
+                            onDeny={() => handleRequestAction(request.id, "RejectRequest")} // Cambiado de onReject a onDeny
+                        />
+                        
                         ))}
                     </div>
                 ) : (
                     <div className="text-center text-xl text-gray-500">No hay solicitudes de adopción</div>
                 )}
             </div>
-            
 
             <ServicesContainer />
             <div className="grid gap-5 md:gap-10 pt-24">
@@ -160,4 +194,3 @@ export default function HomePage() {
         </div>
     );
 }
-

@@ -9,7 +9,10 @@ export default function CardNotification({
     name,
     requesterEmail,
     status,
-    requestDate
+    requestDate,
+    onAccept,
+    onDeny,
+    requestId
 }) {
     return (
         <div className="flex flex-col md:flex-row md:items-center p-6 bg-white shadow-lg rounded-lg mb-6 items-center">
@@ -24,29 +27,28 @@ export default function CardNotification({
 
             {/* Details */}
             <div className="flex flex-col md:ml-6 mt-4 md:mt-0 w-full">
-                {/* Pet Name */}
                 <p className="text-xl font-bold text-petrack-green">{name}</p>
-
-                {/* Requester Email */}
                 <p className="text-sm text-gray-600">{requesterEmail}</p>
-
-                {/* Request Status */}
                 <p className={`text-sm font-medium mt-2 ${status === "Aceptada" ? "text-green-600" : "text-yellow-500"}`}>
                     {status}
                 </p>
-
-                {/* Request Date */}
                 <p className="text-xs text-gray-400 mt-1">Fecha: {requestDate}</p>
             </div>
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-8 ml-auto items-center">
-                <ButtonAccept variant="solid-green" size="extra-small">Aceptar</ButtonAccept>
-                <ButtonDeny variant="solid-red" size="extra-small">Denegar</ButtonDeny>
+                <ButtonAccept variant="solid-green" size="extra-small" onClick={() => onAccept(requestId)}>
+                    Aceptar
+                </ButtonAccept>
+                <ButtonDeny variant="solid-red" size="extra-small" onClick={() => onDeny(requestId)}>
+                    Denegar
+                </ButtonDeny>
             </div>
+
         </div>
     );
 }
+
 
 CardNotification.propTypes = {
     imgSrc: PropTypes.string.isRequired,
@@ -54,5 +56,8 @@ CardNotification.propTypes = {
     name: PropTypes.string.isRequired,
     requesterEmail: PropTypes.string.isRequired,
     status: PropTypes.oneOf(["Aceptada", "Pendiente", "Denegada"]).isRequired,
-    requestDate: PropTypes.string.isRequired
+    requestDate: PropTypes.string.isRequired,
+    onAccept: PropTypes.func.isRequired, // Add this line
+    onDeny: PropTypes.func.isRequired, // Add this line
+    requestId: PropTypes.string.isRequired // Add this line for request ID
 };
