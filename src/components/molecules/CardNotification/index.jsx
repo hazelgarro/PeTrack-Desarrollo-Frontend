@@ -29,9 +29,11 @@ export default function CardNotification({
             <div className="flex flex-col md:ml-6 mt-4 md:mt-0 w-full">
                 <p className="text-xl font-bold text-petrack-green">{name}</p>
                 <p className="text-sm text-gray-600">{requesterEmail}</p>
-                <p className={`text-sm font-medium mt-2 ${status === "Aceptada" ? "text-green-600" : "text-yellow-500"}`}>
+                <p className={`text-sm font-extrabold mt-2 ${status === "Aceptada" ? "text-green-600" : status === "Denegada" ? "text-petrack-red" : "text-yellow-500"
+                    }`}>
                     {status}
                 </p>
+
                 <p className="text-xs text-gray-400 mt-1">Fecha: {requestDate}</p>
             </div>
 

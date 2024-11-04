@@ -153,7 +153,8 @@ export default function HomePage() {
                             imgAlt={request.petName}
                             name={request.petName}
                             requesterEmail={request.requester.email}
-                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : 'Pendiente'}
+                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
+
                             requestDate={new Date(request.requestDate).toLocaleDateString()}
                             onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
                             onDeny={() => handleRequestAction(request.id, "RejectRequest")} // Cambiado de onReject a onDeny
