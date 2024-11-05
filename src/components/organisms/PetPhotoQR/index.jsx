@@ -64,10 +64,10 @@ export default function PetPhotoQR({ petAccountData }) {
                             <QRCode
                                 value={window.location.href} // Make sure this is the desired URL
                                 size={200}
-                                logoImage={imgLogo} // Specify logo image
-                                logoWidth={40} // Adjust logo size
-                                logoHeight={40}
-                                qrStyle="dots" // Different styles: "dots" or "squares"
+                                // logoImage={imgLogo} // Specify logo image
+                                // logoWidth={60} // Adjust logo size
+                                // logoHeight={60}
+                                qrStyle="squares" // Different styles: "dots" or "squares"
                                 eyeRadius={10} // Adjust eye radius of the QR
                             />
                         </div>
