@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
-import NavBar from "../../organisms/Nav";
+import NavBar from "../../organisms/NavMenu";
+import NavLoged from "../../organisms/NavLoged";
 import Footer from "../../organisms/Footer";
 
 const PageLayout = ({ children, navVariant = "" }) => {

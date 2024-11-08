@@ -4,7 +4,7 @@ import LocationIcon from "../../atoms/Icons/Location/index.jsx";
 import ProfileInfoContainer from "../../organisms/ProfileInfoContainer";
 import ButtonAdopt from "../../atoms/Button";
 import petPicture from '../../../assets/img/pet_picture.webp';
-import NavBar from "../../organisms/Nav";
+import NavBar from "../../organisms/NavLoged/index.jsx";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getData } from "../../../utils/apiConnector.js";
@@ -19,6 +19,7 @@ import EditUser from '../../organisms/EditUser/index.jsx';
 import EditPicture from '../../organisms/EditPicture/index.jsx';
 import Banner from '../../atoms/Banner/index.jsx';
 import Loader from '../../atoms/Loader/index.jsx';
+import Footer from '../../organisms/Footer/index.jsx';
 
 export default function ShelterProfile() {
     const { id } = useParams();
@@ -96,9 +97,9 @@ export default function ShelterProfile() {
                     {id ? <Banner imageSrc={shelterData.coverPicture}></Banner> : <EditPicture type="cover" imageSrc={shelterData.coverPicture}></EditPicture>}
                 </section>
                 <section >
-                    <div className="flex gap-6 justify-start my-4 items-center ">
-                        <h2 className="justify-center text-6xl font-bold text-petrack-green mt-6 mb-6">{shelterData.name}</h2>
-                        {!id && <div className="flex justify-center md:justify-start mt-4">
+                    <div className="flex flex-col gap-6 justify-start my-4 md:flex-row md:items-center ">
+                        <h2 className="text-6xl font-bold text-petrack-green mt-4 mb-4">{shelterData.name}</h2>
+                        {!id && <div className="flex mb-4 md:mb-0 md:mt-4 justify-start md:justify-start">
                             <EditUser accountData={shelterData}></EditUser>
                         </div>}
                     </div>
@@ -142,6 +143,7 @@ export default function ShelterProfile() {
                     </CardsContainer>
                 </div>
             </div>
+            <Footer></Footer>
         </div>
     );
 }

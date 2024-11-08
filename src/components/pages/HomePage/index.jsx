@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import NavMenu from "../../organisms/NavMenu";
 import Nav from "../../organisms/Nav";
-import NavLanding from "../../organisms/NavLanding";
+import NavLanding from "../../organisms/NavLoged/index.jsx";
 import Welcome from "../../organisms/WelcomeContainer";
 import CardsContainer from "../../organisms/cardsContainer";
 import MedicalRecord from "../../atoms/Icons/MedicalRecord";
