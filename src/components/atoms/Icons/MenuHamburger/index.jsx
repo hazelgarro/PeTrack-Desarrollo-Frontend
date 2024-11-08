@@ -1,4 +1,4 @@
- import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import "../styles.css";
 
 export default function MenuHamburger({ size = 'medium', color = 'primary', thickness = '1.5', ...props }) {
