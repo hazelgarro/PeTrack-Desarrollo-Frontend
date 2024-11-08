@@ -75,7 +75,7 @@ export default function EditUser({ accountData }) {
                     <TextInput
                         size="medium"
                         placeholder={namePlaceholder} // Placeholder dinámico
-                        name="completeName"
+                        name={userData.userTypeId === "O"? "completeName" : "name" }
                         value={userData.userTypeId === "O"? userData.completeName : userData.name}
                         onChange={handleInputChange}
                     />

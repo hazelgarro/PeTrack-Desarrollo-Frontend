@@ -13,6 +13,9 @@ import Button from "../../atoms/Button";
 import TextBlock from "../../molecules/TextBlock";
 import MedicalInfoCard from "../../molecules/MedicalInfoCard";
 import MedicalInfoToggle from "../../organisms/MedicalInfoToggle";
+import IconEmail from "../../atoms/Icons/Email";
+import IconUser from "../../atoms/Icons/User";
+import IconPhone from "../../atoms/Icons/Phone";
 import NavBar from "../../organisms/Nav";
 import GenderIcon from "../../atoms/Icons/Gender";
 import WeightIcon from "../../atoms/Icons/Weight";
@@ -35,6 +38,7 @@ export default function PetProfile() {
     const hookMenuBotones = useOpenClose();
     const { userData, isAuthenticated } = useSession();
     const [isLoading, setIsLoading] = useState(true);
+    const [ownerData, setOwnerData] = useState({});
 
     const [petData, setPetData] = useState({
         name: "",
@@ -57,8 +61,9 @@ export default function PetProfile() {
             navigate("/");
         } else {
             fetchPet();
+            fetPetOwnerData();
         }
-    }, [id]);
+    }, [id, petData]);
 
     async function fetchPet() {
         try {
@@ -78,6 +83,14 @@ export default function PetProfile() {
             setIsLoading(false); // Desactivamos el loader al terminar de cargar los datos
         }
     }
+
+    async function fetPetOwnerData() {
+        const respond = await getData(`https://www.APIPetrack.somee.com/User/DetailsUser/${petData.ownerId}`, null, false, "GET");
+        if (respond.result) {
+            setOwnerData(respond.data);
+        }
+        setIsLoading(false);
+    };
 
     const handleDeletePet = async () => {
         const isConfirmed = window.confirm(`Are you sure you want to eliminate ${petData.name}?`);
@@ -213,33 +226,22 @@ export default function PetProfile() {
                 </section>
 
 
-                <section className="flex items-center gap-4 p-4 border-b border-gray-300">
-                    {/* Imagen del dueño */}
-                    <div className="flex flex-col items-center">
-                        <ProfileImage
-                            imageSrc={ownerData.profilePicture}
-                            defaultImage="https://via.placeholder.com/50" // Reemplaza con tu imagen por defecto
-                            size="large"
-                        />
-                        <span className="text-xs text-gray-500">Owned by</span>
-                        <span className="text-sm font-semibold">{ownerData.completeName || 'Full name'}</span>
-                    </div>
+                <section className="flex items-center">
+                    <div className="flex items-center gap-8">
+                        <a href= {petData.ownerType === "O" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
+                            <ProfileImage
+                                imageSrc={ownerData.profilePicture}
+                                defaultImage="https://via.placeholder.com/50" // Reemplaza con tu imagen por defecto
+                                size="large"
+                            />
+                        </a>
+                        <div className="flex flex-col items-center">
 
-                    {/* Información de contacto */}
-                    <div className="flex items-center gap-8 text-gray-700">
-                        {/* Tipo de usuario */}
-                        <div className="flex items-center gap-2">
-                            <IconUser size="large" />
-                            <span>{ownerData.userType || 'Pet Owner'}</span>
+                            <span className="text-xs text-gray-500">Owned by</span>
+                            <span className="text-sm font-semibold">{ownerData.completeName || 'Full name'}</span>
                         </div>
 
                         {/* Teléfono */}
-                        <div className="flex items-center gap-2">
-                            <IconPhone size="large" />
-                            <span>{ownerData.phoneNumber || 'Not available'}</span>
-                        </div>
-
-                        {/* WhatsApp - puedes usar IconPhone para representar esto si no tienes un icono específico */}
                         <div className="flex items-center gap-2">
                             <IconPhone size="large" />
                             <span>{ownerData.phoneNumber || 'Not available'}</span>

@@ -40,9 +40,7 @@ export default function Login() {
             setIsLoading(false);
 
             if (apiResponse.result) {
-                let message;
                 updateSessionState();
-                alert(JSON.stringify(message));
                 navigate("/Homepage");
             } else {
                 setErrorMessage(apiResponse.message);
