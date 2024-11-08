@@ -151,7 +151,7 @@ export default function HomePage() {
                     <Welcome />
 
                     {/* Pets Section */}
-                    <div className="mx-12 sm:mx-24 md:mx-44 my-20">
+                    <div className="mx-12 sm:mx-24 md:mx-44 my-20 ">
                         {pets.length > 0 ? (
                             <>
                                 <div className="flex justify-center items-center pt-16">
