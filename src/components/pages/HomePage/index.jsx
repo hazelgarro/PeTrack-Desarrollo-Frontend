@@ -23,6 +23,7 @@ export default function HomePage() {
     const [adoptionRequests, setAdoptionRequests] = useState([]);
     const [adoptionPets, setAdoptionPets] = useState([]);
     const [visiblePets, setVisiblePets] = useState(6);
+    const [filter, setFilter] = useState("Todos");
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -91,6 +92,16 @@ export default function HomePage() {
     const loadMorePets = () => {
         setVisiblePets((prevVisible) => prevVisible + 6);
     };
+
+    const handleFilterChange = (newFilter) => {
+        setFilter(newFilter);
+        setVisiblePets(6); // Reinicia el conteo de mascotas visibles al cambiar el filtro
+    };
+
+    const filteredPets = adoptionPets.filter((pet) => {
+        if (filter === "Todos") return true;
+        return pet.species.toLowerCase() === filter.toLowerCase();
+    });
 
     const handleRequestAction = async (requestId, action) => {
         try {
@@ -209,17 +220,24 @@ export default function HomePage() {
                         <h2 className="text-3xl md:text-8xl font-bold text-petrack-green text-center">Cambia una vida</h2>
                         <p className="text-xl md:text-4xl font-semibold text-center">Adopta una mascota</p>
                         <div className=" flex flex-col md:flex-row justify-center items-center gap-3 md:gap-8">
-                            <Button type="button" size="small" variant="solid-green">Todos</Button>
-                            <Button type="button" size="small" variant="border-green">Perros</Button>
-                            <Button type="button" size="small" variant="border-green">Gatos</Button>
+                            <Button type="button" size="small" variant={filter === "Todos" ? "solid-green" : "border-green"} onClick={() => handleFilterChange("Todos")}>
+                                Todos
+                            </Button>
+                            <Button type="button" size="small" variant={filter === "Dog" ? "solid-green" : "border-green"} onClick={() => handleFilterChange("Dog")}>
+                                Perros
+                            </Button>
+                            <Button type="button" size="small" variant={filter === "Cat" ? "solid-green" : "border-green"} onClick={() => handleFilterChange("Cat")}>
+                                Gatos
+                            </Button>
                         </div>
                     </div>
 
                     <div className="mx-12 md:mx-24 lg:mx-44 my-8 md:my-20">
                         <CardsContainer>
                             {adoptionPets.length > 0 ? (
-                                adoptionPets.slice(0, visiblePets).map((pet) => (
+                                filteredPets.slice(0, visiblePets).map((pet) => (
                                     <Card
+                                        link={`/PetProfile/${pet.id}`}
                                         key={pet.id}
                                         typeCard="adoption_pet"
                                         imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
