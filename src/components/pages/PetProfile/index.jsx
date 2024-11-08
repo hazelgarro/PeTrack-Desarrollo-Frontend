@@ -16,7 +16,7 @@ import MedicalInfoToggle from "../../organisms/MedicalInfoToggle";
 import IconEmail from "../../atoms/Icons/Email";
 import IconUser from "../../atoms/Icons/User";
 import IconPhone from "../../atoms/Icons/Phone";
-import NavBar from "../../organisms/Nav";
+import NavBar from "../../organisms/NavMenu";
 import GenderIcon from "../../atoms/Icons/Gender";
 import WeightIcon from "../../atoms/Icons/Weight";
 import PetIcon from "../../atoms/Icons/Pet";
