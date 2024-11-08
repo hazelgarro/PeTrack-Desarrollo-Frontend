@@ -214,7 +214,7 @@ export default function PetRegister() {
                     <Button type="submit" size="small" variant="solid-green">
                         Register
                     </Button>
-                    <Button size="small">
+                    <Button onClick={() => navigate(-1)} size="small">
                         Cancel
                     </Button>
                 </Form>

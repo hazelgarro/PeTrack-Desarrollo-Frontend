@@ -18,7 +18,7 @@ import Card from '../../molecules/Card/index.jsx';
 import EditUser from '../../organisms/EditUser/index.jsx';
 import EditPicture from '../../organisms/EditPicture/index.jsx';
 import Banner from '../../atoms/Banner/index.jsx';
-
+import Loader from '../../atoms/Loader/index.jsx';
 
 export default function ShelterProfile() {
     const { id } = useParams();
@@ -34,58 +34,65 @@ export default function ShelterProfile() {
         address: "",
         workingDays: "",
         workingHours: "",
-        pets: {},
+        pets: [],
     });
+    
+    const [isLoading, setIsLoading] = useState(true); // Estado para manejar el loader
 
-    const fetchPetData = async () => {
-        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterData.id}`, null, true, "GET");
+    const fetchPetData = async (shelterId) => {
+        setIsLoading(true);
+        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterId}`, null, true, "GET");
         if (respond.result) {
             setShelterData(prevState => ({
-                ...prevState,       // Mantiene los campos existentes (name, age, address, etc.)
-                pets: respond.data      // Agrega o actualiza el campo pets
+                ...prevState,
+                pets: respond.data
             }));
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
         if (id) {
             fetchShelter();
-            fetchPetData();
         } else if (!isAuthenticated) {
             alert('No se encontró el ID del refugio');
             navigate("/");
         } else {
             setShelterData(userData);
-            fetchPetData();
+            fetchPetData(userData.id);
         }
     }, [id, userData, isAuthenticated]);
 
     async function fetchShelter() {
+        // Activamos el loader antes de comenzar la carga
         try {
+            setIsLoading(true);
             const apiUrl = `https://www.APIPetrack.somee.com/User/DetailsUser/${id}`;
             const apiRespond = await getData(apiUrl, null, false, 'GET');
 
             if (apiRespond && apiRespond.result) {
                 setShelterData(apiRespond.data);
+                fetchPetData(apiRespond.data.id); // Llama a fetchPetData con el ID correcto
             } else if (apiRespond) {
                 alert(apiRespond.message);
-                navigate("/"); // Redirige en caso de error conocido
+                navigate("/");
             } else {
                 alert("Unexpected error");
                 navigate("/");
             }
         } catch (error) {
             console.error('Error al obtener los datos del refugio:', error);
-            alert('Error al obtener los datos del refugio. Intente más tarde.');
+        } finally {
+            setIsLoading(false); // Desactivamos el loader después de completar la carga
         }
     }
 
     return (
         <div>
             <NavBar variant="menuHamburgerIcon"></NavBar>
+            {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
             <div className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
-                    
                     {id ? <Banner imageSrc={shelterData.coverPicture}></Banner> : <EditPicture type="cover" imageSrc={shelterData.coverPicture}></EditPicture>}
                 </section>
                 <section >
@@ -110,7 +117,7 @@ export default function ShelterProfile() {
                         </IconText>
                     </ProfileInfoContainer>
                 </section>
-                <div className='grid grid-cols-2 mt-24'>
+                {/* <div className='grid grid-cols-2 mt-24'>
                     <div className='bg-petrack-yellow rounded-3xl'>
                         <img className='rounded-3xl' src={catImage} alt="Cat" />
                     </div>
@@ -118,8 +125,7 @@ export default function ShelterProfile() {
                         <h2 className='text-petrack-green text-3xl font-extrabold'>Dale una segunda oportunidad a un amigo fiel. Adopta y cambia una vida hoy mismo.</h2>
                         <ButtonAdopt variant={`solid-green`} size="small">Adoptar</ButtonAdopt>
                     </div>
-
-                </div>
+                </div> */}
 
                 <div>
                     <p className="flex font-outfit text-petrack-green text-2xl md:text-3xl font-bold mt-12 md:mt-24 mb-6 text-center">Mascotas en adopción</p>
@@ -128,7 +134,7 @@ export default function ShelterProfile() {
                     <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {shelterData.pets && shelterData.pets.length > 0 ? (
                             shelterData.pets.map((pet) => (
-                                <Card link={`/PetProfile/${pet.id}`} imgSrc={pet.petPicture || petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
+                                <Card key={pet.id} link={`/PetProfile/${pet.id}`} imgSrc={pet.petPicture || petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
                             ))
                         ) : (
                             <p>No pets found.</p>
@@ -136,6 +142,6 @@ export default function ShelterProfile() {
                     </CardsContainer>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

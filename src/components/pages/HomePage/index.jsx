@@ -248,6 +248,7 @@ export default function HomePage() {
                                         species={pet.species}
                                         location={pet.location}
                                         breed={pet.breed}
+                                        dateOfBirth={pet.dateOfBirth}
                                     />
                                 ))
                             ) : (

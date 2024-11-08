@@ -97,8 +97,8 @@ export default function PagePetOwner() {
                         <div className="flex justify-center sm:justify-start gap-2 items-center">
                             <IconUser size="large"></IconUser>
                             <h4 className="text-xl">{ownerData.userType || 'Pet Owner'}</h4>
-                        </div>
                     </div>
+                        </div>
                     <div>
                         <p className="text-center mb-2 sm:text-left">Email</p>
                         <div className="flex justify-center sm:justify-start gap-2 items-center">

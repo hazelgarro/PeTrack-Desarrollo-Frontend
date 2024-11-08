@@ -25,13 +25,16 @@ import { getFormattedDate } from "../../../utils/dateFormater.js";
 import Missed from "../../atoms/Icons/Missed/";
 import { useSession } from '../../../context/SessionContext';
 import EditPet from "../../organisms/EditPet/index.jsx";
-import Banner from "../../atoms/Banner/index.jsx";
+import TransferPet from "../../organisms/TransferPet/index.jsx";
+import Loader from "../../atoms/Loader/index.jsx";
+import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 
 export default function PetProfile() {
     const { id } = useParams();
     const navigate = useNavigate();
     const hookMenuBotones = useOpenClose();
     const { userData, isAuthenticated } = useSession();
+    const [isLoading, setIsLoading] = useState(true);
 
     const [petData, setPetData] = useState({
         name: "",
@@ -55,7 +58,7 @@ export default function PetProfile() {
         } else {
             fetchPet();
         }
-    }, [id]); // Agregado shouldRefresh para re-ejecutar el efecto
+    }, [id]);
 
     async function fetchPet() {
         try {
@@ -65,37 +68,32 @@ export default function PetProfile() {
             if (apiRespond && apiRespond.result) {
                 setPetData(apiRespond.data);
             } else if (apiRespond) {
-                alert(apiRespond.message);
-                navigate("/"); // Redirige en caso de error conocido
+                console.log(apiRespond.message);
             } else {
                 alert("Unexpected error");
-                navigate("/");
             }
         } catch (error) {
             console.error('Error al obtener los datos de la mascota:', error);
-            alert('Error al obtener los datos de la mascota. Intente más tarde.');
+        } finally {
+            setIsLoading(false); // Desactivamos el loader al terminar de cargar los datos
         }
     }
 
-    async function handleDeletePet() {
+    const handleDeletePet = async () => {
         const isConfirmed = window.confirm(`Are you sure you want to eliminate ${petData.name}?`);
-
         if (isConfirmed) {
             const apiUrl = `https://www.APIPetrack.somee.com/Pet/DeletePet/${id}`;
-
             try {
                 const apiRespond = await getData(apiUrl, null, true, "DELETE");
-
                 alert(apiRespond.message);
                 if (apiRespond.result) {
                     navigate("/Homepage");
                 }
-
             } catch (error) {
                 alert("Error deleting pet");
             }
         }
-    }
+    };
 
     const updatePetData = (updatedData) => {
         setPetData(updatedData);
@@ -104,32 +102,24 @@ export default function PetProfile() {
         }
     };
 
-// Remove one of the duplicate handleAdoption declarations
-const handleAdoption = async () => {
-    if (!isAuthenticated) {
-        alert("Por favor, inicie sesión para enviar una solicitud de adopción.");
-        return;
-    }
-
-    const adoptionRequestData = {
-        petId: petData.id,         // ID de la mascota a adoptar
-        newOwnerId: userData.id,    // ID del usuario solicitante
-    };
-
-    try {
-        const apiUrl = "https://www.APIPetrack.somee.com/Adoption/RequestAdoption";
-        const response = await getData(apiUrl, adoptionRequestData, true, "POST");
-
-        if (response.result) {
-            alert(response.message);
-        } else {
-            alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
+    const handleAdoption = async () => {
+        if (!isAuthenticated) {
+            alert("Por favor, inicie sesión para enviar una solicitud de adopción.");
+            return;
         }
-    } catch (error) {
-        console.error("Error al enviar la solicitud de adopción:", error);
-        alert("Error al enviar la solicitud de adopción. Intente más tarde.");
-    }
-};
+        const adoptionRequestData = {
+            petId: petData.id,
+            newOwnerId: userData.id,
+        };
+        try {
+            const apiUrl = "https://www.APIPetrack.somee.com/Adoption/RequestAdoption";
+            const response = await getData(apiUrl, adoptionRequestData, true, "POST");
+            alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
+        } catch (error) {
+            console.error("Error al enviar la solicitud de adopción:", error);
+            alert("Error al enviar la solicitud de adopción. Intente más tarde.");
+        }
+    };
 
 
     const buttons = (
@@ -139,11 +129,7 @@ const handleAdoption = async () => {
                     <DeleteIcon size="medium"></DeleteIcon> <span>Delete</span>
                 </div>
             </Button>
-            <Button variant="border-green" variant2="content-fit" size="extra-small">
-                <div className="flex items-center gap-1">
-                    <TransferIcon size="medium"></TransferIcon> <span>Transfer</span>
-                </div>
-            </Button>
+            <TransferPet isAuthenticated={isAuthenticated} petAccountData={petData}></TransferPet>
             <EditPet petAccountData={petData} updatePetData={updatePetData} />
         </>
     );
@@ -151,6 +137,7 @@ const handleAdoption = async () => {
     return (
         <div>
             <NavBar />
+            {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
             <main className="relative 2xl:mx-80 xl:mx-60 lg:mx-40 md:mx-24 mx-4 my-5">
                 <section className="relative">
                     <PetPhotoQr petAccountData={petData} />
@@ -169,28 +156,38 @@ const handleAdoption = async () => {
                     ) : null}
                 </section>
                 <section>
-                    <div className="flex w-full justify-between my-4 items-center">
+                    <div className="flex flex-col w-full justify-start my-4 md:flex-row md:justify-between">
                         <h2 className="justify-center text-petrack-green text-6xl font-bold">{petData.name}</h2>
                         {isAuthenticated && userData.id === petData.ownerId ? (
                             <div className="hidden lg:flex flex-wrap space-x-4">{buttons}</div>
-                        ) : (petData.ownerType === "O" ?
-                            <Link to={`/PetOwnerProfile/${petData.ownerId}`}>
-                                <Button variant="solid-green" size="extra-small" className="ml-4">
-                                    <div className="flex items-center gap-2">
-                                        <Missed color="white" />
-                                        <span>Am I lost?</span>
-                                    </div>
-                                </Button>
-                            </Link>
-                            :
-                            <Button onClick={handleAdoption} variant="solid-green" size="extra-small" className="ml-4">
-                                <div className="flex items-center gap-2">
-                                    <Missed color="white" />
-                                    <span>Solicitar Adopción</span>
+                        ) : (
+                            petData.ownerType === "O" ? (
+                                <Link to={`/PetOwnerProfile/${petData.ownerId}`}>
+                                    <Button variant="solid-green" size="extra-small" className="ml-4 !w-auto">
+                                        <div className="flex items-center gap-2">
+                                            <Missed color="white" />
+                                            <span>Am I lost?</span>
+                                        </div>
+                                    </Button>
+                                </Link>
+                            ) : (
+                                <div className="w-fit my-5">
+                                    <Button
+                                        onClick={handleAdoption}
+                                        variant="solid-green"
+                                        size="extra-small"
+                                    >
+                                        <div className="flex items-center gap-2">
+                                            <Missed color="white" />
+                                            <span>Solicitar Adopción</span>
+                                        </div>
+                                    </Button>
                                 </div>
-                            </Button>
+                            )
                         )}
                     </div>
+
+
                     <ProfileInfoContainer>
                         <IconText text={petData.breed}>
                             <PetIcon petType={petData.species ? petData.species.toLowerCase() : ""} size="medium" />
@@ -214,7 +211,48 @@ const handleAdoption = async () => {
                         <p className="text-petrack-black mt-2 mb-4">{petData.healthIssues ? petData.healthIssues : "No Data"}</p>
                     </TextBlock>
                 </section>
+
+
+                <section className="flex items-center gap-4 p-4 border-b border-gray-300">
+                    {/* Imagen del dueño */}
+                    <div className="flex flex-col items-center">
+                        <ProfileImage
+                            imageSrc={ownerData.profilePicture}
+                            defaultImage="https://via.placeholder.com/50" // Reemplaza con tu imagen por defecto
+                            size="large"
+                        />
+                        <span className="text-xs text-gray-500">Owned by</span>
+                        <span className="text-sm font-semibold">{ownerData.completeName || 'Full name'}</span>
+                    </div>
+
+                    {/* Información de contacto */}
+                    <div className="flex items-center gap-8 text-gray-700">
+                        {/* Tipo de usuario */}
+                        <div className="flex items-center gap-2">
+                            <IconUser size="large" />
+                            <span>{ownerData.userType || 'Pet Owner'}</span>
+                        </div>
+
+                        {/* Teléfono */}
+                        <div className="flex items-center gap-2">
+                            <IconPhone size="large" />
+                            <span>{ownerData.phoneNumber || 'Not available'}</span>
+                        </div>
+
+                        {/* WhatsApp - puedes usar IconPhone para representar esto si no tienes un icono específico */}
+                        <div className="flex items-center gap-2">
+                            <IconPhone size="large" />
+                            <span>{ownerData.phoneNumber || 'Not available'}</span>
+                        </div>
+
+                        {/* Correo electrónico */}
+                        <div className="flex items-center gap-2">
+                            <IconEmail size="large" />
+                            <span>{ownerData.email || 'email@email.com'}</span>
+                        </div>
+                    </div>
+                </section>
             </main>
-        </div>
+        </div >
     );
 }

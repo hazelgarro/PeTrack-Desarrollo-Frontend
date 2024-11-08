@@ -13,6 +13,6 @@ export function getFormattedDate(dateString) {
     } else if (totalMonthsDifference > 0) {
         return `${monthsDifference} month${monthsDifference > 1 ? 's' : ''} ago`;
     } else {
-        return 'This date is in the future'; // Si la fecha es futura
+        return 'No data'; // Si la fecha es futura
     }
 }

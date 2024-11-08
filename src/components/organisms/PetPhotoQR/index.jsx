@@ -67,7 +67,7 @@ export default function PetPhotoQR({ petAccountData }) {
                                 // logoImage={imgLogo} // Specify logo image
                                 // logoWidth={60} // Adjust logo size
                                 // logoHeight={60}
-                                qrStyle="squares" // Different styles: "dots" or "squares"
+                                qrStyle="squares" // Different styles: "dots" or "squares"m 
                                 eyeRadius={10} // Adjust eye radius of the QR
                             />
                         </div>

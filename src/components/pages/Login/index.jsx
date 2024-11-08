@@ -41,11 +41,6 @@ export default function Login() {
 
             if (apiResponse.result) {
                 let message;
-                if (apiResponse.data.userTypeId === "O") {
-                    message = "Bienvenid@ " + apiResponse.data.details.completeName;
-                } else {
-                    message = "Bienvenidos " + apiResponse.data.details.name;
-                }
                 updateSessionState();
                 alert(JSON.stringify(message));
                 navigate("/Homepage");
@@ -55,7 +50,6 @@ export default function Login() {
                     setErrorMessage(null);
                 }, 7000);
             }
-
         } catch (error) {
             alert("Login error: " + error.message);
             console.error("Error:", error);
