@@ -5,7 +5,6 @@ import ButtonLogin from "../../atoms/Button";
 import ProfileImage from "../../atoms/ProfileImage";
 import Link from "../../atoms/Link";
 import Logo from "../../atoms/Logo";
-import userImage from "../../../assets/img/veterinary.webp";
 import { useOpenClose } from "../../../hooks/useOpenClose";
 import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger";
 import DropdownMenu from "../../molecules/DropDownMenu"; // Ensure the path is correct
