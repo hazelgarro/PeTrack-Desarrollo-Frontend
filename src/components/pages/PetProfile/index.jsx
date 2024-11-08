@@ -31,6 +31,7 @@ import EditPet from "../../organisms/EditPet/index.jsx";
 import TransferPet from "../../organisms/TransferPet/index.jsx";
 import Loader from "../../atoms/Loader/index.jsx";
 import ProfileImage from "../../atoms/ProfileImage/index.jsx";
+import imageUserDefault from '../../../assets/img/UserDefault.svg';
 
 export default function PetProfile() {
     const { id } = useParams();
@@ -225,32 +226,32 @@ export default function PetProfile() {
                     </TextBlock>
                 </section>
 
+                <section>
+                    <h2 className="my-4 text-2xl text-petrack-black font-semibold">{petData.ownerId === "O" ? "Dueño" : "Refugio"}</h2>
 
-                <section className="flex items-center">
-                    <div className="flex items-center gap-8">
-                        <a href= {petData.ownerType === "O" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
-                            <ProfileImage
-                                imageSrc={ownerData.profilePicture}
-                                defaultImage="https://via.placeholder.com/50" // Reemplaza con tu imagen por defecto
-                                size="large"
-                            />
-                        </a>
-                        <div className="flex flex-col items-center">
+                    <div className="flex items-center">
+                        <div className="flex items-center gap-8">
+                            <a href={petData.ownerType === "O" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
+                                <ProfileImage
+                                    imageSrc={ownerData.profilePicture}
+                                    defaultImage={imageUserDefault} // Reemplaza con tu imagen por defecto
+                                    size="large"
+                                />
+                            </a>
 
-                            <span className="text-xs text-gray-500">Owned by</span>
-                            <span className="text-sm font-semibold">{ownerData.completeName || 'Full name'}</span>
-                        </div>
+                            <p className="text-xl font-semibold">{ownerData.completeName || ownerData.name}</p>
 
-                        {/* Teléfono */}
-                        <div className="flex items-center gap-2">
-                            <IconPhone size="large" />
-                            <span>{ownerData.phoneNumber || 'Not available'}</span>
-                        </div>
+                            {/* Teléfono */}
+                            <div className="flex items-center gap-2">
+                                <IconPhone size="large" />
+                                <span>{ownerData.phoneNumber || 'Not available'}</span>
+                            </div>
 
-                        {/* Correo electrónico */}
-                        <div className="flex items-center gap-2">
-                            <IconEmail size="large" />
-                            <span>{ownerData.email || 'email@email.com'}</span>
+                            {/* Correo electrónico */}
+                            <div className="flex items-center gap-2">
+                                <IconEmail size="large" />
+                                <span>{ownerData.email || 'email@email.com'}</span>
+                            </div>
                         </div>
                     </div>
                 </section>

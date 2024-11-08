@@ -9,10 +9,10 @@ export function getFormattedDate(dateString) {
     const totalMonthsDifference = yearsDifference * 12 + monthsDifference;
 
     if (totalMonthsDifference >= 12) {
-        return `${yearsDifference} year${yearsDifference > 1 ? 's' : ''} ago`;
+        return `${yearsDifference} año${yearsDifference > 1 ? 's' : ''}`;
     } else if (totalMonthsDifference > 0) {
-        return `${monthsDifference} month${monthsDifference > 1 ? 's' : ''} ago`;
+        return `${monthsDifference} mes${monthsDifference > 1 ? 'es' : ''}`;
     } else {
-        return 'No data'; // Si la fecha es futura
+        return 'Sin datos'; // Si la fecha es futura
     }
 }
