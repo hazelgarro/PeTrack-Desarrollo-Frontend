@@ -1,15 +1,15 @@
 
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import ButtonSignUp from "../../atoms/Button";
-import ButtonLogin from "../../atoms/Button";
-import Link from "../../atoms/Link";
-import Logo from "../../atoms/Logo";
-import { useOpenClose } from "../../../hooks/useOpenClose";
-import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger";
-import DropdownMenu from "../../molecules/DropDownMenu"; // Ensure the path is correct
+import ButtonSignUp from "../../atoms/Button/index.jsx";
+import ButtonLogin from "../../atoms/Button/index.jsx";
+import Link from "../../atoms/Link/index.jsx";
+import Logo from "../../atoms/Logo/index.jsx";
+import { useOpenClose } from "../../../hooks/useOpenClose.js";
+import MenuHamburgerIcon from "../../atoms/Icons/MenuHamburger/index.jsx";
+import DropdownMenu from "../../molecules/DropDownMenu/index.jsx"; // Ensure the path is correct
 import { logoutUser } from "../../../utils/sessionManager.js";
-import { useSession } from '../../../context/SessionContext';
+import { useSession } from '../../../context/SessionContext/index.jsx';
 import { useNavigate } from "react-router-dom";
 import { getData } from "../../../utils/apiConnector.js";
 import ChangePassword from "../ChangePassword/index.jsx";
