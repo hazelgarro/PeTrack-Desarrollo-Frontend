@@ -140,7 +140,7 @@ export default function PetProfile() {
         <>
             <Button variant="border-green" variant2="content-fit" size="extra-small" onClick={handleDeletePet}>
                 <div className="flex items-center gap-1">
-                    <DeleteIcon size="medium"></DeleteIcon> <span>Delete</span>
+                    <DeleteIcon size="medium"></DeleteIcon> <span>Eliminar</span>
                 </div>
             </Button>
             <TransferPet isAuthenticated={isAuthenticated} petAccountData={petData}></TransferPet>
@@ -180,7 +180,7 @@ export default function PetProfile() {
                                     <Button variant="solid-green" size="extra-small" className="ml-4 !w-auto">
                                         <div className="flex items-center gap-2">
                                             <Missed color="white" />
-                                            <span>Am I lost?</span>
+                                            <span>Estoy perdido?</span>
                                         </div>
                                     </Button>
                                 </Link>
@@ -220,8 +220,8 @@ export default function PetProfile() {
                         </IconText>
                     </ProfileInfoContainer>
                 </section>
-                <section className="my-6">
-                    <TextBlock title="Health Issues">
+                <section className="my-14">
+                    <TextBlock title="Condiciones de Salud">
                         <p className="text-petrack-black mt-2 mb-4">{petData.healthIssues ? petData.healthIssues : "No Data"}</p>
                     </TextBlock>
                 </section>

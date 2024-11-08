@@ -81,7 +81,7 @@ export default function EditPet({ petAccountData, updatePetData }) {
         <>
             <Button onClick={toggleModal} variant="border-green" variant2="content-fit" size="extra-small">
                 <div className="flex items-center gap-1">
-                    <IconEdit size="medium"></IconEdit> <span>Edit pet</span>
+                    <IconEdit size="medium"></IconEdit> <span>Editar</span>
                 </div>
             </Button>
 

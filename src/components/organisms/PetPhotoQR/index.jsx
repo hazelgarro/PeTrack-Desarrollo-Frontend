@@ -46,7 +46,7 @@ export default function PetPhotoQR({ petAccountData }) {
             <div className="absolute top-2 right-2 p-3">
                 <Button onClick={hookModalQr.toggleModal} variant="solid-green" size="extra-small">
                     <div className="flex items-center">
-                        <QrCodeIcon className="mr-2" />QR Code for {petAccountData.name}
+                        <QrCodeIcon className="mr-2" />Código QR para {petAccountData.name}
                     </div>
                 </Button>
             </div>
