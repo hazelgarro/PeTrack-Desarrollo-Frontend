@@ -19,8 +19,8 @@ const Footer = () => (
           </div>
           <div className='flex flex-col gap-4 items-center justify-center md:col-span-1 md:mt-2'>
             <p className='text-2xl font-semibold'>Our Services</p>
-            <a href="#">Home Page</a>
-            <a href="#">Adoption Catalog</a>
+            <a href="/">Home Page</a>
+            <a href="/ShelterListPage">Adoption Catalog</a>
             <a href="#">QR Identification Service</a>
           </div>
           <div className='flex flex-col gap-4 items-center justify-center md:col-span-1 mt-6 md:mt-2'>

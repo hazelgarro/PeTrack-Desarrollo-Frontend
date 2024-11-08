@@ -21,7 +21,7 @@ function App() {
     <SessionContextProvider>
       <Router>
         <Routes>
-          <Route path="/" element={<LandingPage />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/AccountRecovery" element={<AccountRecovery />} />
           <Route path="/ResetPassword/:token?" element={<ResetPassword />} />
@@ -30,7 +30,7 @@ function App() {
           <Route path="/PetProfile/:id" element={<PetProfile />} />
           <Route path="/PetOwnerProfile/:id?" element={<PetOwnerProfile />} />
           <Route path="/ShelterProfile/:id?" element={<ShelterProfile />} />
-          <Route path="/Homepage/:id?" element={<HomePage />} />
+          <Route path="/Homepage" element={<HomePage />} />
           <Route path="/ShelterListPage" element={<ShelterListPage />} />
         </Routes>
       </Router >
