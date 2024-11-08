@@ -65,7 +65,7 @@ export default function EditUser({ accountData }) {
         <>
             <Button variant="border-green" variant2="content-fit" size="extra-small" onClick={toggleModal}>
                 <div className="flex items-center gap-1">
-                    <IconEdit size="medium" /> <span>Edit Profile</span>
+                    <IconEdit size="medium" /> <span>Editar</span>
                 </div>
             </Button>
 

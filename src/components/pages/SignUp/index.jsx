@@ -227,7 +227,7 @@ export default function SignUp() {
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
 
             <CSSTransition in={!isFormSubmitted} timeout={500} classNames="form-slide" unmountOnExit>
-                <Form title="Crear cuenta" subTitle="Ingresa tus datosj" onSubmit={handleFirtsSubmit}>
+                <Form title="Crear cuenta" subTitle="Ingresa tus datos" onSubmit={handleFirtsSubmit}>
                     <SelectInput
                         size="medium"
                         placeholder="Tipo de Usuario"
@@ -281,7 +281,7 @@ export default function SignUp() {
                         Registrarse
                     </Button>
                     <h3 className="text-center pt-5">
-                        ¿Ya posee un cuenta?{" "}
+                        ¿Ya tiene una cuenta?{" "}
                         <a className="font-bold text-petrack-green" href="/Login">
                             Iniciar sesión
                         </a>

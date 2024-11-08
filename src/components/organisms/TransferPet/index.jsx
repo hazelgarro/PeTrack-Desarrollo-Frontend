@@ -59,7 +59,7 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
         <>
             <Button onClick={toggleModal} variant="border-green" variant2="content-fit" size="extra-small">
                 <div className="flex items-center gap-1">
-                    <TransferIcon size="medium"></TransferIcon> <span>Transfer</span>
+                    <TransferIcon size="medium"></TransferIcon> <span>Transferir</span>
                 </div>
             </Button>
 

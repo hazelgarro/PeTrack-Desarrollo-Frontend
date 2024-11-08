@@ -77,36 +77,36 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
 
     return (
         <Modal isOpen={isOpen} toggleModal={toggleModal}>
-            <Form title="Change password" type="edit" onSubmit={handleSubmit}>
-                <p className="px-5">Current password</p>
+            <Form title="Cambiar contraseña" type="edit" onSubmit={handleSubmit}>
+                <p className="px-5">Contraseña actual</p>
                 <PasswordInput
                     size="medium"
-                    placeholder="Current password"
+                    placeholder="Contraseña actual"
                     name="currentPassword"
                     value={passwords.currentPassword}
                     onChange={handleInputChange}
                 />
                 <hr className="my-2 border-t-2 border-gray-300" />
 
-                <p className="px-5">New password</p>
+                <p className="px-5">Nueva contraseña</p>
                 <PasswordInput
                     size="medium"
-                    placeholder="New password"
+                    placeholder="Nueva contraseña"
                     name="newPassword"
                     value={passwords.newPassword}
                     onChange={handleInputChange}
                 />
-                <p className="px-5">Confirm new password</p>
+                <p className="px-5">Confirmar nueva contraseña</p>
                 <PasswordInput
                     size="medium"
-                    placeholder="Confirm new password"
+                    placeholder="Confirmar nueva contraseña"
                     name="confirmNewPassword"
                     value={passwords.confirmNewPassword}
                     onChange={handleInputChange}
                 />
                 {error && <p className="my-2 text-red-500">{error}</p>}
                 <Button type="submit" size="small" variant="solid-green">
-                    Change
+                    Cambiar
                 </Button>
             </Form>
         </Modal>

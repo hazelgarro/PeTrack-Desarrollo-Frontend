@@ -4,7 +4,7 @@ import LocationIcon from "../../atoms/Icons/Location/index.jsx";
 import ProfileInfoContainer from "../../organisms/ProfileInfoContainer";
 import ButtonAdopt from "../../atoms/Button";
 import petPicture from '../../../assets/img/pet_picture.webp';
-import NavBar from "../../organisms/NavLoged/index.jsx";
+import NavBar from "../../organisms/NavMenu/index.jsx";
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getData } from "../../../utils/apiConnector.js";

@@ -96,9 +96,9 @@ export default function NavMenu({ variant = "" }) {
                             {isAuthenticated ? (
 
                                 <>
-                                    <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
-                                    <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
-                                    <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
+                                    <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Cambiar contraseña</Link>
+                                    <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Eliminar cuenta</Link>
+                                    <Link onClick={logout} variant={variant} className="dropdown-link">Cerrar sesión</Link>
 
                                 </>
                             ) : (
@@ -106,10 +106,10 @@ export default function NavMenu({ variant = "" }) {
                                 <div className="flex flex-col gap-6 ml-3 mb-6">
 
                                     <a href="/Login">
-                                        <ButtonLogin variant="border-green" size="extra-small">Login</ButtonLogin>
+                                        <ButtonLogin variant="border-green" size="extra-small">Iniciar sesión</ButtonLogin>
                                     </a>
                                     <a href="/Signup">
-                                        <ButtonSignUp variant="solid-green" size="extra-small">Sign Up</ButtonSignUp>
+                                        <ButtonSignUp variant="solid-green" size="extra-small">Registrarse</ButtonSignUp>
                                     </a>
                                 </div>
                                 </>
