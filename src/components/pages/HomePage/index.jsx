@@ -164,6 +164,7 @@ export default function HomePage() {
                                             imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
                                             imgAlt={pet.name}
                                             name={pet.name}
+                                            gender={pet.gender}
                                             species={pet.species}
                                         />
                                     ))}
@@ -243,6 +244,7 @@ export default function HomePage() {
                                         imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
                                         imgAlt={pet.name}
                                         name={pet.name}
+                                        gender={pet.gender}
                                         species={pet.species}
                                         location={pet.location}
                                         breed={pet.breed}
