@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getData } from '../../../utils/apiConnector.js';
 
-import NavBar from "../../organisms/Nav";
+import NavBar from "../../organisms/NavMenu";
 import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 import CardsContainer from "../../organisms/cardsContainer";
 import Card from "../../molecules/Card/index.jsx";
@@ -93,10 +93,10 @@ export default function PagePetOwner() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 mb-4">
                     <div>
-                        <p className="text-center mb-2 sm:text-left">User type</p>
+                        <p className="text-center mb-2 sm:text-left">Tipo de Usuario</p>
                         <div className="flex justify-center sm:justify-start gap-2 items-center">
                             <IconUser size="large"></IconUser>
-                            <h4 className="text-xl">{ownerData.userType || 'Pet Owner'}</h4>
+                            <h4 className="text-xl">{ownerData.userTypeId === "O" ? 'Dueño/a de Mascota' : 'Refugio' }</h4>
                     </div>
                         </div>
                     <div>
@@ -107,7 +107,7 @@ export default function PagePetOwner() {
                         </div>
                     </div>
                     <div>
-                        <p className="text-center mb-2 sm:text-left">Phone number</p>
+                        <p className="text-center mb-2 sm:text-left">Numero de Teléfono</p>
                         <div className="flex justify-center sm:justify-start gap-2 items-center">
                             <IconPhone size="large"></IconPhone>
                             <h4 className="text-xl">{ownerData.phoneNumber || 'Not available'}</h4>
@@ -118,7 +118,7 @@ export default function PagePetOwner() {
                 {!id &&
                     <div>
                         <div>
-                            <p className="flex font-outfit text-petrack-green text-2xl md:text-3xl font-bold mt-12 md:mt-24 mb-6 text-center">My pets</p>
+                            <p className="flex font-outfit text-petrack-green text-2xl md:text-3xl font-bold mt-12 md:mt-24 mb-6 text-center">Mis Mascotas</p>
                         </div>
                         <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {ownerData.pets && ownerData.pets.length > 0 ? (

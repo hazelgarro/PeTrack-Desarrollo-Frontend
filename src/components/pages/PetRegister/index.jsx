@@ -172,17 +172,17 @@ export default function PetRegister() {
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
 
             <CSSTransition in={!isFormSubmitted} timeout={500} classNames="form-slide" unmountOnExit>
-                <Form title="Register your pet" subTitle="What type of account do you want to register?" onSubmit={handleFirstSubmit}>
+                <Form title="Registra tu mascota" onSubmit={handleFirstSubmit}>
                     <TextInput
                         size="medium"
-                        placeholder="Name" // Placeholder dinámico
+                        placeholder="Nombre" // Placeholder dinámico
                         name="name"
                         value={petData.name}
                         onChange={handleInputChange}
                     />
                     <SelectInput
                         size="medium"
-                        placeholder="Species"
+                        placeholder="Especie"
                         options={speciesOptions}
                         name="species"
                         value={petData.species}
@@ -190,14 +190,14 @@ export default function PetRegister() {
                     />
                     <TextInput
                         size="medium"
-                        placeholder="Breed"
+                        placeholder="Raza"
                         name="breed"
                         value={petData.breed}
                         onChange={handleInputChange}
                     />
                     <SelectInput
                         size="medium"
-                        placeholder="Gender"
+                        placeholder="Género"
                         options={genderOptions}
                         name="gender"
                         value={petData.gender}

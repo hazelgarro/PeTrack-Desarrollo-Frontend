@@ -17,7 +17,7 @@ export default function SocialIcon({ variant, href }) {
     }
 
     return (
-        <a href={href} className="mr-8">
+        <a href={href} className="">
             <img src={iconSrc} alt={variant} />
         </a>
     );
