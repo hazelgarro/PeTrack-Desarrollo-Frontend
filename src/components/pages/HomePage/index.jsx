@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
+import NavMenu from "../../organisms/NavMenu";
 import Nav from "../../organisms/Nav";
+import NavLanding from "../../organisms/NavLanding";
 import Welcome from "../../organisms/WelcomeContainer";
 import CardsContainer from "../../organisms/cardsContainer";
 import MedicalRecord from "../../atoms/Icons/MedicalRecord";
@@ -153,7 +155,7 @@ export default function HomePage() {
                         {pets.length > 0 ? (
                             <>
                                 <div className="flex justify-center items-center pt-16">
-                                    <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Mis Mascotas</p>
+                                    <p className="text-3xl m-12 md:text-5xl font-medium text-petrack-green text-center">Mis Mascotas</p>
                                 </div>
                                 <CardsContainer>
                                     {pets.map((pet) => (
@@ -264,7 +266,7 @@ export default function HomePage() {
             ) : (
                 <>
                     {/* Contenido para usuarios no autenticados */}
-                    <Nav isAuthenticated={false} variant="green" />
+                    <NavMenu isAuthenticated={false} variant="green" />
                     <Welcome />
 
                     <div className=" items-center mx-6 md:mx-24 lg:mx-72 my-10 md:my-20 flex flex-col gap-6 md:gap-8">
@@ -309,14 +311,15 @@ export default function HomePage() {
                         </div>
                     </div>
                     <ServicesContainer />
-                    <div className="flex justify-center">
+                    <div className="flex justify-center m-24">
                         <div className="flex flex-col justify-center items-center gap-8">
-                            <p className="text-3xl md:text-5xl font-bold">Únete a Nuestra Comunidad</p>
+                            <p className="text-3xl md:text-5xl font-bold text-center">Únete a Nuestra Comunidad</p>
                             <a href="/Signup"><Button type="button" variant="solid-green" size="large">Registrarse</Button></a>
                         </div>
-                        <div>
+                        <div className="hidden md:block">
                             <img src={Smartphone} alt="" />
                         </div>
+
                     </div>
                 </>
             )}

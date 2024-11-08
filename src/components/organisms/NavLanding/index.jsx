@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ButtonSignUp from "../../atoms/Button";
@@ -15,7 +16,7 @@ import { getData } from "../../../utils/apiConnector.js";
 import ChangePassword from "../ChangePassword/index.jsx";
 
 
-export default function NavBar({ variant = "" }) {
+export default function NavMenu({ variant = "" }) {
     const { isOpen, toggleModal } = useOpenClose();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [currentVariant, setCurrentVariant] = useState(variant);
@@ -27,33 +28,24 @@ export default function NavBar({ variant = "" }) {
     }, [variant, isAuthenticated]);
 
     const toggleMenu = () => {
-        if (currentVariant === "menuHamburgerIcon") {
-            setIsMenuOpen(!isMenuOpen);
-        }
+        setIsMenuOpen(!isMenuOpen);
     };
 
     const logout = (e) => {
         e.preventDefault();
-
-        const isConfirmed = window.confirm("Are you sure you want to log out?");
-
-        if (isConfirmed) {
+        if (window.confirm("Are you sure you want to log out?")) {
             logoutUser();
             updateSessionState();
             navigate("/");
         }
-    }
+    };
 
     const deleteAccount = async (e) => {
         e.preventDefault();
-
-        const isConfirmed = window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.");
-
-        if (isConfirmed) {
+        if (window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.")) {
             try {
                 const apiUrl = `https://www.APIPetrack.somee.com/User/DeleteAccount/${userData.id}`;
                 const apiResponse = await getData(apiUrl, null, true, "DELETE");
-
                 if (apiResponse.result) {
                     alert("The user has been successfully deleted");
                     logoutUser();
@@ -67,66 +59,72 @@ export default function NavBar({ variant = "" }) {
                 alert("Error deleting account");
             }
         }
-    }
+    };
 
-    const onClickPasswordChange = () =>{
+    const onClickPasswordChange = () => {
         toggleMenu();
         toggleModal();
-    }
+    };
 
     return (
         <div className="w-full bg-white">
-            <nav className="flex justify-between items-center px-8 py-4">
-                <a href="/Homepage">
-                    <Logo size="extra-small" />
-                </a>
+            <nav className="flex justify-between items-center px-5 py-4">
+                <div>
+                    <a href="/Homepage">
+                        <Logo size="extra-small" />
+                    </a>
+                </div>
+                <div className="flex gap-4">
 
-                <ChangePassword userId={userData.id} isOpen={isOpen} toggleModal={toggleModal}></ChangePassword>
+                
 
-                <div className="flex space-x-4 items-center">
-                    <div className="p-2">
-                        <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
-                        <Link href="/ShelterListPage" variant={variant} size="small">Adopción</Link>
-                        <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
-                    </div>
+                <ChangePassword userId={userData.id} isOpen={isOpen} toggleModal={toggleModal} />
 
-                    {isAuthenticated ? (
-                        currentVariant === "menuHamburgerIcon" ? (
-                            <div className="relative">
-                                <button onClick={toggleMenu}>
-                                    <MenuHamburgerIcon size="small" />
-                                </button>
-                                <DropdownMenu
-                                    isMenuOpen={isMenuOpen}
-                                    size={"size-extra-small"}
-                                >
+                <div className="relative">
+                    {/* Menu icon that toggles dropdown */}
+                    <button onClick={toggleMenu} className="p-2">
+                        <MenuHamburgerIcon size="small" />
+                    </button>
+
+                    {/* Dropdown menu content */}
+                    {isMenuOpen && (
+
+                        <DropdownMenu isMenuOpen={isMenuOpen} size={"size-extra-small"}>
+                            <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
+                            <Link href="/ShelterListPage" variant={variant} size="small">Adopción</Link>
+                            <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
+
+                            {isAuthenticated ? (
+
+                                <>
                                     <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
                                     <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
                                     <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
-                                    
-                                </DropdownMenu>
-                            </div>
-                        ) : (
-                            <a href={userData.userTypeId === "O" ? "/PetOwnerProfile" : "/ShelterProfile"}>
-                                <ProfileImage imageSrc={userData.profilePicture} size="small" />
-                            </a>
-                        )
-                    ) : (
-                        <>
-                            <a href="/Login">
-                                <ButtonLogin variant={`border-green`} size="extra-small">Login</ButtonLogin>
-                            </a>
-                            <a href="/Signup">
-                                <ButtonSignUp variant={`solid-green`} size="extra-small">Sign Up</ButtonSignUp>
-                            </a>
-                        </>
+
+                                </>
+                            ) : (
+                                <>
+                                <div className="flex flex-col gap-6 ml-3 mb-6">
+
+                                    <a href="/Login">
+                                        <ButtonLogin variant="border-green" size="extra-small">Login</ButtonLogin>
+                                    </a>
+                                    <a href="/Signup">
+                                        <ButtonSignUp variant="solid-green" size="extra-small">Sign Up</ButtonSignUp>
+                                    </a>
+                                </div>
+                                </>
+                            )}
+                        </DropdownMenu>
                     )}
+                </div>
+
                 </div>
             </nav>
         </div>
     );
 }
 
-NavBar.propTypes = {
+NavMenu.propTypes = {
     variant: PropTypes.string,
 };
