@@ -212,23 +212,23 @@ export default function PetRegister() {
                         onChange={handleInputChange}
                     />
                     <Button type="submit" size="small" variant="solid-green">
-                        Register
+                        Registrar
                     </Button>
                     <Button onClick={() => navigate(-1)} size="small">
-                        Cancel
+                        Cancelar
                     </Button>
                 </Form>
             </CSSTransition>
 
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
-                <Form title="Add additional info" subTitle="We're almost done" onSubmit={handleFinalSubmit}>
+                <Form title="Añade información extra" subTitle="Ya casi terminamos..." onSubmit={handleFinalSubmit}>
                     <div className="relative flex flex-col items-center">
                         <div className="w-full mb-5">
                             <LoadImage name="petPictureTemp" image={petPictureTemp} imageType="rectangular" onChange={handleInputChange} />
                         </div>
                         <TextInput
                             size="medium"
-                            placeholder="Location"
+                            placeholder="Ubicación"
                             name="location"
                             value={petData.location}
                             isRequired={false}
@@ -236,7 +236,7 @@ export default function PetRegister() {
                         />
                         <TextInput
                             size="medium"
-                            placeholder="Weight"
+                            placeholder="Peso en Kg"
                             name="weight"
                             value={petData.weight}
                             isRequired={false}
@@ -244,7 +244,7 @@ export default function PetRegister() {
                         />
                         <TextInput
                             size="medium"
-                            placeholder="Health issues"
+                            placeholder="Condiciones Médicas"
                             name="healthIssues"
                             value={petData.healthIssues}
                             isRequired={false}
@@ -254,8 +254,8 @@ export default function PetRegister() {
                         {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
 
                         <div className="flex flex-col w-full justify-end mt-4 gap-2">
-                            <Button size="small" variant="solid-green" type="submit">Continue</Button>
-                            <Button onClick={handleSkip} size="small">Skip</Button>
+                            <Button size="small" variant="solid-green" type="submit">Continuar</Button>
+                            <Button onClick={handleSkip} size="small">Omitir</Button>
                         </div>
                     </div>
                 </Form>
