@@ -49,6 +49,8 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
             } else {
                 alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
             }
+            setTransferData({ email: "", password: "" });
+            toggleModal();
         } catch (error) {
             console.error("Error al enviar la solicitud de adopción:", error);
             alert("Error al enviar la solicitud de adopción. Intente más tarde.");
