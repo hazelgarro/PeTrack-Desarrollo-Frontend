@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import ButtonSignUp from "../../atoms/Button";
 import ButtonLogin from "../../atoms/Button";
-import ProfileImage from "../../atoms/ProfileImage";
 import Link from "../../atoms/Link";
 import Logo from "../../atoms/Logo";
 import { useOpenClose } from "../../../hooks/useOpenClose";
@@ -14,6 +13,7 @@ import { useSession } from '../../../context/SessionContext';
 import { useNavigate } from "react-router-dom";
 import { getData } from "../../../utils/apiConnector.js";
 import ChangePassword from "../ChangePassword/index.jsx";
+import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 
 
 export default function NavMenu({ variant = "" }) {
@@ -74,50 +74,53 @@ export default function NavMenu({ variant = "" }) {
                         <Logo size="extra-small" />
                     </a>
                 </div>
-                <div className="flex gap-4">
 
-                
+                <div className="flex gap-4 items-center">
+                    <div className="">
+                    <a href={userData.userTypeId === "O" ? "/PetOwnerProfile" : "/ShelterProfile"}>
+                        <ProfileImage imageSrc={userData.profilePicture} size="small" />
+                    </a>
+                    </div>
+                    <ChangePassword userId={userData.id} isOpen={isOpen} toggleModal={toggleModal} />
 
-                <ChangePassword userId={userData.id} isOpen={isOpen} toggleModal={toggleModal} />
+                    <div className="relative">
+                        {/* Menu icon that toggles dropdown */}
+                        <button onClick={toggleMenu} className="p-2">
+                            <MenuHamburgerIcon size="small" />
+                        </button>
 
-                <div className="relative">
-                    {/* Menu icon that toggles dropdown */}
-                    <button onClick={toggleMenu} className="p-2">
-                        <MenuHamburgerIcon size="small" />
-                    </button>
+                        {/* Dropdown menu content */}
+                        {isMenuOpen && (
 
-                    {/* Dropdown menu content */}
-                    {isMenuOpen && (
+                            <DropdownMenu isMenuOpen={isMenuOpen} size={"size-extra-small"}>
+                                <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
+                                <Link href="/ShelterListPage" variant={variant} size="small">Adopción</Link>
+                                <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
 
-                        <DropdownMenu isMenuOpen={isMenuOpen} size={"size-extra-small"}>
-                            <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
-                            <Link href="/ShelterListPage" variant={variant} size="small">Adopción</Link>
-                            <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
+                                {isAuthenticated ? (
 
-                            {isAuthenticated ? (
+                                    <>
+                                        <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
+                                        <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
+                                        <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
 
-                                <>
-                                    <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
-                                    <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
-                                    <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
+                                    </>
+                                ) : (
+                                    <>
+                                        <div className="flex flex-col gap-6 ml-3 mb-6">
 
-                                </>
-                            ) : (
-                                <>
-                                <div className="flex flex-col gap-6 ml-3 mb-6">
-
-                                    <a href="/Login">
-                                        <ButtonLogin variant="border-green" size="extra-small">Login</ButtonLogin>
-                                    </a>
-                                    <a href="/Signup">
-                                        <ButtonSignUp variant="solid-green" size="extra-small">Sign Up</ButtonSignUp>
-                                    </a>
-                                </div>
-                                </>
-                            )}
-                        </DropdownMenu>
-                    )}
-                </div>
+                                            <a href="/Login">
+                                                <ButtonLogin variant="border-green" size="extra-small">Login</ButtonLogin>
+                                            </a>
+                                            <a href="/Signup">
+                                                <ButtonSignUp variant="solid-green" size="extra-small">Sign Up</ButtonSignUp>
+                                            </a>
+                                        </div>
+                                    </>
+                                )}
+                            </DropdownMenu>
+                        )}
+                    </div>
 
                 </div>
             </nav>

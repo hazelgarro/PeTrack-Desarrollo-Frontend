@@ -147,7 +147,7 @@ export default function HomePage() {
             {isAuthenticated ? (
                 <>
                     {/* Contenido para usuarios autenticados */}
-                    <Nav isAuthenticated={isAuthenticated} variant="green" />
+                    <NavLanding isAuthenticated={isAuthenticated} variant="green" />
                     <Welcome />
 
                     {/* Pets Section */}
