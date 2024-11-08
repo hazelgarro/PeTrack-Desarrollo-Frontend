@@ -227,11 +227,11 @@ export default function PetProfile() {
                 </section>
 
                 <section>
-                    <h2 className="my-4 text-2xl text-petrack-black font-semibold">{petData.ownerId === "O" ? "Dueño" : "Refugio"}</h2>
+                    <h2 className="my-4 text-2xl text-petrack-black font-semibold">{petData.ownerType === "PetOwner" ? "Dueño" : "Refugio"}</h2>
 
                     <div className="flex items-center">
                         <div className="flex items-center gap-8">
-                            <a href={petData.ownerType === "O" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
+                            <a href={petData.ownerType === "PetOwner" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
                                 <ProfileImage
                                     imageSrc={ownerData.profilePicture}
                                     defaultImage={imageUserDefault} // Reemplaza con tu imagen por defecto

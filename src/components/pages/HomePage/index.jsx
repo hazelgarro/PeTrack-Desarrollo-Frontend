@@ -23,6 +23,7 @@ export default function HomePage() {
     const { userData, isAuthenticated } = useSession();
     const [pets, setPets] = useState([]);
     const [adoptionRequests, setAdoptionRequests] = useState([]);
+    const [transfers, setTransfers] = useState([]);
     const [adoptionPets, setAdoptionPets] = useState([]);
     const [visiblePets, setVisiblePets] = useState(6);
     const [filter, setFilter] = useState("Todos");
@@ -39,27 +40,32 @@ export default function HomePage() {
                         true,
                         "GET"
                     );
+
                     if (petResponse.result) {
                         setPets(petResponse.data);
 
                         // Fetch adoption requests for each pet
-                        const allRequests = [];
-                        for (const pet of petResponse.data) {
-                            const requestResponse = await getData(
-                                `https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`,
-                                null,
-                                true,
-                                "GET"
-                            );
-                            if (requestResponse.result) {
-                                requestResponse.data.forEach((request) => {
-                                    allRequests.push({ ...request, petName: pet.name, petPicture: pet.petPicture });
-                                });
+                        if (userData.userTypeId === "S") {
+                            let allRequests = [];
+                            for (const pet of petResponse.data) {
+                                const requestResponse = await getData(
+                                    `https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`,
+                                    null,
+                                    true,
+                                    "GET"
+                                );
+                                if (requestResponse.result) {
+                                    requestResponse.data.forEach((request) => {
+                                        allRequests.push({
+                                            ...request,
+                                            petName: pet.name,
+                                            petPicture: pet.petPicture,
+                                        });
+                                    });
+                                }
                             }
+                            setAdoptionRequests(allRequests);
                         }
-                        setAdoptionRequests(allRequests);
-                    } else {
-                        alert(petResponse.message);
                     }
                 } catch (error) {
                     console.error("Error fetching pets and requests:", error);
@@ -76,6 +82,7 @@ export default function HomePage() {
                     false,
                     'GET'
                 );
+
                 if (response.result) {
                     setAdoptionPets(response.data);
                 } else {
@@ -87,9 +94,32 @@ export default function HomePage() {
             setLoading(false);
         };
 
-        fetchAdoptionPets();
-        fetchPetsAndRequests();
+        const fetchTransfers = async () => {
+            if (isAuthenticated && userData) {
+                try {
+                    const apiUrl = `https://www.APIPetrack.somee.com/Transfer/GetTransferRequestsByUserId/${userData.id}`;
+                    const apiResponse = await getData(apiUrl, null, true, "GET");
+
+                    if (apiResponse.result) {
+                        setTransfers(apiResponse.data);
+                        console.log(apiResponse.data);
+                    } else {
+                        console.error("Error fetching transfer requests:", apiResponse.message);
+                    }
+                } catch (error) {
+                    console.error("Error fetching transfer requests:", error);
+                }
+            }
+        };
+
+        if (isAuthenticated && userData) {
+            fetchAdoptionPets();
+            fetchPetsAndRequests();
+            fetchTransfers();
+        }
+
     }, [isAuthenticated, userData]);
+
 
     const loadMorePets = () => {
         setVisiblePets((prevVisible) => prevVisible + 6);
@@ -108,11 +138,24 @@ export default function HomePage() {
     const handleRequestAction = async (requestId, action) => {
         try {
             // Determina la URL correcta según la acción
-            const endpoint = action === "AcceptRequest"
-                ? `https://www.APIPetrack.somee.com/Adoption/AcceptAdoptionRequest/${requestId}`
-                : `https://www.APIPetrack.somee.com/Adoption/RejectAdoptionRequest/${requestId}`;
+            let endpoint;
 
-            // Llama a la API con el método PUT tanto para aceptar como para rechazar
+            switch (action) {
+                case "AcceptRequest":
+                    endpoint = `https://www.APIPetrack.somee.com/Adoption/AcceptAdoptionRequest/${requestId}`;
+                    break;
+                case "RejectRequest":
+                    endpoint = `https://www.APIPetrack.somee.com/Adoption/RejectAdoptionRequest/${requestId}`;
+                    break;
+                case "DeliveryRequest":
+                    endpoint = `https://www.APIPetrack.somee.com/Adoption/ConfirmDelivery/${requestId}`;
+                    break;
+                default:
+                    console.error("Acción no reconocida:", action);
+                    return;
+            }
+
+            // Llama a la API con el método PUT para aceptar, rechazar o confirmar entrega
             const response = await getData(
                 endpoint,
                 null,
@@ -123,20 +166,25 @@ export default function HomePage() {
             if (response.result) {
                 setAdoptionRequests((prevRequests) =>
                     prevRequests.map((req) =>
-                        req.id === requestId ? { ...req, isAccepted: action === "AcceptRequest" ? "Accepted" : "Rejected" } : req
+                        req.id === requestId
+                            ? {
+                                ...req,
+                                isAccepted:
+                                    action === "AcceptRequest"
+                                        ? "Accepted"
+                                        : action === "RejectRequest"
+                                            ? "Rejected"
+                                            : "Delivered"
+                            }
+                            : req
                     )
                 );
-                alert(response.message);
-            } else {
-                alert(response.message);
             }
         } catch (error) {
-            console.error(`Error ${action === "AcceptRequest" ? "accepting" : "rejecting"} request:`, error);
+            console.error(`Error en la acción ${action}:`, error);
+            alert("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.");
         }
     };
-
-
-
 
     if (loading) {
         return <div>Loading...</div>;
@@ -189,36 +237,80 @@ export default function HomePage() {
                             </div>
                         )}
                     </div>
-                    {/* Adoption Requests Section */}
-                    <div className="flex justify-center items-center pt-16">
-                        <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Solicitudes de Adopción</p>
-                    </div>
 
-                    <div className="mx-12 sm:mx-24 md:mx-44 my-20">
-                        {adoptionRequests.length > 0 ? (
-                            <div>
-                                {adoptionRequests.map((request) => (
-                                    <CardNotification
-                                        key={request.id}
-                                        typeCard="adoption_request"
-                                        imgSrc={request.petPicture || 'default_pet_picture.jpg'}
-                                        imgAlt={request.petName}
-                                        name={request.petName}
-                                        requesterEmail={request.requester.email}
-                                        status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
-
-                                        requestDate={new Date(request.requestDate).toLocaleDateString()}
-                                        onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
-                                        onDeny={() => handleRequestAction(request.id, "RejectRequest")} // Cambiado de onReject a onDeny
-                                    />
-
-                                ))}
+                    {/* Transfers Requests Section */}
+                    {/* {transfers && (
+                        <section>
+                            <div className="flex justify-center items-center pt-16">
+                                <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">
+                                    Transferencias de mascotas recibidas
+                                </p>
                             </div>
-                        ) : (
-                            <div className="text-center text-xl text-gray-500">No hay solicitudes de adopción</div>
-                        )}
-                    </div>
 
+                            <div className="mx-12 sm:mx-24 md:mx-44 my-20">
+                                <div>
+                                    {transfers
+                                        .filter((request) => request.currentOwner.email !== userData.email && request.status === "Pending") // Filtra las solicitudes donde el dueño tiene un correo diferente al usuario actual
+                                        .map((request) => (
+                                            <CardNotification
+                                                key={request.id}
+                                                typeCard="adoption_request"
+                                                imgSrc={request.petPicture || 'default_pet_picture.jpg'}
+                                                imgAlt={request.petName}
+                                                name={request.petName}
+                                                requesterEmail={request.currentOwner.email}
+                                                status={
+                                                    request.status === 'Accepted'
+                                                        ? 'Aceptada'
+                                                        : request.status === 'Rejected'
+                                                            ? 'Denegada'
+                                                            : 'Pendiente'
+                                                }
+                                                requestDate={new Date(request.requestDate).toLocaleDateString()}
+                                                onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
+                                                onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
+                                                onDeny={() => handleRequestAction(request.id, "RejectRequest")}
+                                            />
+                                        ))}
+                                </div>
+                            </div>
+                        </section>
+                    )} */}
+
+
+
+                    {/* Adoption Requests Section */}
+                    {userData.userTypeId === "S" && <section>
+                        <div className="flex justify-center items-center pt-16">
+                            <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">Solicitudes de Adopción</p>
+                        </div>
+
+                        <div className="mx-12 sm:mx-24 md:mx-44 my-20">
+                            {adoptionRequests.length > 0 ? (
+                                <div>
+                                    {adoptionRequests.map((request) => (
+                                        <CardNotification
+                                            key={request.id}
+                                            typeCard="adoption_request"
+                                            imgSrc={request.petPicture || 'default_pet_picture.jpg'}
+                                            imgAlt={request.petName}
+                                            name={request.petName}
+                                            requesterEmail={request.requester.email}
+                                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
+
+                                            requestDate={new Date(request.requestDate).toLocaleDateString()}
+                                            onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
+                                            onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
+                                            onDeny={() => handleRequestAction(request.id, "RejectRequest")} // Cambiado de onReject a onDeny
+                                        />
+
+                                    ))}
+                                </div>
+                            ) : (
+                                <div className="text-center text-xl text-gray-500">No hay solicitudes de adopción</div>
+                            )}
+                        </div>
+                    </section>}
 
                     <div className="grid gap-5 md:gap-10 pt-24">
                         <h2 className="text-3xl md:text-8xl font-bold text-petrack-green text-center">Cambia una vida</h2>
