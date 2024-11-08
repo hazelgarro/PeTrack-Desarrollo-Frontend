@@ -21,6 +21,8 @@ export default function HomePage() {
     const { userData, isAuthenticated } = useSession();
     const [pets, setPets] = useState([]);
     const [adoptionRequests, setAdoptionRequests] = useState([]);
+    const [adoptionPets, setAdoptionPets] = useState([]);
+    const [visiblePets, setVisiblePets] = useState(6);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -63,8 +65,32 @@ export default function HomePage() {
             setLoading(false);
         };
 
+        const fetchAdoptionPets = async () => {
+            try {
+                const response = await getData(
+                    'https://www.APIPetrack.somee.com/Adoption/GetAllAdoptionPets',
+                    null,
+                    false,
+                    'GET'
+                );
+                if (response.result) {
+                    setAdoptionPets(response.data);
+                } else {
+                    console.error("Error fetching adoption pets:", response.message);
+                }
+            } catch (error) {
+                console.error("Error fetching adoption pets:", error);
+            }
+            setLoading(false);
+        };
+
+        fetchAdoptionPets();
         fetchPetsAndRequests();
     }, [isAuthenticated, userData]);
+
+    const loadMorePets = () => {
+        setVisiblePets((prevVisible) => prevVisible + 6);
+    };
 
     const handleRequestAction = async (requestId, action) => {
         try {
@@ -121,6 +147,7 @@ export default function HomePage() {
                                 <CardsContainer>
                                     {pets.map((pet) => (
                                         <Card
+                                            link={`/PetProfile/${pet.id}`}
                                             key={pet.id}
                                             typeCard="pet"
                                             imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
@@ -190,18 +217,29 @@ export default function HomePage() {
 
                     <div className="mx-12 md:mx-24 lg:mx-44 my-8 md:my-20">
                         <CardsContainer>
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
-                            <Card typeCard="adoption_pet" imgSrc={Pet} imgAlt="MedicalRecord" />
+                            {adoptionPets.length > 0 ? (
+                                adoptionPets.slice(0, visiblePets).map((pet) => (
+                                    <Card
+                                        key={pet.id}
+                                        typeCard="adoption_pet"
+                                        imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
+                                        imgAlt={pet.name}
+                                        name={pet.name}
+                                        species={pet.species}
+                                        location={pet.location}
+                                        breed={pet.breed}
+                                    />
+                                ))
+                            ) : (
+                                <div>No hay mascotas disponibles para adopción en este momento.</div>
+                            )}
                         </CardsContainer>
                     </div>
-
-                    <div className="flex justify-center items-center mb-16">
-                        <Button onClick={() => window.location.href = '/ShelterListPage'} type="button" size="small" variant="border-green">Ver más</Button>
-                    </div>
+                    {visiblePets < adoptionPets.length && (
+                        <div className="flex justify-center items-center mb-16">
+                            <Button onClick={loadMorePets} type="button" size="small" variant="border-green">Ver más</Button>
+                        </div>
+                    )}
                 </>
             ) : (
                 <>
