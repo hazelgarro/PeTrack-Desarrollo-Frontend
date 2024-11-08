@@ -168,6 +168,7 @@ export default function HomePage() {
                                             name={pet.name}
                                             gender={pet.gender}
                                             species={pet.species}
+                                            breed={pet.breed}
                                         />
                                     ))}
                                 </CardsContainer>
