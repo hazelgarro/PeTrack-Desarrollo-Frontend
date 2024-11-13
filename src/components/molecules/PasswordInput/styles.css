@@ -10,14 +10,21 @@
 }
 
 .password-input {
-    @apply w-full outline-none bg-transparent box-border;
+    @apply w-full py-2 outline-none bg-transparent box-border;
     /* Asegura que los bordes se calculen bien */
+    position: relative;
+    z-index: 1;
 
     /* Evita el fondo blanco del autocompletado de Chrome */
     &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px white inset;
+        box-shadow: 0 0 0 1000px #f8f9fa inset; /* Cambia #f8f9fa a un color cercano al fondo */
         -webkit-text-fill-color: #000; /* Cambia el color del texto en autocompletado si es necesario */
-        transition: background-color 5000s ease-in-out 0s; /* Evita el cambio brusco de color */
+        border-radius: inherit; /* Aplica el mismo borde redondeado */
+    }
+
+    /* Desactiva el estilo de fondo cuando el autocompletado está activo */
+    &:-internal-autofill-selected {
+        background-color: transparent !important;
     }
 }
 
