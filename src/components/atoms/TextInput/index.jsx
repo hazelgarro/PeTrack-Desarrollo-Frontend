@@ -11,7 +11,7 @@ export default function TextInput({ size, placeholder, name, value, onChange, is
                 value={value}
                 onChange={(e) => onChange({ name, value: e.target.value })}
                 required={isRequired}
-                autocomplete={name}
+                autoComplete={name}
                 className="text-input w-full py-2 outline-none bg-transparent box-border"
             />
         </div>

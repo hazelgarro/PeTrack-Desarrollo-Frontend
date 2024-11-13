@@ -21,7 +21,7 @@ export default function PasswordInput({ size, placeholder, name, value, onChange
                 value={value}
                 onChange={(e) => onChange({ name, value: e.target.value })} 
                 required={isRequired}
-                autocomplete={name}
+                autoComplete={name}
                 className="password-input w-full  outline-none bg-transparent box-border "
             />
             <span onClick={toggleVisibility} className="password-toggle cursor-pointer text-gray-500 ml-2">
