@@ -13,6 +13,13 @@
 .input {
     @apply w-full py-2 outline-none bg-transparent box-border;
     /* Asegura que los bordes se calculen bien */
+
+    /* Evita el fondo blanco del autocompletado de Chrome */
+    &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px white inset;
+        -webkit-text-fill-color: #000; /* Cambia el color del texto en autocompletado si es necesario */
+        transition: background-color 5000s ease-in-out 0s; /* Evita el cambio brusco de color */
+    }
 }
 
 .password-toggle {
