@@ -18,7 +18,7 @@ import Smartphone from "../../../assets/img/Smartphone.png";
 import Logo from "../../atoms/Logo";
 import CardNotification from "../../molecules/CardNotification";
 import Footer from "../../organisms/Footer";
-import Loader from '../../atoms/Loader/index.jsx';
+import Loader from '../../atoms/Loader';
 
 export default function HomePage() {
     const { userData, isAuthenticated } = useSession();
@@ -31,153 +31,79 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchPetsAndRequests = async () => {
+        const fetchData = async () => {
             if (isAuthenticated && userData) {
                 try {
-                    // Fetch pets
-                    const petResponse = await getData(
-                        `https://www.APIPetrack.somee.com/Pet/GetPetsByOwner`,
-                        null,
-                        true,
-                        "GET"
-                    );
+                    const [petResponse, adoptionPetsResponse, transfersResponse] = await Promise.all([
+                        getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner`, null, true, "GET"),
+                        getData(`https://www.APIPetrack.somee.com/Adoption/GetAllAdoptionPets`, null, false, "GET"),
+                        getData(`https://www.APIPetrack.somee.com/Transfer/GetTransferRequestsByUserId/${userData.id}`, null, true, "GET")
+                    ]);
 
                     if (petResponse.result) {
                         setPets(petResponse.data);
-
-                        // Fetch adoption requests for each pet
                         if (userData.userTypeId === "S") {
-                            let allRequests = [];
-                            for (const pet of petResponse.data) {
-                                const requestResponse = await getData(
-                                    `https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`,
-                                    null,
-                                    true,
-                                    "GET"
-                                );
-                                if (requestResponse.result) {
-                                    requestResponse.data.forEach((request) => {
-                                        allRequests.push({
-                                            ...request,
-                                            petName: pet.name,
-                                            petPicture: pet.petPicture,
-                                        });
-                                    });
-                                }
-                            }
-                            setAdoptionRequests(allRequests);
+                            const adoptionRequestsData = await fetchAdoptionRequests(petResponse.data);
+                            setAdoptionRequests(adoptionRequestsData);
                         }
                     }
+
+                    if (adoptionPetsResponse.result) setAdoptionPets(adoptionPetsResponse.data);
+                    if (transfersResponse.result) setTransfers(transfersResponse.data);
+
                 } catch (error) {
-                    console.error("Error fetching pets and requests:", error);
+                    console.error("Error fetching data:", error);
                 }
             }
             setLoading(false);
         };
 
-        const fetchAdoptionPets = async () => {
-            try {
+        const fetchAdoptionRequests = async (pets) => {
+            let allRequests = [];
+            for (const pet of pets) {
                 const response = await getData(
-                    'https://www.APIPetrack.somee.com/Adoption/GetAllAdoptionPets',
+                    `https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`,
                     null,
-                    false,
-                    'GET'
+                    true,
+                    "GET"
                 );
-
                 if (response.result) {
-                    setAdoptionPets(response.data);
-                } else {
-                    console.error("Error fetching adoption pets:", response.message);
-                }
-            } catch (error) {
-                console.error("Error fetching adoption pets:", error);
-            }
-            setLoading(false);
-        };
-
-        const fetchTransfers = async () => {
-            if (isAuthenticated && userData) {
-                try {
-                    const apiUrl = `https://www.APIPetrack.somee.com/Transfer/GetTransferRequestsByUserId/${userData.id}`;
-                    const apiResponse = await getData(apiUrl, null, true, "GET");
-
-                    if (apiResponse.result) {
-                        setTransfers(apiResponse.data);
-                        console.log(apiResponse.data);
-                    } else {
-                        console.error("Error fetching transfer requests:", apiResponse.message);
-                    }
-                } catch (error) {
-                    console.error("Error fetching transfer requests:", error);
+                    response.data.forEach((request) => {
+                        allRequests.push({ ...request, petName: pet.name, petPicture: pet.petPicture });
+                    });
                 }
             }
+            return allRequests;
         };
 
         if (isAuthenticated && userData) {
-            fetchAdoptionPets();
-            fetchPetsAndRequests();
-            fetchTransfers();
+            fetchData();
+        } else {
+            setLoading(false);
         }
-
-        setLoading(false);
     }, [isAuthenticated, userData]);
 
-
-    const loadMorePets = () => {
-        setVisiblePets((prevVisible) => prevVisible + 6);
-    };
+    const loadMorePets = () => setVisiblePets((prev) => prev + 6);
 
     const handleFilterChange = (newFilter) => {
         setFilter(newFilter);
-        setVisiblePets(6); // Reinicia el conteo de mascotas visibles al cambiar el filtro
+        setVisiblePets(6);
     };
 
-    const filteredPets = adoptionPets.filter((pet) => {
-        if (filter === "Todos") return true;
-        return pet.species.toLowerCase() === filter.toLowerCase();
-    });
+    const filteredPets = adoptionPets.filter((pet) =>
+        filter === "Todos" ? true : pet.species.toLowerCase() === filter.toLowerCase()
+    );
 
     const handleRequestAction = async (requestId, action) => {
         try {
-            // Determina la URL correcta según la acción
-            let endpoint;
-
-            switch (action) {
-                case "AcceptRequest":
-                    endpoint = `https://www.APIPetrack.somee.com/Adoption/AcceptAdoptionRequest/${requestId}`;
-                    break;
-                case "RejectRequest":
-                    endpoint = `https://www.APIPetrack.somee.com/Adoption/RejectAdoptionRequest/${requestId}`;
-                    break;
-                case "DeliveryRequest":
-                    endpoint = `https://www.APIPetrack.somee.com/Adoption/ConfirmDelivery/${requestId}`;
-                    break;
-                default:
-                    console.error("Acción no reconocida:", action);
-                    return;
-            }
-
-            // Llama a la API con el método PUT para aceptar, rechazar o confirmar entrega
-            const response = await getData(
-                endpoint,
-                null,
-                true,
-                "PUT"
-            );
+            const endpoint = getRequestEndpoint(action, requestId);
+            const response = await getData(endpoint, null, true, "PUT");
 
             if (response.result) {
                 setAdoptionRequests((prevRequests) =>
                     prevRequests.map((req) =>
                         req.id === requestId
-                            ? {
-                                ...req,
-                                isAccepted:
-                                    action === "AcceptRequest"
-                                        ? "Accepted"
-                                        : action === "RejectRequest"
-                                            ? "Rejected"
-                                            : "Delivered"
-                            }
+                            ? { ...req, isAccepted: getActionStatus(action) }
                             : req
                     )
                 );
@@ -188,22 +114,31 @@ export default function HomePage() {
         }
     };
 
-    const handleRespondToTransfer = async (transferId, accepted) => {
-        alert(transferId);
-        try {
-            const apiUrl = `https://www.APIPetrack.somee.com/Transfer/RespondToTransfer/${transferId}`
-
-            const apiResponse = await getData(apiUrl, accepted, true, "PUT");
-
-            if (apiResponse.result){
-                apiResponse.message;
-            }
+    const getRequestEndpoint = (action, requestId) => {
+        switch (action) {
+            case "AcceptRequest":
+                return `https://www.APIPetrack.somee.com/Adoption/AcceptAdoptionRequest/${requestId}`;
+            case "RejectRequest":
+                return `https://www.APIPetrack.somee.com/Adoption/RejectAdoptionRequest/${requestId}`;
+            case "DeliveryRequest":
+                return `https://www.APIPetrack.somee.com/Adoption/ConfirmDelivery/${requestId}`;
+            default:
+                throw new Error("Invalid action");
         }
-        catch (error) {
-            console.error(`Error en la acción ${action}:`, error);
-            alert("Ocurrió un error al procesar la transferencia. Inténtalo de nuevo más tarde.");
+    };
+
+    const getActionStatus = (action) => {
+        switch (action) {
+            case "AcceptRequest":
+                return "Accepted";
+            case "RejectRequest":
+                return "Rejected";
+            case "DeliveryRequest":
+                return "Delivered";
+            default:
+                return "Pending";
         }
-    }
+    };
 
     return (
         <div className="w-full bg-white">
