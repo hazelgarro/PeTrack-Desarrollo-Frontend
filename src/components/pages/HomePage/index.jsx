@@ -18,6 +18,7 @@ import Smartphone from "../../../assets/img/Smartphone.png";
 import Logo from "../../atoms/Logo";
 import CardNotification from "../../molecules/CardNotification";
 import Footer from "../../organisms/Footer";
+import Loader from '../../atoms/Loader/index.jsx';
 
 export default function HomePage() {
     const { userData, isAuthenticated } = useSession();
@@ -118,6 +119,7 @@ export default function HomePage() {
             fetchTransfers();
         }
 
+        setLoading(false);
     }, [isAuthenticated, userData]);
 
 
@@ -203,12 +205,9 @@ export default function HomePage() {
         }
     }
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div className="w-full bg-white">
+            {loading && <Loader />} {/* Muestra el loader mientras se carga */}
             {isAuthenticated ? (
                 <>
                     {/* Contenido para usuarios autenticados */}
