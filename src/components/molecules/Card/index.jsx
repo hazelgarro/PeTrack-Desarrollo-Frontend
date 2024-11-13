@@ -10,7 +10,7 @@ import { getFormattedDate } from "../../../utils/dateFormater";
 export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="pet photo", name, species, breed, gender, location, dateOfBirth}) {
     return (
         <a href={link} className="block transform">
-            <div className="relative rounded overflow-hidden">
+            <div className="relative rounded-2xl overflow-hidden">
                 <Image imgSrc={imgSrc} imgAlt={imgAlt}></Image>
 
                 {typeCard === "service" ? (

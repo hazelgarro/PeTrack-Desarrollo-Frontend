@@ -33,7 +33,7 @@ export default function NavMenu({ variant = "" }) {
 
     const logout = (e) => {
         e.preventDefault();
-        if (window.confirm("Are you sure you want to log out?")) {
+        if (window.confirm("Estás seguro de que deseas cerrar sesión")) {
             logoutUser();
             updateSessionState();
             navigate("/");
@@ -42,12 +42,12 @@ export default function NavMenu({ variant = "" }) {
 
     const deleteAccount = async (e) => {
         e.preventDefault();
-        if (window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.")) {
+        if (window.confirm("Estás seguro de que deseas eliminar tu cuenta?\nEsta acción es irreversible")) {
             try {
                 const apiUrl = `https://www.APIPetrack.somee.com/User/DeleteAccount/${userData.id}`;
                 const apiResponse = await getData(apiUrl, null, true, "DELETE");
                 if (apiResponse.result) {
-                    alert("The user has been successfully deleted");
+                    alert("El usuario ha sido eliminado exitosamente ");
                     logoutUser();
                     updateSessionState();
                     navigate("/");
@@ -56,7 +56,7 @@ export default function NavMenu({ variant = "" }) {
                 }
             } catch (error) {
                 console.log("Error deleting account", error);
-                alert("Error deleting account");
+                alert("Ocurrió un error al eliminar la cuenta");
             }
         }
     };
@@ -100,9 +100,9 @@ export default function NavMenu({ variant = "" }) {
                                 {isAuthenticated ? (
 
                                     <>
-                                        <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Change password</Link>
-                                        <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Delete account</Link>
-                                        <Link onClick={logout} variant={variant} className="dropdown-link">Log out</Link>
+                                        <Link onClick={onClickPasswordChange} variant={variant} className="dropdown-link">Cambiar contraseña</Link>
+                                        <Link onClick={deleteAccount} variant={variant} className="dropdown-link">Eliminar cuenta</Link>
+                                        <Link onClick={logout} variant={variant} className="dropdown-link">Cerrar sesión</Link>
 
                                     </>
                                 ) : (
@@ -110,10 +110,10 @@ export default function NavMenu({ variant = "" }) {
                                         <div className="flex flex-col gap-6 ml-3 mb-6">
 
                                             <a href="/Login">
-                                                <ButtonLogin variant="border-green" size="extra-small">Login</ButtonLogin>
+                                                <ButtonLogin variant="border-green" size="extra-small">Iniciar sesión</ButtonLogin>
                                             </a>
                                             <a href="/Signup">
-                                                <ButtonSignUp variant="solid-green" size="extra-small">Sign Up</ButtonSignUp>
+                                                <ButtonSignUp variant="solid-green" size="extra-small">Registrase</ButtonSignUp>
                                             </a>
                                         </div>
                                     </>
