@@ -12,18 +12,15 @@
 
 .input {
     @apply w-full py-2 outline-none bg-transparent box-border;
-    /* Asegura que los bordes se calculen bien */
-    position: relative;
-    z-index: 1;
+    /* Estilo base del input */
 
-    /* Evita el fondo blanco del autocompletado de Chrome */
+    /* Ajuste para el autocompletado de Chrome */
     &:-webkit-autofill {
-        box-shadow: 0 0 0 1000px #f8f9fa inset; /* Cambia #f8f9fa a un color cercano al fondo */
-        -webkit-text-fill-color: #000; /* Cambia el color del texto en autocompletado si es necesario */
-        border-radius: inherit; /* Aplica el mismo borde redondeado */
+        box-shadow: 0 0 0px 1000px transparent inset;
+        -webkit-text-fill-color: #333; /* Cambia al color de texto deseado */
+        border-radius: inherit;
     }
 
-    /* Desactiva el estilo de fondo cuando el autocompletado está activo */
     &:-internal-autofill-selected {
         background-color: transparent !important;
     }
