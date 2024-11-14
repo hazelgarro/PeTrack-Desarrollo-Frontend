@@ -40,17 +40,18 @@ export default function ShelterProfile() {
     
     const [isLoading, setIsLoading] = useState(true); // Estado para manejar el loader
 
-    const fetchPetData = async (shelterId) => {
-        setIsLoading(true);
-        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterId}`, null, true, "GET");
-        if (respond.result) {
-            setShelterData(prevState => ({
-                ...prevState,
-                pets: respond.data
-            }));
-        }
-        setIsLoading(false);
-    };
+const fetchPetData = async (shelterId) => {
+    setIsLoading(true);
+    const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterId}`, null, false, "GET");
+    if (respond.result) {
+        setShelterData(prevState => ({
+            ...prevState,
+            pets: respond.data
+        }));
+    }
+    setIsLoading(false);
+};
+
 
     useEffect(() => {
         if (id) {
