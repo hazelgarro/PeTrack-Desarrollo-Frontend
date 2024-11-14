@@ -40,13 +40,29 @@ export default function CardNotification({
 
             {/* Action Buttons */}
             <div className="flex flex-col gap-8 ml-auto items-center">
-                {status === "Aceptada" ? <ButtonAccept variant="solid-green" size="extra-small" onClick={() => onDelivery(requestId)}>
-                    Entregar
-                </ButtonAccept> : <ButtonAccept variant="solid-green" size="extra-small" onClick={() => onAccept(requestId)}>
-                    Aceptar
-                </ButtonAccept>}
+                {status === "Aceptada" ? (
+                    <ButtonAccept
+                        variant="solid-green"
+                        size="extra-small"
+                        onClick={() => onDelivery(requestId)}
+                    >
+                        Confirmar entrega
+                    </ButtonAccept>
+                ) : (
+                    <ButtonAccept
+                        variant="solid-green"
+                        size="extra-small"
+                        onClick={() => onAccept(requestId)}
+                    >
+                        Aceptar
+                    </ButtonAccept>
+                )}
 
-                <ButtonDeny variant="solid-red" size="extra-small" onClick={() => onDeny(requestId)}>
+                <ButtonDeny
+                    variant="solid-red"
+                    size="extra-small"
+                    onClick={() => onDeny(requestId)}
+                >
                     Denegar
                 </ButtonDeny>
             </div>

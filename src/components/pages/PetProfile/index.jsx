@@ -227,34 +227,42 @@ export default function PetProfile() {
                 </section>
 
                 <section>
-                    <h2 className="my-4 text-2xl text-petrack-black font-semibold">{petData.ownerType === "PetOwner" ? "Dueño" : "Refugio"}</h2>
+                    <h2 className="my-4 text-2xl font-semibold text-petrack-black">
+                        {petData.ownerType === "PetOwner" ? "Dueño" : "Refugio"}
+                    </h2>
 
-                    <div className="flex items-center">
-                        <div className="flex items-center gap-8">
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8">
+                        <div className="flex gap-4 items-center">
+
                             <a href={petData.ownerType === "PetOwner" ? `/PetOwnerProfile/${petData.ownerId}` : `/ShelterProfile/${petData.ownerId}`}>
                                 <ProfileImage
                                     imageSrc={ownerData.profilePicture}
-                                    defaultImage={imageUserDefault} // Reemplaza con tu imagen por defecto
+                                    defaultImage={imageUserDefault}
                                     size="large"
                                 />
                             </a>
+                            <p className="text-lg sm:text-xl font-semibold">
+                                {ownerData.completeName || ownerData.name}
+                            </p>
+                        </div>
 
-                            <p className="text-xl font-semibold">{ownerData.completeName || ownerData.name}</p>
+                        <div className="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 text-center sm:text-left">
 
                             {/* Teléfono */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-start sm:justify-start gap-2 text-sm sm:text-base">
                                 <IconPhone size="large" />
                                 <span>{ownerData.phoneNumber || 'Not available'}</span>
                             </div>
 
                             {/* Correo electrónico */}
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center justify-start sm:justify-start gap-2 text-sm sm:text-base">
                                 <IconEmail size="large" />
                                 <span>{ownerData.email || 'email@email.com'}</span>
                             </div>
                         </div>
                     </div>
                 </section>
+
             </main>
         </div >
     );

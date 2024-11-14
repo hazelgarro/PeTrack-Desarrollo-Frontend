@@ -100,19 +100,29 @@ export default function HomePage() {
             const response = await getData(endpoint, null, true, "PUT");
 
             if (response.result) {
-                setAdoptionRequests((prevRequests) =>
-                    prevRequests.map((req) =>
-                        req.id === requestId
-                            ? { ...req, isAccepted: getActionStatus(action) }
-                            : req
-                    )
-                );
+                if (action === "DeliveryRequest") {
+                    // Filtrar la mascota que fue entregada y actualizar el estado
+                    setAdoptionRequests((prevRequests) =>
+                        prevRequests.filter((req) => req.id !== requestId)
+                    );
+                    alert("La mascota ha sido transferida exitosamente al perfil del usuario.");
+                } else {
+                    // Actualizar el estado de la solicitud en la lista
+                    setAdoptionRequests((prevRequests) =>
+                        prevRequests.map((req) =>
+                            req.id === requestId
+                                ? { ...req, isAccepted: getActionStatus(action) }
+                                : req
+                        )
+                    );
+                }
             }
         } catch (error) {
             console.error(`Error en la acción ${action}:`, error);
             alert("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.");
         }
     };
+
 
     const getRequestEndpoint = (action, requestId) => {
         switch (action) {
@@ -238,19 +248,19 @@ export default function HomePage() {
                                 <div>
                                     {adoptionRequests.map((request) => (
                                         <CardNotification
-                                            key={request.id}
-                                            typeCard="adoption_request"
-                                            imgSrc={request.petPicture || 'default_pet_picture.jpg'}
-                                            imgAlt={request.petName}
-                                            name={request.petName}
-                                            requesterEmail={request.requester.email}
-                                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
-
-                                            requestDate={new Date(request.requestDate).toLocaleDateString()}
-                                            onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
-                                            onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
-                                            onDeny={() => handleRequestAction(request.id, "RejectRequest")} // Cambiado de onReject a onDeny
-                                        />
+                                        key={request.id}
+                                        typeCard="adoption_request"
+                                        imgSrc={request.petPicture || 'default_pet_picture.jpg'}
+                                        imgAlt={request.petName}
+                                        name={request.petName}
+                                        requesterEmail={request.requester.email}
+                                        status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
+                                        requestDate={new Date(request.requestDate).toLocaleDateString()}
+                                        onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
+                                        onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
+                                        onDeny={() => handleRequestAction(request.id, "RejectRequest")}
+                                    />
+                                    
 
                                     ))}
                                 </div>
