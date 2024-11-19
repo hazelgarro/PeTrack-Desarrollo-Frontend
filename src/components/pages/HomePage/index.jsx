@@ -371,7 +371,6 @@ export default function HomePage() {
                         <div className="hidden md:block">
                             <img src={Smartphone} alt="" />
                         </div>
-
                     </div>
                 </>
             )}
