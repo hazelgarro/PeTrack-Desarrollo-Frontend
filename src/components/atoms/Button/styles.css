@@ -14,6 +14,10 @@
     @apply border-2 border-petrack-red font-bold text-petrack-red rounded-full cursor-pointer hover:scale-105 duration-300;
 }
 
+.button--border-white {
+    @apply border-2 border-white font-bold text-white rounded-full cursor-pointer hover:scale-105 duration-300;
+}
+
 .button--content-fit {
     @apply min-w-min w-auto !important;
 }

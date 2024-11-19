@@ -66,6 +66,10 @@ export default function PetProfile() {
         }
     }, [id, petData]);
 
+    useEffect(() => {
+        document.title = petData.name ? `${petData.name} - Petrack` : "Cargando Mascota...";
+    }, [petData.name]);
+
     async function fetchPet() {
         try {
             const apiUrl = `https://www.APIPetrack.somee.com/Pet/SearchById/${id}`;

@@ -160,7 +160,7 @@ export default function HomePage() {
                     <Welcome />
 
                     {/* Pets Section */}
-                    <div className="mx-12 sm:mx-24 md:mx-44 my-20 ">
+                    <div id="pets-section" className="mx-12 sm:mx-24 md:mx-44 my-20 ">
                         {pets.length > 0 ? (
                             <>
                                 <div className="flex justify-center items-center pt-16">
@@ -183,7 +183,7 @@ export default function HomePage() {
                                 </CardsContainer>
                             </>
                         ) : (
-                            <div className="flex flex-col justify-center items-center gap-10 m-20">
+                            <div id="pets-section" className="flex flex-col justify-center items-center gap-10 m-20">
                                 <h2 className="text-4xl md:text-6xl font-bold text-center text-petrack-green">
                                     ¿Tu mascota es parte de tu familia?
                                 </h2>
@@ -270,7 +270,7 @@ export default function HomePage() {
                         </div>
                     </section>}
 
-                    <div className="grid gap-5 md:gap-10 pt-24">
+                    <div id="adoption-section" className="grid gap-5 md:gap-10 pt-24">
                         <h2 className="text-3xl md:text-8xl font-bold text-petrack-green text-center">Cambia una vida</h2>
                         <p className="text-xl md:text-4xl font-semibold text-center">Adopta una mascota</p>
                         <div className=" flex flex-col md:flex-row justify-center items-center gap-3 md:gap-8">
