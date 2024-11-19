@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import GreenBorderContainer from '../../atoms/GreenBorderContainer';
+import BorderContainer from '../../atoms/BorderContainer';
 import ArrowDownIcon from "../../atoms/Icons/Arrow";
 import TextBlock from "../TextBlock";
 
@@ -39,7 +39,7 @@ export default function MedicalInfoCard() {
 
   return (
     <div className="my-4">
-      <GreenBorderContainer>
+      <BorderContainer>
         <div className="p-4 flex justify-between">
           <div>
             <div className="text-md text-petrack-green">Datetime</div>
@@ -66,7 +66,7 @@ export default function MedicalInfoCard() {
             </button>
           )}
         </div>
-      </GreenBorderContainer>
+      </BorderContainer>
     </div>
   );
 };

@@ -200,7 +200,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Transfers Requests Section */}
-                    {transfers && (
+                    {/* {transfers && (
                         <section>
                             <div className="flex justify-center items-center pt-16">
                                 <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">
@@ -210,7 +210,7 @@ export default function HomePage() {
 
                             <div className="mx-12 sm:mx-24 md:mx-44 my-20">
                                 <div>
-                                    {/* {transfers
+                                    {transfers
                                         .filter((request) => request.currentOwner.email !== userData.email && request.status === "Pending") // Filtra las solicitudes donde el dueño tiene un correo diferente al usuario actual
                                         .map((request) => (
                                             <CardNotification
@@ -231,11 +231,11 @@ export default function HomePage() {
                                                 onAccept={() => handleRespondToTransfer(request.id, { accepted: true})}
                                                 onDeny={() => handleRespondToTransfer(request.id, { accepted: false})}
                                             />
-                                        ))} */}
+                                        ))}
                                 </div>
                             </div>
                         </section>
-                    )}
+                    )} */}
 
                     {/* Adoption Requests Section */}
                     {userData.userTypeId === "S" && <section>

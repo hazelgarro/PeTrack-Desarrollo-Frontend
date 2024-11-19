@@ -16,6 +16,10 @@
     @apply text-petrack-yellow;
 }
 
+.svg-icon--danger {
+    @apply text-petrack-red;
+}
+
 /* Custom sizes */
 .svg-icon--extra-small {
     @apply w-4 h-4;

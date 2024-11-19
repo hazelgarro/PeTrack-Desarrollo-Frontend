@@ -1,12 +1,12 @@
 import "./styles.css";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import TextInput from "../../atoms/TextInput";
 import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
-import CustomAlert from "../../molecules/CustomAlert"; // Importa el alert personalizado
+import Alert from "../../molecules/Alert"; // Importa el alert personalizado
 import { getData } from "../../../utils/apiConnector";
 
 export default function AccountRecovery() {
@@ -70,7 +70,7 @@ export default function AccountRecovery() {
         <AccountForm>
             {isLoading && <Loader />}
             {showConfirmation && (
-                <CustomAlert 
+                <Alert 
                     type="error" 
                     message="¡Correo enviado exitosamente!" 
                     onAccept={handleAccept} // Cambiamos el evento de cierre por uno de aceptación

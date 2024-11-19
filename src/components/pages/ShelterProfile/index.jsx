@@ -119,6 +119,7 @@ const fetchPetData = async (shelterId) => {
                         </IconText>
                     </ProfileInfoContainer>
                 </section>
+                
                 {/* <div className='grid grid-cols-2 mt-24'>
                     <div className='bg-petrack-yellow rounded-3xl'>
                         <img className='rounded-3xl' src={catImage} alt="Cat" />
@@ -132,6 +133,7 @@ const fetchPetData = async (shelterId) => {
                 <div>
                     <p className="flex font-outfit text-petrack-green text-2xl md:text-3xl font-bold mt-12 md:mt-24 mb-6 text-center">Mascotas en adopción</p>
                 </div>
+                
                 <div>
                     <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {shelterData.pets && shelterData.pets.length > 0 ? (
