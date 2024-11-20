@@ -19,8 +19,10 @@ import Logo from "../../atoms/Logo";
 import CardNotification from "../../molecules/CardNotification";
 import Footer from "../../organisms/Footer";
 import Loader from '../../atoms/Loader';
+import {showMessageDialog} from '../../../utils/customAlerts.jsx';
 
 export default function HomePage() {
+
     const { userData, isAuthenticated } = useSession();
     const [pets, setPets] = useState([]);
     const [adoptionRequests, setAdoptionRequests] = useState([]);
@@ -105,7 +107,7 @@ export default function HomePage() {
                     setAdoptionRequests((prevRequests) =>
                         prevRequests.filter((req) => req.id !== requestId)
                     );
-                    alert("La mascota ha sido transferida exitosamente al perfil del usuario.");
+                    showMessageDialog(result.message, "success", "top");
                 } else {
                     // Actualizar el estado de la solicitud en la lista
                     setAdoptionRequests((prevRequests) =>
@@ -116,10 +118,12 @@ export default function HomePage() {
                         )
                     );
                 }
+            }else{
+                showMessageDialog(result.message, "warning", "top");
             }
         } catch (error) {
             console.error(`Error en la acción ${action}:`, error);
-            alert("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.");
+            showMessageDialog("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.", "warning", "top");
         }
     };
 

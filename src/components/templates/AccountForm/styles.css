@@ -10,12 +10,12 @@ html, body {
 }
 
 .bg-background-image {
-    /*@apply bg-fixed bg-cover bg-center;*/
     @apply absolute inset-0 bg-fixed bg-cover bg-center h-full;
     background-image: url('../../../assets/img/Bg.png');
+    @apply bg-petrack-green;
 }
 
-/* For movile screen */
+/* Cambiar la imagen de fondo para pantallas móviles */
 @media (max-width: 640px) {
     .bg-background-image {
         background-image: url('../../../assets/img/movil_Bg.png');

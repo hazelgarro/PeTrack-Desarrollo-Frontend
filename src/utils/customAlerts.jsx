@@ -3,7 +3,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Dialog from '../components/molecules/Dialog';
 
-// Función genérica para mostrar diálogos
 function showDialog({ message, type, position, withBackdrop }) {
   return new Promise((resolve) => {
     const div = document.createElement('div');
@@ -56,5 +55,8 @@ export function showOptionDialog(message, type) {
 }
 
 showDialog.propTypes = {
+  message: PropTypes.string,
   type: PropTypes.oneOf(["success", "warning"]),
+  position: PropTypes.oneOf(["top", "center"]),
+  withBackdrop: PropTypes.bool
 };

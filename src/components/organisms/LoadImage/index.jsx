@@ -3,17 +3,18 @@ import Banner from "../../atoms/Banner";
 import Button from "../../atoms/Button";
 import { useRef } from 'react';
 import ProfileImage from "../../atoms/ProfileImage";
+import {showMessageDialog} from '../../../utils/customAlerts.jsx';
 
 export default function LoadImage({ name, image, defaultImage, imageType, onChange }) {
+
     const fileInputRef = useRef(null);
 
-    const handleFileChange = (event) => {
+    const handleFileChange = async (event) => {
         event.preventDefault();
         const file = event.target.files[0];
 
         if (!file) {
-            alert("No se seleccionó ningún archivo."); // User feedback for no file
-            console.error("No se seleccionó ningún archivo.");
+            await showMessageDialog("No se seleccionó ningún archivo.", "warning", "top"); // User feedback for no file
             return;
         }
 

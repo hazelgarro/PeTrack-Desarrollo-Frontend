@@ -15,7 +15,7 @@ const Dialog = ({ message, type, onClose, position, withBackdrop }) => {
     setVisible(true);
 
     if (position === "top") {
-      const timer = setTimeout(() => handleClose(), 3000);
+      const timer = setTimeout(() => handleClose(), 3700);
       return () => clearTimeout(timer);
     }
   }, [position]);
@@ -94,7 +94,7 @@ const Dialog = ({ message, type, onClose, position, withBackdrop }) => {
                         size="large"
                         color={["info", "confirm"].includes(type) ? "primary" : "danger"}
                         animate={visible} // Controla si la animación está activa
-                        animationDuration={3000} // Sincronizado con la duración del alert
+                        animationDuration={3700} // Sincronizado con la duración del alert
                       />
                     </button>
                   </div>

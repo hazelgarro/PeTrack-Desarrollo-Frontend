@@ -8,6 +8,7 @@ export default function Exit({ size = 'medium', color = 'primary', thickness = '
             className={`svg-icon svg-icon--${size} svg-icon--${color}`}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
+            
             width={24}
             height={24}
             color={"#000000"}
@@ -29,6 +30,8 @@ export default function Exit({ size = 'medium', color = 'primary', thickness = '
                 strokeWidth={thickness}
                 className={animate ? "exit-circle-animation" : ""}
                 style={{
+                    transform: "rotate(-90deg)", // Rotar para que empiece arriba
+                    transformOrigin: "center", // Asegurar que la rotación sea desde el centro
                     animationDuration: `${animationDuration}ms`,
                 }}
             />
