@@ -28,7 +28,7 @@ const Footer = () => (
       <div className='flex flex-col gap-4 items-center justify-center mt-6 md:mt-0'>
         <p className='text-2xl font-semibold'>Contáctanos</p>
         <div className='flex gap-3 items-center'>
-          <Phone size='small' color='white' />
+          <Phone size='small' color='white'/>
           <p>(123) 456-7890</p>
         </div>
         <div className='flex gap-3 items-center'>

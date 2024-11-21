@@ -19,7 +19,7 @@ import Logo from "../../atoms/Logo";
 import CardNotification from "../../molecules/CardNotification";
 import Footer from "../../organisms/Footer";
 import Loader from '../../atoms/Loader';
-import {showMessageDialog} from '../../../utils/customAlerts.jsx';
+import { showMessageDialog } from '../../../utils/customAlerts.jsx';
 
 export default function HomePage() {
 
@@ -34,25 +34,10 @@ export default function HomePage() {
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
             if (isAuthenticated && userData) {
                 try {
-                    const [petResponse, adoptionPetsResponse, transfersResponse] = await Promise.all([
-                        getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner`, null, true, "GET"),
-                        getData(`https://www.APIPetrack.somee.com/Adoption/GetAllAdoptionPets`, null, false, "GET"),
-                        getData(`https://www.APIPetrack.somee.com/Transfer/GetTransferRequestsByUserId/${userData.id}`, null, true, "GET")
-                    ]);
-
-                    if (petResponse.result) {
-                        setPets(petResponse.data);
-                        if (userData.userTypeId === "S") {
-                            const adoptionRequestsData = await fetchAdoptionRequests(petResponse.data);
-                            setAdoptionRequests(adoptionRequestsData);
-                        }
-                    }
-
-                    if (adoptionPetsResponse.result) setAdoptionPets(adoptionPetsResponse.data);
-                    if (transfersResponse.result) setTransfers(transfersResponse.data);
-
+                    await Promise.all([fetchPets(), fetchAdoptionPets(), fetchTransfers()]);
                 } catch (error) {
                     console.error("Error fetching data:", error);
                 }
@@ -60,30 +45,61 @@ export default function HomePage() {
             setLoading(false);
         };
 
-        const fetchAdoptionRequests = async (pets) => {
-            let allRequests = [];
-            for (const pet of pets) {
-                const response = await getData(
-                    `https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`,
-                    null,
-                    true,
-                    "GET"
-                );
-                if (response.result) {
-                    response.data.forEach((request) => {
-                        allRequests.push({ ...request, petName: pet.name, petPicture: pet.petPicture });
-                    });
+        fetchData();
+
+    }, [isAuthenticated, userData]);
+
+    const fetchPets = async () => {
+        try {
+            const petResponse = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByOwner`, null, true, "GET");
+            if (petResponse.result) {
+                setPets(petResponse.data);
+                if (userData.userTypeId === "S") {
+                    const adoptionRequestsData = await fetchAdoptionRequests(petResponse.data);
+                    setAdoptionRequests(adoptionRequestsData);
                 }
             }
-            return allRequests;
-        };
-
-        if (isAuthenticated && userData) {
-            fetchData();
-        } else {
-            setLoading(false);
+        } catch (error) {
+            console.error("Error fetching pets:", error);
         }
-    }, [isAuthenticated, userData]);
+    };
+
+    const fetchAdoptionPets = async () => {
+        try {
+            const adoptionPetsResponse = await getData(`https://www.APIPetrack.somee.com/Adoption/GetAllAdoptionPets`, null, false, "GET");
+            if (adoptionPetsResponse.result) {
+                setAdoptionPets(adoptionPetsResponse.data);
+            }
+        } catch (error) {
+            console.error("Error fetching adoption pets:", error);
+        }
+    };
+
+    const fetchTransfers = async () => {
+        try {
+            const transfersResponse = await getData(`https://www.APIPetrack.somee.com/Transfer/GetTransferRequestsByUserId/${userData.id}`, null, true, "GET");
+            if (transfersResponse.result) {
+                setTransfers(transfersResponse.data);
+            }
+        } catch (error) {
+            console.error("Error fetching transfers:", error);
+        }
+    };
+
+    //Extrae del api todas las adopciones asociadas a una mascota del refugio dueño de este perfil
+    const fetchAdoptionRequests = async (pets) => {
+        let allRequests = [];
+        for (const pet of pets) {
+            const response = await getData(`https://www.APIPetrack.somee.com/Adoption/ListAdoptionRequestsForPet/${pet.id}`, null, true, "GET");
+
+            if (response.result) {
+                response.data.forEach((request) => {
+                    allRequests.push({ ...request, petName: pet.name, petPicture: pet.petPicture });
+                });
+            }
+        }
+        return allRequests;
+    };
 
     const loadMorePets = () => setVisiblePets((prev) => prev + 6);
 
@@ -118,7 +134,7 @@ export default function HomePage() {
                         )
                     );
                 }
-            }else{
+            } else {
                 showMessageDialog(result.message, "warning", "top");
             }
         } catch (error) {
@@ -126,7 +142,6 @@ export default function HomePage() {
             showMessageDialog("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.", "warning", "top");
         }
     };
-
 
     const getRequestEndpoint = (action, requestId) => {
         switch (action) {
@@ -151,6 +166,32 @@ export default function HomePage() {
                 return "Delivered";
             default:
                 return "Pending";
+        }
+    };
+
+    const handleRespondToTransfer = async (transferId, action) => {
+        try {
+            const apiUrl = `https://www.APIPetrack.somee.com/Transfer/RespondToTransfer/${transferId}`;
+            const response = await getData(apiUrl, { accepted: action }, true, "PUT");
+
+            if (response.result) {
+                fetchTransfers();
+                await fetchPets();
+
+                const section = document.getElementById('pets-section');
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+
+                showMessageDialog(response.message, "success", "top");
+            } else {
+                // Mostrar un mensaje de advertencia si algo salió mal
+                showMessageDialog(response.message, "warning", "top");
+            }
+        } catch (error) {
+            console.error(`Error al responder a la transferencia:`, error);
+            // Mostrar un mensaje de error en caso de falla
+            showMessageDialog("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.", "warning", "top");
         }
     };
 
@@ -179,7 +220,7 @@ export default function HomePage() {
                                             imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
                                             imgAlt={pet.name}
                                             name={pet.name}
-                                            gender={pet.gender}
+                                            gender={pet.gender.toLowerCase()}
                                             species={pet.species}
                                             breed={pet.breed}
                                         />
@@ -204,7 +245,7 @@ export default function HomePage() {
                     </div>
 
                     {/* Transfers Requests Section */}
-                    {/* {transfers && (
+                    {transfers && (
                         <section>
                             <div className="flex justify-center items-center pt-16">
                                 <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">
@@ -212,14 +253,15 @@ export default function HomePage() {
                                 </p>
                             </div>
 
-                            <div className="mx-12 sm:mx-24 md:mx-44 my-20">
+                            <div className="mx-18 sm:mx-24 md:mx-34 lg:mx-44 my-20">
                                 <div>
                                     {transfers
-                                        .filter((request) => request.currentOwner.email !== userData.email && request.status === "Pending") // Filtra las solicitudes donde el dueño tiene un correo diferente al usuario actual
+                                        .filter((request) => request.currentOwner.email !== userData.email && (request.status === "Pending")) // Filtra las solicitudes donde el dueño tiene un correo diferente al usuario actual
                                         .map((request) => (
                                             <CardNotification
                                                 key={request.id}
-                                                typeCard="adoption_request"
+                                                requestId={request.id}
+                                                typeCard="transfer_received"
                                                 imgSrc={request.petPicture || 'default_pet_picture.jpg'}
                                                 imgAlt={request.petName}
                                                 name={request.petName}
@@ -232,14 +274,14 @@ export default function HomePage() {
                                                             : 'Pendiente'
                                                 }
                                                 requestDate={new Date(request.requestDate).toLocaleDateString()}
-                                                onAccept={() => handleRespondToTransfer(request.id, { accepted: true})}
-                                                onDeny={() => handleRespondToTransfer(request.id, { accepted: false})}
+                                                onAccept={() => handleRespondToTransfer(request.id, true)}
+                                                onDeny={() => handleRespondToTransfer(request.id, false)}
                                             />
                                         ))}
                                 </div>
                             </div>
                         </section>
-                    )} */}
+                    )}
 
                     {/* Adoption Requests Section */}
                     {userData.userTypeId === "S" && <section>
@@ -252,19 +294,19 @@ export default function HomePage() {
                                 <div>
                                     {adoptionRequests.map((request) => (
                                         <CardNotification
-                                        key={request.id}
-                                        typeCard="adoption_request"
-                                        imgSrc={request.petPicture || 'default_pet_picture.jpg'}
-                                        imgAlt={request.petName}
-                                        name={request.petName}
-                                        requesterEmail={request.requester.email}
-                                        status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
-                                        requestDate={new Date(request.requestDate).toLocaleDateString()}
-                                        onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
-                                        onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
-                                        onDeny={() => handleRequestAction(request.id, "RejectRequest")}
-                                    />
-                                    
+                                            key={request.id}
+                                            typeCard="adoption_request"
+                                            imgSrc={request.petPicture || 'default_pet_picture.jpg'}
+                                            imgAlt={request.petName}
+                                            name={request.petName}
+                                            requesterEmail={request.requester.email}
+                                            status={request.isAccepted === 'Accepted' ? 'Aceptada' : request.isAccepted === 'Rejected' ? 'Denegada' : 'Pendiente'}
+                                            requestDate={new Date(request.requestDate).toLocaleDateString()}
+                                            onDelivery={() => handleRequestAction(request.id, "DeliveryRequest")}
+                                            onAccept={() => handleRequestAction(request.id, "AcceptRequest")}
+                                            onDeny={() => handleRequestAction(request.id, "RejectRequest")}
+                                        />
+
 
                                     ))}
                                 </div>
@@ -301,7 +343,7 @@ export default function HomePage() {
                                         imgSrc={pet.petPicture || 'default_pet_picture.jpg'}
                                         imgAlt={pet.name}
                                         name={pet.name}
-                                        gender={pet.gender}
+                                        gender={pet.gender.toLowerCase()}
                                         species={pet.species}
                                         location={pet.location}
                                         breed={pet.breed}
@@ -329,8 +371,6 @@ export default function HomePage() {
                         <div className="flex justify-center my-4 md:my-12 w-56 sm:w-56 lg:w-96">
                             <Logo size="extra-large" />
                         </div>
-
-
 
                         <p className="text-sm text-center md:text-2xl lg:text-4xl">
                             Conecta a propietarios de mascotas, veterinarios, y tiendas en un solo lugar.

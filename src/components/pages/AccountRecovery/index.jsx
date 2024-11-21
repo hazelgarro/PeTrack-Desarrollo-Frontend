@@ -34,19 +34,19 @@ export default function AccountRecovery() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const plane = document.querySelector(".paper-plane");
-    
+
         if (plane) {
             plane.classList.add("shake"); // Agrega la animación de temblor
         }
-    
+
         try {
             const apiUrl = `https://www.APIPetrack.somee.com/User/RequestPasswordReset/?email=${email}`;
             const apiResponse = await getData(apiUrl, null, false, "POST");
-    
+
             if (plane) {
                 plane.classList.remove("shake"); // Quita la animación de temblor
             }
-    
+
             if (apiResponse.result) {
                 if (plane) {
                     plane.classList.add("fly"); // Inicia la animación de vuelo
@@ -64,15 +64,15 @@ export default function AccountRecovery() {
             alert("Error al enviar el correo");
         }
     };
-    
+
 
     return (
         <AccountForm>
             {isLoading && <Loader />}
             {showConfirmation && (
-                <Alert 
-                    type="error" 
-                    message="¡Correo enviado exitosamente!" 
+                <Alert
+                    type="error"
+                    message="¡Correo enviado exitosamente!"
                     onAccept={handleAccept} // Cambiamos el evento de cierre por uno de aceptación
                 />
             )}
@@ -122,6 +122,7 @@ export default function AccountRecovery() {
                 <Button type="submit" size="small" variant="solid-green">
                     Enviar
                 </Button>
+                <Button onClick={handleAccept} size="small">Volver al login</Button>
             </Form>
         </AccountForm>
     );
