@@ -11,6 +11,7 @@ import LandingPage from "./components/pages/LandingPage";
 import HomePage from './components/pages/HomePage';
 import ShelterProfile from './components/pages/ShelterProfile';
 import ShelterListPage from './components/pages/SheltersListPage';
+import NotificationsPage from './components/pages/NotificationsPage';
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { SessionContextProvider } from './context/SessionContext';
@@ -32,6 +33,7 @@ function App() {
           <Route path="/ShelterProfile/:id?" element={<ShelterProfile />} />
           <Route path="/Homepage" element={<HomePage />} />
           <Route path="/ShelterListPage" element={<ShelterListPage />} />
+          <Route path="/NotificationsPage" element={<NotificationsPage />} />
         </Routes>
       </Router >
     </SessionContextProvider>

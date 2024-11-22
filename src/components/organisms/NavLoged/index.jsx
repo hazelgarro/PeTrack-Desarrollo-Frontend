@@ -96,6 +96,7 @@ export default function NavMenu({ variant = "" }) {
                                 <Link href="/Homepage" variant={variant} size="small">Inicio</Link>
                                 <Link href="/ShelterListPage" variant={variant} size="small">Adopción</Link>
                                 <Link href="/PetRegister" variant={variant} size="small">Registrar mascota</Link>
+                                <Link href="/NotificationsPage" variant={variant} size="small">Notificaciones</Link> {/* Nuevo enlace */}
 
                                 {isAuthenticated ? (
 
