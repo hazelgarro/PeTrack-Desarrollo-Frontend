@@ -6,7 +6,6 @@ import NavBar from "../../organisms/NavMenu";
 import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 import CardsContainer from "../../organisms/cardsContainer";
 import Card from "../../molecules/Card/index.jsx";
-import petPicture from '../../../assets/img/pet_picture.webp';
 import IconEmail from "../../atoms/Icons/Email";
 import IconUser from "../../atoms/Icons/User";
 import IconPhone from "../../atoms/Icons/Phone";
@@ -126,7 +125,7 @@ export default function PagePetOwner() {
                         <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                             {ownerData.pets && ownerData.pets.length > 0 ? (
                                 ownerData.pets.map((pet) => (
-                                    <Card link={`/PetProfile/${pet.id}`} imgSrc={pet.petPicture || petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
+                                    <Card link={`/PetProfile/${pet.id}`} key={pet.id} imgSrc={pet.petPicture} name={pet.name} species={pet.species} breed={pet.breed} gender={pet.gender}></Card>
                                 ))
                             ) : (
                                 <p>Sin mascotas.</p>
