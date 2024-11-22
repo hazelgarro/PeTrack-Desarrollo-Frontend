@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { getData } from "../../../utils/apiConnector.js";
 import ChangePassword from "../ChangePassword/index.jsx";
 import ProfileImage from "../../atoms/ProfileImage/index.jsx";
+import { showMessageDialog, showOptionDialog } from "../../../utils/customAlerts.jsx";
 
 
 export default function NavMenu({ variant = "" }) {
