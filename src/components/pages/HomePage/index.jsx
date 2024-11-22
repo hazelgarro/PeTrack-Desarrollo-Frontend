@@ -123,7 +123,7 @@ export default function HomePage() {
                     setAdoptionRequests((prevRequests) =>
                         prevRequests.filter((req) => req.id !== requestId)
                     );
-                    showMessageDialog(result.message, "success", "top");
+                    showMessageDialog(response.message, "success", "top");
                 } else {
                     // Actualizar el estado de la solicitud en la lista
                     setAdoptionRequests((prevRequests) =>
@@ -135,7 +135,7 @@ export default function HomePage() {
                     );
                 }
             } else {
-                showMessageDialog(result.message, "warning", "top");
+                showMessageDialog(response.message, "warning", "top");
             }
         } catch (error) {
             console.error(`Error en la acción ${action}:`, error);
