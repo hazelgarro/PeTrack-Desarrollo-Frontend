@@ -76,6 +76,14 @@ export default function SignUp() {
         return ""; // Contraseña válida
     };
 
+    const validatePhoneNumber = (phoneNumber) => {
+        const phoneRegex = /^\d{4}-\d{4}$/;
+        if (!phoneRegex.test(phoneNumber)) {
+            return "El número de teléfono debe estar en el formato 8888-8888.";
+        }
+        return ""; // Número válido
+    };
+
     const handleInputChange = ({ name, value }) => {
         if (name !== "tempProfile" && name !== "tempCover") {
             setAccountData((prevData) => {
@@ -83,6 +91,19 @@ export default function SignUp() {
                     ...prevData,
                     [name]: value
                 };
+
+                if (name === "phoneNumber") {
+                    value = value.replace(/[^0-9]/g, ""); // Elimina caracteres no numéricos
+                    if (value.length > 4) {
+                        value = value.slice(0, 4) + "-" + value.slice(4, 8); // Inserta el guion
+                    }
+                    if (value.length > 9) {
+                        value = value.slice(0, 9); // Limita la longitud a 9 caracteres
+                    }
+    
+                    const validationMessage = validatePhoneNumber(value);
+                    setErrorMessage(validationMessage);
+                }
 
                 if (name === "password") {
                     if (!isTypingPassword || value.length > 0) {
@@ -119,7 +140,6 @@ export default function SignUp() {
 
     const handleFirtsSubmit = (e) => {
         e.preventDefault();
-
         if (accountData.password !== accountData.confirmPassword) {
             setErrorMessage("Las contraseñas no coinciden");
             setIsFormSubmitted(false);
@@ -127,14 +147,16 @@ export default function SignUp() {
         } else if (accountData.password.length < 8) {
             setErrorMessage("La contraseña debe tener un mínimo de 8 caracteres.");
         } 
+        const phoneValidationMessage = validatePhoneNumber(accountData.phoneNumber);
+        if (phoneValidationMessage) {
+            setErrorMessage(phoneValidationMessage);
+            return;
+        }
         const validationMessage = validatePassword(accountData.password);
         if (validationMessage) {
             setErrorMessage(validationMessage);
             return;
         }
-    
-        setIsFormSubmitted(true);
-
         if (accountData.password.length < 8) {
             setErrorMessage("The password must be a minimum of 8 characters.");
             return;

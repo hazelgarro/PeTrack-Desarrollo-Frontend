@@ -39,13 +39,13 @@ export default function PetRegister() {
     let isSkipping = false;
 
     const speciesOptions = [
-        { value: "Dog", label: "Dog" },
-        { value: "Cat", label: "Cat" },
+        { value: "Dog", label: "Perro" },
+        { value: "Cat", label: "Gato" },
     ];
 
     const genderOptions = [
-        { value: "Male", label: "Male" },
-        { value: "Female", label: "Female" },
+        { value: "Male", label: "Macho" },
+        { value: "Female", label: "Hembra" },
     ];
 
     useEffect(() => {
@@ -64,10 +64,24 @@ export default function PetRegister() {
 
     const handleInputChange = ({ name, value }) => {
         if (name !== "petPictureTemp") {
-            setPetData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
+            setPetData((prevData) => {
+                // Validación para la fecha de nacimiento
+                if (name === "dateOfBirth") {
+                    const today = new Date();
+                    const selectedDate = new Date(value);
+    
+                    if (selectedDate > today) {
+                        setErrorMessage("La fecha de nacimiento no puede ser mayor a la fecha actual.");
+                        return prevData;
+                    } else {
+                        setErrorMessage("");
+                    }
+                }
+                return {
+                    ...prevData,
+                    [name]: value,
+                };
+            });
         } else {
             setPetPictureTemp(value);
         }
@@ -75,6 +89,17 @@ export default function PetRegister() {
 
     const handleFirstSubmit = (e) => {
         e.preventDefault();
+
+        // Validar la fecha de nacimiento
+        const today = new Date();
+        const selectedDate = new Date(petData.dateOfBirth);
+
+        if (selectedDate > today) {
+            setErrorMessage("La fecha de nacimiento no puede ser mayor a la fecha actual.");
+            return;
+        }
+
+        setErrorMessage("");
         setIsFormSubmitted(true);
     };
 
@@ -121,6 +146,8 @@ export default function PetRegister() {
 
                 const petPicture = imageUploadResult?.imageUrl || "";
                 const imagePublicId = imageUploadResult?.publicId || "";
+
+                const formattedWeight = petData.weight ? `${petData.weight} kg` : "";
 
                 const newPetData = {
                     ...petData,
@@ -192,7 +219,7 @@ export default function PetRegister() {
                     <TextInput
                         type="date"
                         size="medium"
-                        placeholder="Date of Birth"
+                        placeholder="Fecha de Nacimiento"
                         name="dateOfBirth"
                         value={petData.dateOfBirth}
                         onChange={handleInputChange}
@@ -208,7 +235,7 @@ export default function PetRegister() {
 
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
                 <Form title="Añade información extra" subTitle="Ya casi terminamos..." onSubmit={handleFinalSubmit}>
-                <div className="relative flex flex-col items-center">
+                    <div className="relative flex flex-col items-center">
                         <div className="w-full mb-5">
                             <LoadImage name="petPictureTemp" image={petPictureTemp} imageType="rectangular" onChange={handleInputChange} />
                         </div>
