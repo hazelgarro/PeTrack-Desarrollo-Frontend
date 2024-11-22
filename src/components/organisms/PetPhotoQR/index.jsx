@@ -6,22 +6,25 @@ import Modal from "../../molecules/Modal";
 import { QRCode } from "react-qrcode-logo"; // Changed to 'react-qrcode-logo'
 import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
-import imgLogo from "../../../assets/img/isotipo.svg";
 import EditPicture from "../EditPicture";
 import { useSession } from "../../../context/SessionContext";
+import dog_default from "../../../assets/img/dog_default.webp";
+import cat_default from "../../../assets/img/cat_default.webp";
 
 export default function PetPhotoQR({ petAccountData }) {
     const { userData, updateSessionState } = useSession();
     const hookModalQr = useOpenClose();
     const svgRef = useRef(null);
 
+    const [petDefaultPicture, setDefauldPicture] = useState("");
     const [petPicture, setPetPicture] = useState("");
 
     useEffect(() => {
         updateSessionState();
-        updateImage(petAccountData.petPicture);
-    }, [petAccountData]);
-
+        setDefauldPicture(petAccountData.species === "Dog" ? dog_default : cat_default);
+        updateImage(petAccountData.petPicture || (petAccountData.species === "Dog" ? dog_default : cat_default));
+    }, [petAccountData.petPicture, petAccountData.species]);
+    
     const updateImage = (imgUrl) => {
         setPetPicture(imgUrl);
     }
@@ -41,7 +44,7 @@ export default function PetPhotoQR({ petAccountData }) {
 
     return (
         <div className="relative rounded-3xl overflow-hidden w-full">
-            <PetImage imgSrc={petPicture} imgAlt={"Pet profile picture"} /> {/* Use 'PetImage' */}
+            <PetImage imgSrc={petPicture} imgAlt={"Pet profile picture"} defaultImage={petDefaultPicture}/>
 
             <div className="absolute top-2 right-2 p-3">
                 <Button onClick={hookModalQr.toggleModal} variant="solid-green" size="extra-small">
@@ -52,7 +55,7 @@ export default function PetPhotoQR({ petAccountData }) {
             </div>
             {userData.id === petAccountData.ownerId &&
                 <div className="absolute bottom-2 left-2 p-3">
-                    <EditPicture type="pet" imageSrc={petPicture} petData={petAccountData} updateImage={updateImage} />
+                    <EditPicture type="pet" imageSrc={petPicture} petData={petAccountData}/>
                 </div>
             }
 
