@@ -49,6 +49,33 @@ export default function SignUp() {
 
     const navigate = useNavigate();
 
+    const [isTypingPassword, setIsTypingPassword] = useState(false);
+
+    const validatePassword = (password) => {
+        const lengthRegex = /^.{8,}$/;
+        const uppercaseRegex = /[A-Z]/;
+        const lowercaseRegex = /[a-z]/;
+        const numberRegex = /\d/;
+        const specialCharRegex = /[@$!%*?&#.,_-]/;
+
+        if (!lengthRegex.test(password)) {
+            return "La contraseña debe tener al menos 8 caracteres.";
+        }
+        if (!uppercaseRegex.test(password)) {
+            return "La contraseña debe incluir al menos una letra mayúscula.";
+        }
+        if (!lowercaseRegex.test(password)) {
+            return "La contraseña debe incluir al menos una letra minúscula.";
+        }
+        if (!numberRegex.test(password)) {
+            return "La contraseña debe incluir al menos un número.";
+        }
+        if (!specialCharRegex.test(password)) {
+            return "La contraseña debe incluir al menos un carácter especial (@, $, !, %, etc.).";
+        }
+        return ""; // Contraseña válida
+    };
+
     const handleInputChange = ({ name, value }) => {
         if (name !== "tempProfile" && name !== "tempCover") {
             setAccountData((prevData) => {
@@ -57,13 +84,21 @@ export default function SignUp() {
                     [name]: value
                 };
 
+                if (name === "password") {
+                    if (!isTypingPassword || value.length > 0) {
+                        setIsTypingPassword(true);
+                    }
+                    if (value.length === 0) {
+                        setIsTypingPassword(false);
+                    }
+                }
+
                 if (newData.password === newData.confirmPassword) {
                     setErrorMessage("");
                 } else {
                     setErrorMessage("Las contraseñas no coinciden");
                 }
 
-                // Cambia el placeholder si el tipo de usuario es "2" o "3"
                 if (name === "userTypeId") {
                     value === "O" ? setNamePlaceholder("Nombre completo") : setNamePlaceholder("Nombre de la organización");
                 }
@@ -91,6 +126,17 @@ export default function SignUp() {
             return;
         } else if (accountData.password.length < 8) {
             setErrorMessage("La contraseña debe tener un mínimo de 8 caracteres.");
+        } 
+        const validationMessage = validatePassword(accountData.password);
+        if (validationMessage) {
+            setErrorMessage(validationMessage);
+            return;
+        }
+    
+        setIsFormSubmitted(true);
+
+        if (accountData.password.length < 8) {
+            setErrorMessage("The password must be a minimum of 8 characters.");
             return;
         }
 
@@ -264,6 +310,26 @@ export default function SignUp() {
                         value={accountData.password}
                         onChange={handleInputChange}
                     />
+                    {isTypingPassword && (
+                        <ul className="text-sm text font-['Lato'] mb-3 ">
+                            <li className={accountData.password.length >= 8 ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos 8 caracteres
+                            </li>
+                            <li className={/[A-Z]/.test(accountData.password) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos una letra mayúscula
+                            </li>
+                            <li className={/[a-z]/.test(accountData.password) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos una letra minúscula
+                            </li>
+                            <li className={/\d/.test(accountData.password) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos un número
+                            </li>
+                            <li className={/[@$!%*?&#.,_-]/.test(accountData.password) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos un carácter especial (@, $, !, etc.)
+                            </li>
+                        </ul>
+                    )}
+
                     <PasswordInput
                         size="medium"
                         placeholder="Confirma tu contraseña"
@@ -272,7 +338,7 @@ export default function SignUp() {
                         onChange={handleInputChange}
                     />
 
-                    {errorMessage && <p className="m-1 text-red-500">{errorMessage}</p>}
+                    {errorMessage && <p className="m-1 text-petrack-red">{errorMessage}</p>}
 
                     <Button type="submit" size="small" variant="solid-green">
                         Registrarse
