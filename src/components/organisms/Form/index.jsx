@@ -8,7 +8,8 @@ export default function Form({ title, subTitle, onSubmit, children, type = "defa
     return (
         <Container className="m-4">
             <div className="flex flex-col items-center mb-5">
-                <Logo size="large" type="isotipo" />
+                <a href="./" title="Página de inicio"><Logo size="large" type="isotipo" /></a>
+                
                 <h1 className="text-4xl text-center mt-4">{title}</h1>
                 <h2 className="text-lg text-center mt-2">{subTitle}</h2>
             </div>

@@ -202,7 +202,7 @@ export default function HomePage() {
                 <>
                     {/* Contenido para usuarios autenticados */}
                     <NavLanding isAuthenticated={isAuthenticated} variant="green" />
-                    <Welcome />
+                    <Welcome userName={userData ? (userData.userType === "PetOwner" ? userData.completeName : userData.name) : ""}/>
 
                     {/* Pets Section */}
                     <div id="pets-section" className="mx-12 sm:mx-24 md:mx-44 my-20 ">

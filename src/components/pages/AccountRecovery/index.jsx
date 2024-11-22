@@ -5,18 +5,14 @@ import TextInput from "../../atoms/TextInput";
 import Button from "../../atoms/Button";
 import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
-import Loader from "../../atoms/Loader";
-import Alert from "../../molecules/Alert"; // Importa el alert personalizado
+import { showMessageDialog } from '../../../utils/customAlerts.jsx';
 import { getData } from "../../../utils/apiConnector";
 
 export default function AccountRecovery() {
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const [showPlane, setShowPlane] = useState(true);
-    const [showConfirmation, setShowConfirmation] = useState(false);
     const [email, setEmail] = useState("");
-
 
     const handleInputChange = ({ name, value }) => {
         setEmail(value);
@@ -24,11 +20,6 @@ export default function AccountRecovery() {
 
     const handleAnimationEnd = () => {
         setShowPlane(false); // Oculta el avión después de la animación
-    };
-
-    const handleAccept = () => {
-        // Redirige al usuario al inicio de sesión cuando se acepta el alert
-        navigate("/login");
     };
 
     const handleSubmit = async (e) => {
@@ -50,32 +41,28 @@ export default function AccountRecovery() {
             if (apiResponse.result) {
                 if (plane) {
                     plane.classList.add("fly"); // Inicia la animación de vuelo
-                    setTimeout(() => {
-                        setShowConfirmation(true);
+                    setTimeout(async () => {
+                        await showMessageDialog("¡Correo enviado exitosamente!", "success", "center");
+                        navigate("/login");
                     }, 2000);
                 }
             } else {
-                alert(apiResponse.message);
+                setErrorMessage(apiResponse.message);
+                setTimeout(() => {
+                    setErrorMessage(""); // Limpia el mensaje después de 40 segundos
+                }, 4000);
+
             }
         } catch (error) {
             if (plane) {
                 plane.classList.remove("shake"); // Quita la animación de temblor si hay error
             }
-            alert("Error al enviar el correo");
+            setErrorMessage("Error inesperado al mandar el correo. Por favor inténtelo denuevo");
         }
     };
 
-
     return (
         <AccountForm>
-            {isLoading && <Loader />}
-            {showConfirmation && (
-                <Alert
-                    type="error"
-                    message="¡Correo enviado exitosamente!"
-                    onAccept={handleAccept} // Cambiamos el evento de cierre por uno de aceptación
-                />
-            )}
             <Form
                 title="Recuperar cuenta"
                 subTitle="Ingresa tu correo para establecer una nueva contraseña."
@@ -122,8 +109,8 @@ export default function AccountRecovery() {
                 <Button type="submit" size="small" variant="solid-green">
                     Enviar
                 </Button>
-                <Button onClick={handleAccept} size="small">Volver al login</Button>
+                <Button onClick={() => { navigate("/login"); }} size="small">Volver al login</Button>
             </Form>
-        </AccountForm>
+        </AccountForm >
     );
 }

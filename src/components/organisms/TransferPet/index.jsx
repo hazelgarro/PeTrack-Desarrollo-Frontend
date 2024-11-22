@@ -6,10 +6,13 @@ import Modal from "../../molecules/Modal";
 import Button from "../../atoms/Button";
 import TransferIcon from "../../atoms/Icons/Transfer";
 import PasswordInput from "../../molecules/PasswordInput";
+import { useNavigate } from 'react-router-dom';
 import { getData } from "../../../utils/apiConnector";
+import { showMessageDialog } from '../../../utils/customAlerts.jsx';
 
 export default function TrasferPet({isAuthenticated, petAccountData }) {
     const { isOpen, toggleModal } = useOpenClose();
+    const navigate = useNavigate();
 
     const [transferData, setTransferData] = useState({ email: "", password: "" });
 
@@ -27,7 +30,8 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
         e.preventDefault();
 
         if (!isAuthenticated) {
-            alert("Por favor, inicie sesión para enviar una solicitud de adopción.");
+            showMessageDialog("Por favor, inicie sesión para transferir la mascota", "warning", "top");
+            navigate("/Login");
             return;
         }
 
@@ -45,15 +49,15 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
             const response = await getData(apiUrl, transferRequestData, true, "POST");
 
             if (response.result) {
-                alert(response.message);
+                await showMessageDialog(response.message, "success", "top");
             } else {
-                alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
+                await showMessageDialog(response.message || "Ocurrió un error al enviar el traspaso de la mascota", "warning", "top");
             }
             setTransferData({ email: "", password: "" });
             toggleModal();
         } catch (error) {
             console.error("Error al enviar la solicitud de adopción:", error);
-            alert("Error al enviar la solicitud de adopción. Intente más tarde.");
+            showMessageDialog("Error al enviar el traspaso de la mascota. Intentelo más tarde.", "warning", "top");
         }
     }
 

@@ -7,7 +7,7 @@ import WarningIcon from "../../atoms/Icons/Warning";
 import InfoIcon from "../../atoms/Icons/Info";
 import Button from "../../atoms/Button";
 
-const Dialog = ({ message, type, onClose, position, withBackdrop }) => {
+const Dialog = ({ message, type, onClose, position, withBackdrop=false }) => {
   const [visible, setVisible] = useState(false);
 
   // Controla la visibilidad inicial del diálogo
@@ -120,7 +120,7 @@ const Dialog = ({ message, type, onClose, position, withBackdrop }) => {
               </div>
             ) : (
               position === "center" && (
-                <div className="mt-4">
+                <div className="mt-4 flex justify-center">
                   <Button
                     onClick={() => onClose(true)}
                     variant={"solid-green"}
@@ -146,10 +146,6 @@ Dialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   position: PropTypes.oneOf(["top", "center"]).isRequired,
   withBackdrop: PropTypes.bool,
-};
-
-Dialog.defaultProps = {
-  withBackdrop: false,
 };
 
 export default Dialog;

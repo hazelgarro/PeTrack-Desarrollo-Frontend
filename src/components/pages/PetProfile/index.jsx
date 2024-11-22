@@ -32,6 +32,7 @@ import TransferPet from "../../organisms/TransferPet/index.jsx";
 import Loader from "../../atoms/Loader/index.jsx";
 import ProfileImage from "../../atoms/ProfileImage/index.jsx";
 import imageUserDefault from '../../../assets/img/UserDefault.svg';
+import { showMessageDialog, showOptionDialog } from "../../../utils/customAlerts.jsx";
 
 export default function PetProfile() {
     const { id } = useParams();
@@ -79,8 +80,6 @@ export default function PetProfile() {
                 setPetData(apiRespond.data);
             } else if (apiRespond) {
                 console.log(apiRespond.message);
-            } else {
-                alert("Unexpected error");
             }
         } catch (error) {
             console.error('Error al obtener los datos de la mascota:', error);
@@ -98,17 +97,20 @@ export default function PetProfile() {
     };
 
     const handleDeletePet = async () => {
-        const isConfirmed = window.confirm(`Are you sure you want to eliminate ${petData.name}?`);
+        const isConfirmed = await showOptionDialog(`¿Estás seguro de que deseas eliminar a ${petData.name}?(Esta acción es irreversible)`, "warning");
         if (isConfirmed) {
             const apiUrl = `https://www.APIPetrack.somee.com/Pet/DeletePet/${id}`;
             try {
                 const apiRespond = await getData(apiUrl, null, true, "DELETE");
-                alert(apiRespond.message);
+
+                await showMessageDialog(apiRespond.message, apiRespond.resul ? "success" : "warning", "top");
+
                 if (apiRespond.result) {
                     navigate("/Homepage");
                 }
             } catch (error) {
-                alert("Error deleting pet");
+                showMessageDialog("Error inesperado, inténtalo de nuevo", "warning", "top");
+                console.log("Error deleting pet: " + error);
             }
         }
     };
@@ -122,7 +124,7 @@ export default function PetProfile() {
 
     const handleAdoption = async () => {
         if (!isAuthenticated) {
-            alert("Por favor, inicie sesión para enviar una solicitud de adopción.");
+            showMessageDialog("Debe iniciar sesión para hacer una solicitud de adopción", "warning", "top");
             return;
         }
         const adoptionRequestData = {
@@ -132,10 +134,10 @@ export default function PetProfile() {
         try {
             const apiUrl = "https://www.APIPetrack.somee.com/Adoption/RequestAdoption";
             const response = await getData(apiUrl, adoptionRequestData, true, "POST");
-            alert(response.message || "Ocurrió un error al enviar la solicitud de adopción.");
+            showMessageDialog(response.message || "Ocurrió un error al enviar la solicitud de adopción.", "warning", "top");
         } catch (error) {
             console.error("Error al enviar la solicitud de adopción:", error);
-            alert("Error al enviar la solicitud de adopción. Intente más tarde.");
+            showMessageDialog("Error al enviar la solicitud de adopción. Inténtelo más tarde.", "warning", "top");
         }
     };
 

@@ -7,6 +7,7 @@ import Form from "../../organisms/Form";
 import TextInput from "../../atoms/TextInput";
 import { getData } from "../../../utils/apiConnector.js";
 import SelectInput from "../../molecules/SelectInput/index.jsx";
+import { showMessageDialog } from '../../../utils/customAlerts.jsx';
 
 export default function EditPet({ petAccountData, updatePetData }) {
     const { isOpen, toggleModal } = useOpenClose();
@@ -41,7 +42,7 @@ export default function EditPet({ petAccountData, updatePetData }) {
         e.preventDefault();
         if (petAccountData === petData) {
             toggleModal();
-            alert("No changes were made");
+            showMessageDialog("No se realizó ningun cambio", "success", "top");
         }
         else {
             try {
@@ -63,16 +64,16 @@ export default function EditPet({ petAccountData, updatePetData }) {
                 const apiResponse = await getData(apiUrl, body, true, "PUT");
 
                 if (apiResponse.result) {
-                    alert("Changes saved successfully");
+                    showMessageDialog(apiResponse.message, "success", "top");
                     updatePetData(petData);
                     toggleModal();
                 } else {
-                    alert(apiResponse.message);
+                    showMessageDialog(apiResponse.message, "warning", "top");
                 }
             } catch (error) {
                 toggleModal();
                 console.error("Error editing pet:", error);
-                alert("Error editing pet");
+                showMessageDialog("Error editing pet", "warning", "top");
             }
         }
     }

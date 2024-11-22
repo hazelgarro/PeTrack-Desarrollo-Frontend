@@ -14,6 +14,7 @@ import { getData } from "../../../utils/apiConnector.js";
 import { loginUser } from "../../../utils/sessionManager.js";
 import { uploadImage } from '../../../utils/imageManager.js';
 import { useSession } from '../../../context/SessionContext';
+import { showMessageDialog, showOptionDialog } from '../../../utils/customAlerts.jsx';
 
 export default function SignUp() {
     const [isLoading, setIsLoading] = useState(false);//maneja la visibilidad de la animación
@@ -85,20 +86,20 @@ export default function SignUp() {
         e.preventDefault();
 
         if (accountData.password !== accountData.confirmPassword) {
-            setErrorMessage("Passwords do not match");
+            setErrorMessage("Las contraseñas no coinciden");
             setIsFormSubmitted(false);
             return;
         } else if (accountData.password.length < 8) {
-            setErrorMessage("The password must be a minimum of 8 characters.");
+            setErrorMessage("La contraseña debe tener un mínimo de 8 caracteres.");
             return;
         }
 
         setIsFormSubmitted(true);
     };
 
-    const handleSkip = (e) => {
+    const handleSkip = async (e) => {
         e.preventDefault();
-        const userResponse = confirm("Additional information will not be saved.\nAre you sure you want to continue?");
+        const userResponse = await showOptionDialog("La información extra y la foto serán descartadas\n ¿Seguro que deseas continuar?", "warning");
 
         if (userResponse) {
             isSkipping = true;
@@ -125,7 +126,7 @@ export default function SignUp() {
         // Verifica si al menos un campo o la imagen han sido completados
         if (!isSkipping) {
             if (!tempImages.tempProfile && !tempImages.tempCover && !accountData.address && !accountData.workingDays && !accountData.workingHours) {
-                const errorMessage = userTypeId === "0" ? "Please select an image" : "Please select an image or enter a data";
+                const errorMessage = accountData.userTypeId === "0" ? "Por favor selecciona una imagen" : "Por favor selecciona una imagen o añade información extra";
 
                 setErrorMessage(errorMessage);
 
@@ -140,20 +141,17 @@ export default function SignUp() {
 
         try {
             if (tempImages.tempProfile) {
-                console.log("Uploading profile image...");
                 profileUploadResult = await uploadImage(tempImages.tempProfile);
                 console.log("Profile image uploaded:", profileUploadResult);
             }
 
             if (tempImages.tempCover) {
-                console.log("Uploading cover image...");
                 coverUploadResult = await uploadImage(tempImages.tempCover);
                 console.log("Cover image uploaded:", coverUploadResult);
             }
         } catch (error) {
             setIsLoading(false);
-            alert("There was an issue uploading the image. Please try again.");
-            setErrorMessage("There was an issue uploading the image. Please try again.");
+            setErrorMessage("Hubo un problema al cargar la imagen. Inténtalo nuevamente.");
             setTimeout(() => {
                 setErrorMessage(null);
             }, 5000);
@@ -190,32 +188,31 @@ export default function SignUp() {
             setIsLoading(false);
 
             if (apiResponse.result) {
-                const userResponse = confirm("The user has been created successfully.\nDo you want to log in with your new user?");
+                const userResponse = await showOptionDialog("El usuario ha sido creado exitosamente.\n¿Desea iniciar seción con su nuevo usuario?", "success");
                 if (userResponse) {
                     try {
                         const loginResult = await loginUser(accountData.email, accountData.password);
                         if (!loginResult.result) {
-                            alert(loginResult.message);
+                            showMessageDialog(loginResult.message, "warining", "top");
                         }
                         updateSessionState();
                     } catch (error) {
                         console.log(error);
-                        alert("An error occurred while trying to log in.");
+                        showMessageDialog("Ha ocurrido un error al intentar loguearse", "warining", "top");
                     } finally {
-
                         navigate("/");
                     }
                 } else {
                     navigate("/");
                 }
             } else {
-                alert(apiResponse.message);
+                showMessageDialog(apiResponse.message, "warning", "top");
                 setIsFormSubmitted(false);
             }
         } catch (error) {
             setIsLoading(false);
             console.error("Error during registration:", error);
-            alert("Error during registration:");
+            showMessageDialog("Ha ocurrido un error mientras se realizaba el registro", "warning", "top");
         }
         finally {
             isSkipping = false;
@@ -289,7 +286,7 @@ export default function SignUp() {
                 </Form>
             </CSSTransition>
             <CSSTransition in={isFormSubmitted} timeout={500} classNames="images-slide" unmountOnExit>
-                <Form title="Perfil" subTitle={`${accountData.userTypeId === "O" ? 'Add a profile picture' : 'Add extra information'}`} onSubmit={handleFinalSubmit}>
+                <Form title={`${accountData.userTypeId === "O" ? 'Añade una foto de perfil' : 'Añade información extra'}`} subTitle="Este paso es opcional" onSubmit={handleFinalSubmit}>
                     <div className="relative w-full flex flex-col items-center">
 
                         {accountData.userTypeId === "S" && (
@@ -335,8 +332,8 @@ export default function SignUp() {
                         {errorMessage && <p className="mb-4 text-red-500">{errorMessage}</p>}
 
                         <div className="flex flex-col w-full max-w-xs justify-end pt-4 gap-2">
-                            <Button size="small" variant="solid-green" type="submit">Save</Button>
-                            <Button onClick={handleSkip} size="small">Skip</Button>
+                            <Button size="small" variant="solid-green" type="submit">Guardar</Button>
+                            <Button onClick={handleSkip} size="small">Saltar</Button>
                         </div>
                     </div>
                 </Form>

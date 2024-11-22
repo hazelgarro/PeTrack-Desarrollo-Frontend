@@ -20,6 +20,7 @@ import EditPicture from '../../organisms/EditPicture/index.jsx';
 import Banner from '../../atoms/Banner/index.jsx';
 import Loader from '../../atoms/Loader/index.jsx';
 import Footer from '../../organisms/Footer/index.jsx';
+import { showMessageDialog, showOptionDialog } from '../../../utils/customAlerts.jsx';
 
 export default function ShelterProfile() {
     const { id } = useParams();
@@ -37,27 +38,26 @@ export default function ShelterProfile() {
         workingHours: "",
         pets: [],
     });
-    
+
     const [isLoading, setIsLoading] = useState(true); // Estado para manejar el loader
 
-const fetchPetData = async (shelterId) => {
-    setIsLoading(true);
-    const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterId}`, null, false, "GET");
-    if (respond.result) {
-        setShelterData(prevState => ({
-            ...prevState,
-            pets: respond.data
-        }));
-    }
-    setIsLoading(false);
-};
-
+    const fetchPetData = async (shelterId) => {
+        setIsLoading(true);
+        const respond = await getData(`https://www.APIPetrack.somee.com/Pet/GetPetsByShelter/${shelterId}`, null, false, "GET");
+        if (respond.result) {
+            setShelterData(prevState => ({
+                ...prevState,
+                pets: respond.data
+            }));
+        }
+        setIsLoading(false);
+    };
 
     useEffect(() => {
         if (id) {
             fetchShelter();
         } else if (!isAuthenticated) {
-            alert('No se encontró el ID del refugio');
+            showMessageDialog('No se encontró el ID del refugio', "warning", "top");
             navigate("/");
         } else {
             setShelterData(userData);
@@ -76,10 +76,10 @@ const fetchPetData = async (shelterId) => {
                 setShelterData(apiRespond.data);
                 fetchPetData(apiRespond.data.id); // Llama a fetchPetData con el ID correcto
             } else if (apiRespond) {
-                alert(apiRespond.message);
+                showMessageDialog(apiRespond.message, "warning", "top");
                 navigate("/");
             } else {
-                alert("Unexpected error");
+                showMessageDialog("Error inesperado", "warning", "top");
                 navigate("/");
             }
         } catch (error) {
@@ -119,7 +119,7 @@ const fetchPetData = async (shelterId) => {
                         </IconText>
                     </ProfileInfoContainer>
                 </section>
-                
+
                 {/* <div className='grid grid-cols-2 mt-24'>
                     <div className='bg-petrack-yellow rounded-3xl'>
                         <img className='rounded-3xl' src={catImage} alt="Cat" />
@@ -133,7 +133,7 @@ const fetchPetData = async (shelterId) => {
                 <div>
                     <p className="flex font-outfit text-petrack-green text-2xl md:text-3xl font-bold mt-12 md:mt-24 mb-6 text-center">Mascotas en adopción</p>
                 </div>
-                
+
                 <div>
                     <CardsContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {shelterData.pets && shelterData.pets.length > 0 ? (

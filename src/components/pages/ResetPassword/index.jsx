@@ -6,6 +6,7 @@ import Form from "../../organisms/Form";
 import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
 import { getData } from "../../../utils/apiConnector.js";
+import { showMessageDialog } from "../../../utils/customAlerts.jsx";
 
 export default function ResetPassword() {
     const location = useLocation();
@@ -60,14 +61,14 @@ export default function ResetPassword() {
             setIsLoading(false);
 
             if(apiResponse.result){
-                alert("La contreseña ha sido cambiada exitosamente");
+                await showMessageDialog("La contreseña ha sido cambiada exitosamente", "success", "center");
                 navigate("/Login")
             }else {
-                alert(apiResponse.message);
+                showMessageDialog(apiResponse.message, "warning", "center");
             }
 
         } catch (error) {
-            alert("Error al cambiar la contraseña: " + error.message);
+            showMessageDialog("Error inesperado, intenta denuevo", "warning", "top");
             console.error("Error:", error);
         } finally {
             setIsLoading(false);

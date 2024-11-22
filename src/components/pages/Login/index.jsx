@@ -8,6 +8,7 @@ import AccountForm from "../../templates/AccountForm";
 import Loader from "../../atoms/Loader";
 import {loginUser} from "../../../utils/sessionManager";
 import { useSession } from '../../../context/SessionContext';
+import { showMessageDialog } from "../../../utils/customAlerts";
 
 export default function Login() {
     const { updateSessionState } = useSession();
@@ -49,7 +50,7 @@ export default function Login() {
                 }, 7000);
             }
         } catch (error) {
-            alert("Login error: " + error.message);
+            showMessageDialog("Error inesperado, intenta denuevo", "warning", "top");
             console.error("Error:", error);
         } finally {
             setIsLoading(false);

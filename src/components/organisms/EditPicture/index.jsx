@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useSession } from "../../../context/SessionContext";
 import { uploadImage } from "../../../utils/imageManager";
 import { getData } from "../../../utils/apiConnector";
+import { showMessageDialog } from "../../../utils/customAlerts";
 
-export default function EditPicture({ type = "profile", imageSrc, petData, updateImage}) {
+export default function EditPicture({ type = "profile", imageSrc, petData}) {
     const { userData, updateSessionState } = useSession();
     const [currentImage, setCurrentImage] = useState(imageSrc);
 
@@ -46,12 +47,11 @@ export default function EditPicture({ type = "profile", imageSrc, petData, updat
             if (!apiResponse.result) {
                 throw new Error(apiResponse.message || "Error updating image in database.");
             }
-            updateImage(pictureUploadResult.imageUrl);
             updateSessionState();
-            alert("Image changed successfully");
+            showMessageDialog("Imagen cambiada exitosamente", "success", "top");
         } catch (error) {
             console.error("Error editing image:", error);
-            alert(error.message || "Error editing image");
+            showMessageDialog(error.message || "Error al editar la imagen", "success", "top");
         }
     };
 

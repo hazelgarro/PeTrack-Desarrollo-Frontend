@@ -4,6 +4,7 @@ import Form from "../Form";
 import PasswordInput from "../../molecules/PasswordInput";
 import Button from "../../atoms/Button";
 import { getData } from "../../../utils/apiConnector";
+import { showMessageDialog } from '../../../utils/customAlerts.jsx';
 
 export default function ChangePassword({ userId, isOpen, toggleModal }) {
     const [passwords, setPasswords] = useState({
@@ -64,14 +65,15 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
             const apiResponse = await getData(apiUrl, body, true, "PUT");
 
             if (apiResponse.result) {
-                alert(apiResponse.message);
+                await showMessageDialog(apiResponse.message, "success", "top");
                 toggleModal();
             } else {
-                alert(apiResponse.message);
+                showMessageDialog(apiResponse.message, "warning", "top");
             }
         } catch (error) {
             console.log("Error changing password: ", error);
-            alert("Error changing password");
+            await showMessageDialog("Error inesperado al cambiar la contraseña", "warning", "top");
+            toggleModal();
         }
     };
 

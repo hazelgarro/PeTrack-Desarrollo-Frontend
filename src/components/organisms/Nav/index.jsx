@@ -13,6 +13,7 @@ import { useSession } from '../../../context/SessionContext';
 import { useNavigate } from "react-router-dom";
 import { getData } from "../../../utils/apiConnector.js";
 import ChangePassword from "../ChangePassword/index.jsx";
+import { showMessageDialog, showOptionDialog } from "../../../utils/customAlerts.jsx";
 
 
 export default function NavBar({ variant = "" }) {
@@ -32,10 +33,10 @@ export default function NavBar({ variant = "" }) {
         }
     };
 
-    const logout = (e) => {
+    const logout = async (e) => {
         e.preventDefault();
 
-        const isConfirmed = window.confirm("Are you sure you want to log out?");
+        const isConfirmed = await showOptionDialog("¿Seguro que deseas cerrar la sesión?", "warning");
 
         if (isConfirmed) {
             logoutUser();
@@ -47,7 +48,7 @@ export default function NavBar({ variant = "" }) {
     const deleteAccount = async (e) => {
         e.preventDefault();
 
-        const isConfirmed = window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.");
+        const isConfirmed = await showOptionDialog("Estás a punto de eliminar tu cuenta. ESTA ACCIÓN ES IRREVERSIBLE. ¿Seguro que deseas continuar?", "warning");
 
         if (isConfirmed) {
             try {
@@ -55,16 +56,17 @@ export default function NavBar({ variant = "" }) {
                 const apiResponse = await getData(apiUrl, null, true, "DELETE");
 
                 if (apiResponse.result) {
-                    alert("The user has been successfully deleted");
+                    
                     logoutUser();
                     updateSessionState();
+                    await showMessageDialog("El usuario a sido eliminado exitósamente.", "success", "top");
                     navigate("/");
                 } else {
-                    alert(apiResponse.message);
+                    showMessageDialog(apiResponse.message, "warning", "top");
                 }
             } catch (error) {
                 console.log("Error deleting account", error);
-                alert("Error deleting account");
+                showMessageDialog("Error inesperado al eliminar la cuenta, inténtalo más tarde", "warning", "top");
             }
         }
     }

@@ -30,35 +30,43 @@ export default function NavMenu({ variant = "" }) {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const logout = (e) => {
+    const logout = async (e) => {
         e.preventDefault();
-        if (window.confirm("Are you sure you want to log out?")) {
+
+        const isConfirmed = await showOptionDialog("¿Seguro que deseas cerrar la sesión?", "warning");
+
+        if (isConfirmed) {
             logoutUser();
             updateSessionState();
             navigate("/");
         }
-    };
+    }
 
     const deleteAccount = async (e) => {
         e.preventDefault();
-        if (window.confirm("Are you sure you want to delete your account?\nThis action is irreversible.")) {
+
+        const isConfirmed = await showOptionDialog("Estás a punto de eliminar tu cuenta. ESTA ACCIÓN ES IRREVERSIBLE. ¿Seguro que deseas continuar?", "warning");
+
+        if (isConfirmed) {
             try {
                 const apiUrl = `https://www.APIPetrack.somee.com/User/DeleteAccount/${userData.id}`;
                 const apiResponse = await getData(apiUrl, null, true, "DELETE");
+
                 if (apiResponse.result) {
-                    alert("The user has been successfully deleted");
+                    
                     logoutUser();
                     updateSessionState();
+                    await showMessageDialog("El usuario a sido eliminado exitósamente.", "success", "top");
                     navigate("/");
                 } else {
-                    alert(apiResponse.message);
+                    showMessageDialog(apiResponse.message, "warning", "top");
                 }
             } catch (error) {
                 console.log("Error deleting account", error);
-                alert("Error deleting account");
+                showMessageDialog("Error inesperado al eliminar la cuenta, inténtalo más tarde", "warning", "top");
             }
         }
-    };
+    }
 
     const onClickPasswordChange = () => {
         toggleMenu();

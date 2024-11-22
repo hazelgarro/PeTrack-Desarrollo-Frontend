@@ -7,6 +7,7 @@ import Form from "../../organisms/Form";
 import TextInput from "../../atoms/TextInput";
 import { getData } from "../../../utils/apiConnector.js";
 import { useSession } from '../../../context/SessionContext';
+import { showMessageDialog } from "../../../utils/customAlerts.jsx";
 
 export default function EditUser({ accountData }) {
     const { isOpen, toggleModal } = useOpenClose();
@@ -39,7 +40,7 @@ export default function EditUser({ accountData }) {
         e.preventDefault();
         if(userData === accountData){
             toggleModal();
-            alert("No changes were made");
+            showMessageDialog("No se realizó ningun cambio", "success", "top");
         }
         else{
             try {
@@ -48,15 +49,15 @@ export default function EditUser({ accountData }) {
     
                 if(apiResponse.result){
                     updateSessionState();
-                    alert("Changes saved successfully");
+                    showMessageDialog("Los cambios se guardaron exitosamente", "success", "top");
                     toggleModal();
                 }else{
-                    alert(apiResponse.message);
+                    showMessageDialog(apiResponse.message, "warning", "top");
                 }
             } catch (error) {
                 toggleModal();
-                console.error("Error editing user:", error);
-                alert("Error editing user");
+                console.error("Error al editar la mascota:", error);
+                showMessageDialog("Error al editar la mascota", "warning", "top");
             }
         }
     }
