@@ -2,6 +2,8 @@ import Proptypes from "prop-types";
 import Image from "../../atoms/Image";
 import Gender from "../../atoms/Icons/Gender";
 import Location from "../../atoms/Icons/Location";
+import dog_default from "../../../assets/img/dog_default.webp";
+import cat_default from "../../../assets/img/cat_default.webp";
 
 import { getFormattedDate } from "../../../utils/dateFormater";
 
@@ -11,7 +13,7 @@ export default function Card({ typeCard="pet", link="#", title, imgSrc, imgAlt="
     return (
         <a href={link} className="block transform">
             <div className="relative rounded-2xl overflow-hidden">
-                <Image imgSrc={imgSrc} imgAlt={imgAlt}></Image>
+                <Image imgSrc={imgSrc} imgAlt={imgAlt} defaultImage={typeCard === "pet" ? (species === "Dog" ? dog_default : cat_default) : ""}></Image>
 
                 {typeCard === "service" ? (
                     <>
