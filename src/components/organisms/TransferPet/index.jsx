@@ -49,7 +49,7 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
             const response = await getData(apiUrl, transferRequestData, true, "POST");
 
             if (response.result) {
-                await showMessageDialog(response.message, "success", "top");
+                showMessageDialog(response.message, "success", "top");
             } else {
                 await showMessageDialog(response.message || "Ocurrió un error al enviar el traspaso de la mascota", "warning", "top");
             }
