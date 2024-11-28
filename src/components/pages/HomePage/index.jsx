@@ -373,9 +373,9 @@ export default function HomePage() {
                         </div>
 
                         <p className="text-sm text-center md:text-2xl lg:text-4xl">
-                            Conecta a propietarios de mascotas, veterinarios, y tiendas en un solo lugar.
+                            Conecta a propietarios de mascotas, posibles adoptantes y refugios en un solo lugar.
                             <br />
-                            Gestiona la salud de tu mascota, localízala en caso de pérdida, y facilita el
+                            Localízala en caso de pérdida, y facilita el
                             proceso de adopción de manera segura y eficiente.
                         </p>
 
