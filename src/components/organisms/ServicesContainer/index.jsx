@@ -15,6 +15,7 @@ export default function ServicesContainer({ }) {
             <div className="flex justify-center gap-12  -mt-12 mb-24 mx-6 md:mx-12 md:-mt-8 lg:mx-48 lg:-mt-12 xl:-mt-24">
                 <ServiceCard image={Tag} text="Consigue placa"></ServiceCard>
                 <ServiceCard image={Shelter} text="Refugios"></ServiceCard>
+                
             </div>
 
         </div>

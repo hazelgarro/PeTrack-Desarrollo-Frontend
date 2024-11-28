@@ -337,7 +337,7 @@ export default function HomePage() {
                                 </p>
                             </FeatureCard>
                             <FeatureCard>
-                                <Location size="extra-large" thickness="1.5"></Location>
+                                <Location size="extra-large" variant='solid' thickness="1.5"></Location>
                                 <p className="text-lg md:text-3xl lg:text-4xl font-bold text-center">
                                     Localiza a tu <br /> mascota
                                 </p>
