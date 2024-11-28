@@ -138,32 +138,35 @@ export default function SignUp() {
         }
     };
 
-    const handleFirtsSubmit = (e) => {
+    const handleFirstSubmit = (e) => {
         e.preventDefault();
+    
         if (accountData.password !== accountData.confirmPassword) {
             setErrorMessage("Las contraseñas no coinciden");
             setIsFormSubmitted(false);
             return;
-        } else if (accountData.password.length < 8) {
+        }
+    
+        if (accountData.password.length < 8) {
             setErrorMessage("La contraseña debe tener un mínimo de 8 caracteres.");
-        } 
+            return;
+        }
+    
         const phoneValidationMessage = validatePhoneNumber(accountData.phoneNumber);
         if (phoneValidationMessage) {
             setErrorMessage(phoneValidationMessage);
             return;
         }
+    
         const validationMessage = validatePassword(accountData.password);
         if (validationMessage) {
             setErrorMessage(validationMessage);
             return;
         }
-        if (accountData.password.length < 8) {
-            setErrorMessage("The password must be a minimum of 8 characters.");
-            return;
-        }
-
+    
         setIsFormSubmitted(true);
     };
+    
 
     const handleSkip = async (e) => {
         e.preventDefault();
@@ -292,7 +295,7 @@ export default function SignUp() {
             {isLoading && <Loader />} {/* Muestra el loader mientras se carga */}
 
             <CSSTransition in={!isFormSubmitted} timeout={500} classNames="form-slide" unmountOnExit>
-                <Form title="Crear cuenta" subTitle="Ingresa tus datos" onSubmit={handleFirtsSubmit}>
+                <Form title="Crear cuenta" subTitle="Ingresa tus datos" onSubmit={handleFirstSubmit}>
                     <SelectInput
                         size="medium"
                         placeholder="Tipo de Usuario"

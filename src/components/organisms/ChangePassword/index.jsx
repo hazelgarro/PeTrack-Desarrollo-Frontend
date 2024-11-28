@@ -26,6 +26,33 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
         }
     }, [isOpen]);
 
+    const [isTypingPassword, setIsTypingPassword] = useState(false);
+
+    const validatePassword = (password) => {
+        const lengthRegex = /^.{8,}$/;
+        const uppercaseRegex = /[A-Z]/;
+        const lowercaseRegex = /[a-z]/;
+        const numberRegex = /\d/;
+        const specialCharRegex = /[@$!%*?&#.,_-]/;
+
+        if (!lengthRegex.test(password)) {
+            return "La contraseña debe tener al menos 8 caracteres.";
+        }
+        if (!uppercaseRegex.test(password)) {
+            return "La contraseña debe incluir al menos una letra mayúscula.";
+        }
+        if (!lowercaseRegex.test(password)) {
+            return "La contraseña debe incluir al menos una letra minúscula.";
+        }
+        if (!numberRegex.test(password)) {
+            return "La contraseña debe incluir al menos un número.";
+        }
+        if (!specialCharRegex.test(password)) {
+            return "La contraseña debe incluir al menos un carácter especial (@, $, !, %, etc.).";
+        }
+        return ""; // Contraseña válida
+    };
+
     const handleInputChange = ({ name, value }) => {
 
         setPasswords((prevData) => {
@@ -34,24 +61,40 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
                 [name]: value,
             };
 
-            if (newData.newPassword === newData.confirmNewPassword) {
-                setError("");
+            if (name === "newPassword") {
+                if (!isTypingPassword || value.length > 0) {
+                    setIsTypingPassword(true);
+                }
+                if (value.length === 0) {
+                    setIsTypingPassword(false);
+                }
+            }
+
+            if (newData.newPassword !== newData.confirmNewPassword && (newData.newPassword.length > 0 && newData.confirmNewPassword.length > 0)) {
+                setError("Las contraseñas no coinciden");
             } else {
-                setError("New password and confirmation do not match.");
+                setError("");
             }
 
             return newData;
         });
     };
 
+    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (passwords.newPassword !== passwords.confirmNewPassword) {
-            setError("New password and confirmation do not match.");
+            setError("Las contraseñas no coinciden");
             return;
         } else if(passwords.newPassword.length < 8){
             setError("The password must be a minimum of 8 characters.");
+            return;
+        }
+        const validationMessage = validatePassword(passwords.newPassword);
+        if (validationMessage) {
+            setErrorMessage(validationMessage);
             return;
         }
 
@@ -65,7 +108,7 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
             const apiResponse = await getData(apiUrl, body, true, "PUT");
 
             if (apiResponse.result) {
-                await showMessageDialog(apiResponse.message, "success", "top");
+                showMessageDialog(apiResponse.message, "success", "top");
                 toggleModal();
             } else {
                 showMessageDialog(apiResponse.message, "warning", "top");
@@ -98,6 +141,25 @@ export default function ChangePassword({ userId, isOpen, toggleModal }) {
                     value={passwords.newPassword}
                     onChange={handleInputChange}
                 />
+                {isTypingPassword && (
+                        <ul className="text-sm text font-['Lato'] mb-3 ">
+                            <li className={passwords.newPassword.length >= 8 ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos 8 caracteres
+                            </li>
+                            <li className={/[A-Z]/.test(passwords.newPassword) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos una letra mayúscula
+                            </li>
+                            <li className={/[a-z]/.test(passwords.newPassword) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos una letra minúscula
+                            </li>
+                            <li className={/\d/.test(passwords.newPassword) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos un número
+                            </li>
+                            <li className={/[@$!%*?&#.,_-]/.test(passwords.newPassword) ? "text-petrack-green" : "text-petrack-red"}>
+                                Al menos un carácter especial (@, $, !, etc.)
+                            </li>
+                        </ul>
+                    )}
                 <p className="px-5">Confirmar nueva contraseña</p>
                 <PasswordInput
                     size="medium"

@@ -7,7 +7,7 @@ import WarningIcon from "../../atoms/Icons/Warning";
 import InfoIcon from "../../atoms/Icons/Info";
 import Button from "../../atoms/Button";
 
-const Dialog = ({ message, type, onClose, position, withBackdrop=false }) => {
+const Dialog = ({ message, type, onClose, position, withBackdrop = false }) => {
   const [visible, setVisible] = useState(false);
 
   // Controla la visibilidad inicial del diálogo
@@ -46,15 +46,21 @@ const Dialog = ({ message, type, onClose, position, withBackdrop=false }) => {
 
   return createPortal(
     <div
-      className={`fixed inset-0 z-50 flex items-center justify-center ${withBackdrop ? "bg-black bg-opacity-50" : ""
-        } ${visible ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-300`}
+      className={`fixed inset-0 z-50 flex items-center justify-center ${
+        withBackdrop ? "bg-black bg-opacity-50" : ""
+      } ${visible ? "opacity-100" : "opacity-0 pointer-events-none"} transition-opacity duration-300`}
     >
       <div
-        className={`${position === "top"
+        className={`${
+          position === "top"
             ? "top-4 fixed left-1/2 transform -translate-x-1/2"
             : "my-10 mx-4 max-h-screen overflow-y-auto"
-          } ${visible ? "scale-100 opacity-100" : "scale-90 opacity-0"} 
+        } ${visible ? "scale-100 opacity-100" : "scale-90 opacity-0"} 
         transition-all duration-300 transform`}
+        style={{
+          maxWidth: position === "top" ? "calc(100% - 20px)" : "auto", // Limitar ancho para la posición top
+          margin: position === "top" ? "10px" : "0", // Agregar margen de 10 unidades
+        }}
       >
         <BorderContainer
           color={["info", "confirm"].includes(type) ? "" : `border-petrack-red`}
@@ -79,12 +85,15 @@ const Dialog = ({ message, type, onClose, position, withBackdrop=false }) => {
                   <p className="text-xl font-semibold">{title[type]}</p>
                 </div>
               )}
-              <div className="flex items-center">
+              <div
+                className={`flex items-center ${
+                  position === "top" ? "text-center" : ""
+                }`}
+              >
                 {position === "top" && <span className="mr-1">{icon[type]}</span>}
-                <p>{message}</p>
+                <p className="break-words">{message}</p> {/* Permite ajustar al contenido */}
                 {position === "top" && (
                   <div className="relative ml-4">
-                    {/* Contenedor del botón con contorno animado */}
                     <button
                       className="flex items-center justify-center"
                       label="Exit"
@@ -115,7 +124,7 @@ const Dialog = ({ message, type, onClose, position, withBackdrop=false }) => {
                   variant={type === "confirm" ? "solid-green" : "border-red"}
                   size="extra-small"
                 >
-                  Si
+                  Sí
                 </Button>
               </div>
             ) : (
@@ -149,4 +158,3 @@ Dialog.propTypes = {
 };
 
 export default Dialog;
-

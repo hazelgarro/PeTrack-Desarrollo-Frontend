@@ -20,6 +20,7 @@ import CardNotification from "../../molecules/CardNotification";
 import Footer from "../../organisms/Footer";
 import Loader from '../../atoms/Loader';
 import { showMessageDialog } from '../../../utils/customAlerts.jsx';
+import PetTransferList from "../../organisms/PetTransferList";
 
 export default function HomePage() {
 
@@ -169,32 +170,6 @@ export default function HomePage() {
         }
     };
 
-    const handleRespondToTransfer = async (transferId, action) => {
-        try {
-            const apiUrl = `https://www.APIPetrack.somee.com/Transfer/RespondToTransfer/${transferId}`;
-            const response = await getData(apiUrl, { accepted: action }, true, "PUT");
-
-            if (response.result) {
-                fetchTransfers();
-                await fetchPets();
-
-                const section = document.getElementById('pets-section');
-                if (section) {
-                    section.scrollIntoView({ behavior: 'smooth' });
-                }
-
-                showMessageDialog(response.message, "success", "top");
-            } else {
-                // Mostrar un mensaje de advertencia si algo salió mal
-                showMessageDialog(response.message, "warning", "top");
-            }
-        } catch (error) {
-            console.error(`Error al responder a la transferencia:`, error);
-            // Mostrar un mensaje de error en caso de falla
-            showMessageDialog("Ocurrió un error al procesar la solicitud. Inténtalo de nuevo más tarde.", "warning", "top");
-        }
-    };
-
     return (
         <div className="w-full bg-white">
             {loading && <Loader />} {/* Muestra el loader mientras se carga */}
@@ -202,7 +177,7 @@ export default function HomePage() {
                 <>
                     {/* Contenido para usuarios autenticados */}
                     <NavLanding isAuthenticated={isAuthenticated} variant="green" />
-                    <Welcome userName={userData ? (userData.userType === "PetOwner" ? userData.completeName : userData.name) : ""}/>
+                    <Welcome userName={userData ? (userData.userType === "PetOwner" ? userData.completeName : userData.name) : ""} />
 
                     {/* Pets Section */}
                     <div id="pets-section" className="mx-12 sm:mx-24 md:mx-44 my-20 ">
@@ -244,44 +219,13 @@ export default function HomePage() {
                         )}
                     </div>
 
-                    {/* Transfers Requests Section */}
-                    {transfers && (
-                        <section>
-                            <div className="flex justify-center items-center pt-16">
-                                <p className="text-3xl md:text-5xl font-medium text-petrack-green text-center">
-                                    Transferencias de mascotas recibidas
-                                </p>
-                            </div>
-
-                            <div className="mx-18 sm:mx-24 md:mx-34 lg:mx-44 my-20">
-                                <div>
-                                    {transfers
-                                        .filter((request) => request.currentOwner.email !== userData.email && (request.status === "Pending")) // Filtra las solicitudes donde el dueño tiene un correo diferente al usuario actual
-                                        .map((request) => (
-                                            <CardNotification
-                                                key={request.id}
-                                                requestId={request.id}
-                                                typeCard="transfer_received"
-                                                imgSrc={request.petPicture || 'default_pet_picture.jpg'}
-                                                imgAlt={request.petName}
-                                                name={request.petName}
-                                                requesterEmail={request.currentOwner.email}
-                                                status={
-                                                    request.status === 'Accepted'
-                                                        ? 'Aceptada'
-                                                        : request.status === 'Rejected'
-                                                            ? 'Denegada'
-                                                            : 'Pendiente'
-                                                }
-                                                requestDate={new Date(request.requestDate).toLocaleDateString()}
-                                                onAccept={() => handleRespondToTransfer(request.id, true)}
-                                                onDeny={() => handleRespondToTransfer(request.id, false)}
-                                            />
-                                        ))}
-                                </div>
-                            </div>
-                        </section>
-                    )}
+                    {/* Sección de Transferencias */}
+                    <PetTransferList
+                        transfers={transfers}
+                        userData={userData}
+                        fetchTransfers={fetchTransfers}
+                        fetchPets={fetchPets}
+                    />
 
                     {/* Adoption Requests Section */}
                     {userData.userTypeId === "S" && <section>

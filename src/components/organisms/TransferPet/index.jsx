@@ -49,12 +49,12 @@ export default function TrasferPet({isAuthenticated, petAccountData }) {
             const response = await getData(apiUrl, transferRequestData, true, "POST");
 
             if (response.result) {
-                await showMessageDialog(response.message, "success", "top");
+                toggleModal();
+                showMessageDialog(response.message, "success", "top");
             } else {
-                await showMessageDialog(response.message || "Ocurrió un error al enviar el traspaso de la mascota", "warning", "top");
+                showMessageDialog(response.message || "Ocurrió un error al enviar el traspaso de la mascota", "warning", "top");
             }
             setTransferData({ email: "", password: "" });
-            toggleModal();
         } catch (error) {
             console.error("Error al enviar la solicitud de adopción:", error);
             showMessageDialog("Error al enviar el traspaso de la mascota. Intentelo más tarde.", "warning", "top");

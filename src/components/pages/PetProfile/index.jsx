@@ -130,13 +130,17 @@ export default function PetProfile() {
         try {
             const apiUrl = "https://www.APIPetrack.somee.com/Adoption/RequestAdoption";
             const response = await getData(apiUrl, adoptionRequestData, true, "POST");
-            showMessageDialog(response.message || "Ocurrió un error al enviar la solicitud de adopción.", "warning", "top");
+            if(response.result){
+                showMessageDialog(response.message, "success", "top");
+            }else{
+                showMessageDialog(response.message, "warning", "top");
+            }
+            
         } catch (error) {
             console.error("Error al enviar la solicitud de adopción:", error);
             showMessageDialog("Error al enviar la solicitud de adopción. Inténtelo más tarde.", "warning", "top");
         }
     };
-
 
     const buttons = (
         <>
